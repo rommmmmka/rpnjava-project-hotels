@@ -10,7 +10,15 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1>asfaf</h1>
+                <div class="card my-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        Выпадковы мем
+                    </div>
+                    <div class="card-body container">
+                        <img th:src="|/assets/memes/${memeNumber}.jpg|" class="d-block mx-auto">
+                    </div>
+                </div>
             </div>
         </main>
         <th:block th:replace="base::footer"/>
