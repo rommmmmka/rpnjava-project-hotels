@@ -21,19 +21,17 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginController {
     private final UserService userService;
     private final SessionService sessionService;
-    private final LoggedInChecker loggedInChecker;
 
     @Autowired
-    public LoginController(UserService userService, SessionService sessionService, LoggedInChecker loggedInChecker) {
+    public LoginController(UserService userService, SessionService sessionService) {
         this.userService = userService;
         this.sessionService = sessionService;
-        this.loggedInChecker = loggedInChecker;
     }
 
     @GetMapping("/login")
     public String loginPage(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         try {
-            model = loggedInChecker.loggedOutAccess(model, request);
+            LoggedInChecker.loggedOutAccess(model, request, userService, sessionService);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/";
@@ -54,7 +52,7 @@ public class LoginController {
                               HttpServletResponse response,
                               RedirectAttributes redirectAttributes) {
         try {
-            loggedInChecker.loggedOutAccess(model, request);
+            LoggedInChecker.loggedOutAccess(model, request, userService, sessionService);
             userEntity = userService.loginUser(userEntity);
             SessionEntity sessionEntity = sessionService.createSession(userEntity);
             response.addCookie(new Cookie("session_key", sessionEntity.getSessionKey()));

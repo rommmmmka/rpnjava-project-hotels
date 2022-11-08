@@ -2,6 +2,7 @@ package com.kravets.hotels.rpnjava.controller;
 
 import com.kravets.hotels.rpnjava.entity.UserEntity;
 import com.kravets.hotels.rpnjava.misc.LoggedInChecker;
+import com.kravets.hotels.rpnjava.service.SessionService;
 import com.kravets.hotels.rpnjava.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,18 +17,18 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class RegisterController {
     private final UserService userService;
-    private final LoggedInChecker loggedInChecker;
+    private final SessionService sessionService;
 
     @Autowired
-    public RegisterController(UserService userService, LoggedInChecker loggedInChecker) {
+    public RegisterController(UserService userService, SessionService sessionService) {
         this.userService = userService;
-        this.loggedInChecker = loggedInChecker;
+        this.sessionService = sessionService;
     }
 
     @GetMapping("/register")
     public String registerPage(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         try {
-            model = loggedInChecker.loggedOutAccess(model, request);
+            LoggedInChecker.loggedOutAccess(model, request, userService, sessionService);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/";
@@ -46,7 +47,7 @@ public class RegisterController {
                                  HttpServletRequest request,
                                  RedirectAttributes redirectAttributes) {
         try {
-            loggedInChecker.loggedOutAccess(model, request);
+            LoggedInChecker.loggedOutAccess(model, request, userService, sessionService);
             userService.registerUser(userEntity);
             UserEntity newUserEntity = new UserEntity(userEntity.getLogin());
             redirectAttributes.addFlashAttribute("userEntity", newUserEntity);

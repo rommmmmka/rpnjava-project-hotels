@@ -73,26 +73,29 @@
                         <a class="nav-link" href="layout-sidenav-light.html">Пошук нумароў</a>
                     </nav>
                 </div>
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts2"
-                   aria-expanded="false" aria-controls="collapseLayouts">
-                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                    Адмін-панэль
-                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                </a>
-                <div class="collapse" id="collapseLayouts2" aria-labelledby="headingOne"
-                     data-bs-parent="#sidenavAccordion">
-                    <nav class="sb-sidenav-menu-nested nav">
-                        <a class="nav-link" href="layout-static.html">Гатэлі</a>
-                        <a class="nav-link" href="layout-sidenav-light.html">Пакоі</a>
-                        <a class="nav-link" href="layout-sidenav-light.html">Заказы</a>
-                        <a class="nav-link" href="layout-sidenav-light.html">Нумары</a>
-                    </nav>
+                <div th:remove="!${isAdmin} ? all">
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts2"
+                       aria-expanded="false" aria-controls="collapseLayouts">
+                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        Адмін-панэль
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseLayouts2" aria-labelledby="headingOne"
+                         data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="layout-static.html">Гатэлі</a>
+                            <a class="nav-link" href="layout-sidenav-light.html">Пакоі</a>
+                            <a class="nav-link" href="layout-sidenav-light.html">Заказы</a>
+                            <a class="nav-link" href="layout-sidenav-light.html">Нумары</a>
+                        </nav>
+                    </div>
                 </div>
+
             </div>
         </div>
         <div th:remove="!${isLoggedIn} ? all" class="sb-sidenav-footer">
-            <div class="small">Logged in as:</div>
-            Start Bootstrap
+            <div class="small">Вы ўвайшлі як:</div>
+            <span th:text="${shortName}"></span>
         </div>
     </nav>
 </div>
