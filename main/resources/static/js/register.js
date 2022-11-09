@@ -82,8 +82,6 @@ const validationConstraints = {
 registerForm.addEventListener("submit", event => {
     let attributes = validate.collectFormValues(registerForm);
     let errors = validate(attributes, validationConstraints, validationOptions);
-    console.log(attributes)
-    console.log(errors)
     if (typeof errors !== 'undefined' && errors.length > 0) {
         event.preventDefault();
         toastr.error(errors[0]);

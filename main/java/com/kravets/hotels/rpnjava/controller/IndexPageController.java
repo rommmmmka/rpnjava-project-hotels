@@ -11,6 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Controller
 public class IndexPageController {
@@ -27,8 +30,11 @@ public class IndexPageController {
     public String indexPage(Model model, HttpServletRequest request) {
         LoggedInChecker.noRestrictionAccess(model, request, userService, sessionService);
 
-        model.addAttribute("searchForm", new SearchForm());
+        ZonedDateTime currentDate = ZonedDateTime.now(ZoneId.of("Europe/Minsk"));
+        model.addAttribute("searchForm", new SearchForm(currentDate));
         model.addAttribute("citiesList", CitiesList.getCitiesList());
+        model.addAttribute("currentDate", currentDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
+        model.addAttribute("currentDatePlusDay", currentDate.plusDays(1).format(DateTimeFormatter.ISO_LOCAL_DATE));
 
         model.addAttribute("templateName", "index");
         return "base";
