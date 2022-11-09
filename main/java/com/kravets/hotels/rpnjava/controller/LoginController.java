@@ -37,12 +37,12 @@ public class LoginController {
             return "redirect:/";
         }
 
-        model.addAttribute("isAdmin", true);
         if (!model.containsAttribute("userEntity")) {
             model.addAttribute("userEntity", new UserEntity());
         }
 
-        return "login";
+        model.addAttribute("templateName", "login");
+        return "base";
     }
 
     @PostMapping("/login")

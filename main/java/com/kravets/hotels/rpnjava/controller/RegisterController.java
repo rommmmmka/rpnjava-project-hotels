@@ -38,7 +38,8 @@ public class RegisterController {
             model.addAttribute("userEntity", new UserEntity());
         }
 
-        return "register";
+        model.addAttribute("templateName", "register");
+        return "base";
     }
 
     @PostMapping("/register")

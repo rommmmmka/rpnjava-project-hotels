@@ -1,23 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
-<head th:replace="base::head(~{::title}, ~{})">
-    <title>Booker - браніраванне гатэляў</title>
-</head>
-<body class="sb-nav-fixed">
-<th:block th:replace="base::topnav"/>
-<div id="layoutSidenav">
-    <th:block th:replace="base::sidenav"/>
-    <div id="layoutSidenav_content">
-        <main>
-            <div class="container-fluid px-4">
-                <h1>asfaf</h1>
-            </div>
-        </main>
-        <th:block th:replace="base::footer"/>
+<html xmlns:th="https://www.thymeleaf.org" lang="be">
+
+<title th:fragment="title">Booker - браніраванне гатэляў</title>
+
+<th:block th:fragment="content">
+    <div class="card my-4">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            Booker - пошук гатэляў у Беларусі
+        </div>
+        <div class="card-body container">
+            <form action="/results" method="get" th:object="${searchForm}">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3 mb-md-0">
+                            <select class="form-select" id="selectCity" required th:field="*{city}">
+                                <option th:each="cityPair : ${citiesList}" th:value="${cityPair.city}"
+                                        th:text="${cityPair.city}" th:disabled="${cityPair.disabled}"></option>
+                            </select>
+                            <label for="selectCity">Горад</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <input class="form-control" id="inputAdultsNumber" type="number"
+                                   th:field="*{adultsNumber}"/>
+                            <label for="inputAdultsNumber">Колькасць дарослых</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <input class="form-control" id="inputChildrenNumber" type="number"
+                                   th:field="*{childrenNumber}"/>
+                            <label for="inputChildrenNumber">Колькасць дзяцей</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input class="form-control" id="inputCheckInDate" type="date" th:field="*{checkInDate}"/>
+                            <label for="inputCheckInDate">Дата заезду</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input class="form-control" id="inputCheckOutDate" type="date" th:field="*{checkOutDate}"/>
+                            <label for="inputCheckOutDate">Дата выезду</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 mb-0">
+                    <div class="d-grid">
+                        <button id="createAccountLink" class="btn btn-primary btn-block">Знайсці</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
-<th:block th:replace="base::scripts"/>
-<th:block th:replace="base::success(${successMessage})"/>
-<th:block th:replace="base::error(${errorMessage})"/>
-</body>
-</html>
+</th:block>
+
+<script th:fragmemt="script"></script>

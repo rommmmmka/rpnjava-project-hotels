@@ -29,7 +29,9 @@ public class EasterEggsController {
 
         Random rand = new Random();
         model.addAttribute("memeNumber", rand.nextInt(7) + 1);
-        return "privacypolicy";
+
+        model.addAttribute("templateName", "privacypolicy");
+        return "base";
     }
 
     @GetMapping("/termsofuse")

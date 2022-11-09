@@ -1,80 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
-<head th:replace="base::head(~{::title}, ~{})">
-    <title>Рэгістрацыя | Booker - браніраванне гатэляў</title>
-</head>
-<body class="sb-nav-fixed">
-<th:block th:replace="base::topnav"/>
-<div id="layoutSidenav">
-    <th:block th:replace="base::sidenav"/>
-    <div id="layoutSidenav_content">
-        <main>
-            <div class="container-fluid px-4">
-                <div class="row justify-content-center">
-                    <div class="col-lg-7">
-                        <div class="card shadow-lg border-0 rounded-lg mt-5">
-                            <div class="card-header"><h3 class="text-center font-weight-light my-4">Рэгістрацыя</h3></div>
-                            <div class="card-body">
-                                <form id="registerForm" action="#" method="post" th:object="${userEntity}">
-                                    <div class="row mb-3">
-                                        <div class="col-md-4">
-                                            <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputFirstName" type="text" placeholder=" " th:field="*{lastName}" />
-                                                <label for="inputFirstName">Прозвішча*</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-floating">
-                                                <input class="form-control" id="inputLastName" type="text" placeholder=" " th:field="*{firstName}" />
-                                                <label for="inputLastName">Імя*</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-floating">
-                                                <input class="form-control" id="inputPatronymic" type="text" placeholder=" " th:field="*{patronymic}" />
-                                                <label for="inputLastName">Імя па бацьку (пры наяўнасці)</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="inputLogin" type="text" placeholder=" " th:field="*{login}"/>
-                                        <label for="inputLogin">Логін</label>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputPassword" type="password" placeholder=" " th:field="*{passwordHash}" />
-                                                <label for="inputPassword">Пароль*</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputPasswordConfirm" type="password" placeholder=" " />
-                                                <label for="inputPasswordConfirm">Паўтарыце пароль*</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mt-4 mb-0">
-                                        <div class="d-grid">
-                                            <a id="createAccountLink" class="btn btn-primary btn-block">Стварыць акаўнт</a>
-                                        </div>
-                                    </div>
-                                </form>
+<html xmlns:th="https://www.thymeleaf.org" lang="be">
+
+<title th:fragment="title">Рэгістрацыя | Booker - браніраванне гатэляў</title>
+
+<th:block th:fragment="content">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-header"><h3 class="text-center font-weight-light my-4">Рэгістрацыя</h3></div>
+                <div class="card-body">
+                    <form id="registerForm" action="#" method="post" th:object="${userEntity}">
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <input class="form-control" id="inputLastName" type="text" placeholder=" "
+                                           th:field="*{lastName}"/>
+                                    <label for="inputLastName">Прозвішча*</label>
+                                </div>
                             </div>
-                            <div class="card-footer text-center py-3">
-                                <div class="small"><a href="/login">Ужо ёсць акаўнт? Увайдзіце</a></div>
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input class="form-control" id="inputFirstName" type="text" placeholder=" "
+                                           th:field="*{firstName}"/>
+                                    <label for="inputFirstName">Імя*</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input class="form-control" id="inputPatronymic" type="text" placeholder=" "
+                                           th:field="*{patronymic}"/>
+                                    <label for="inputLastName">Імя па бацьку (пры наяўнасці)</label>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="inputLogin" type="text" placeholder=" "
+                                   th:field="*{login}"/>
+                            <label for="inputLogin">Логін</label>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <input class="form-control" id="inputPassword" type="password" placeholder=" "
+                                           th:field="*{passwordHash}"/>
+                                    <label for="inputPassword">Пароль*</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <input class="form-control" id="inputPasswordConfirm" type="password"
+                                           placeholder=" " name="passwordRepeat"/>
+                                    <label for="inputPasswordConfirm">Паўтарыце пароль*</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 mb-0">
+                            <div class="d-grid">
+                                <button id="createAccountLink" class="btn btn-primary btn-block">Стварыць акаўнт
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center py-3">
+                    <div class="small"><a href="/login">Ужо ёсць акаўнт? Увайдзіце</a></div>
                 </div>
             </div>
-        </main>
-        <th:block th:replace="base::footer"/>
+        </div>
     </div>
-</div>
-<th:block th:replace="base::scripts"/>
-<th:block th:replace="base::success(${successMessage})"/>
-<th:block th:replace="base::error(${errorMessage})"/>
-<script src="js/register.js"></script>
-</body>
-</html>
+</th:block>
+
+<script th:fragment="script" src="js/register.js"></script>

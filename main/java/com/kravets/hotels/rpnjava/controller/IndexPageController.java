@@ -1,5 +1,7 @@
 package com.kravets.hotels.rpnjava.controller;
 
+import com.kravets.hotels.rpnjava.form.SearchForm;
+import com.kravets.hotels.rpnjava.misc.CitiesList;
 import com.kravets.hotels.rpnjava.misc.LoggedInChecker;
 import com.kravets.hotels.rpnjava.service.SessionService;
 import com.kravets.hotels.rpnjava.service.UserService;
@@ -25,6 +27,10 @@ public class IndexPageController {
     public String indexPage(Model model, HttpServletRequest request) {
         LoggedInChecker.noRestrictionAccess(model, request, userService, sessionService);
 
-        return "index";
+        model.addAttribute("searchForm", new SearchForm());
+        model.addAttribute("citiesList", CitiesList.getCitiesList());
+
+        model.addAttribute("templateName", "index");
+        return "base";
     }
 }

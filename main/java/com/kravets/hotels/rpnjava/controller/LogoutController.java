@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class LogoutController {
+
     @GetMapping("/logout")
     public String logoutAction(HttpServletResponse response, RedirectAttributes redirectAttributes) {
         Cookie cookie = new Cookie("session_key", null);
