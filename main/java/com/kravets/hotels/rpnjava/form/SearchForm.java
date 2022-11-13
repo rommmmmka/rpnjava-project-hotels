@@ -1,30 +1,30 @@
 package com.kravets.hotels.rpnjava.form;
 
-import java.time.ZonedDateTime;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class SearchForm {
-    private String city;
+    private Long city;
 
     private int adultsNumber;
 
     private int childrenNumber;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date checkInDate;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date checkOutDate;
 
-    public SearchForm(ZonedDateTime checkInDate) {
-        this.setCheckInDate(Date.from(checkInDate.toInstant()));
-        this.setCheckOutDate(Date.from(checkInDate.plusDays(1).toInstant()));
-        this.setAdultsNumber(1);
+    public SearchForm() {
     }
 
-    public String getCity() {
+    public Long getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(Long city) {
         this.city = city;
     }
 

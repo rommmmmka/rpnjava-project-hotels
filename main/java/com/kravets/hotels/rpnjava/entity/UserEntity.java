@@ -1,5 +1,7 @@
 package com.kravets.hotels.rpnjava.entity;
 
+import com.kravets.hotels.rpnjava.form.RegisterForm;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +33,24 @@ public class UserEntity {
     public UserEntity() {
     }
 
-    public UserEntity(String login) {
-        this.login = login;
+    public UserEntity(RegisterForm registerForm) {
+        this.login = registerForm.getLogin();
+        this.lastName = registerForm.getLastName();
+        this.firstName = registerForm.getFirstName();
+        this.patronymic = registerForm.getPatronymic();
+    }
+
+    public String getShortName() {
+        String name = firstName.charAt(0) + ". ";
+        if (patronymic != null && patronymic.length() != 0) {
+            name += patronymic.charAt(0) + ". ";
+        }
+        name += lastName;
+
+        if (name.length() > 24) {
+            name = name.substring(0, 22) + "...";
+        }
+        return name;
     }
 
     public Long getId() {
@@ -105,13 +123,5 @@ public class UserEntity {
 
     public void setSessionsList(List<SessionEntity> sessionsList) {
         this.sessionsList = sessionsList;
-    }
-
-    public String getShortName() {
-        String name = firstName.charAt(0) + ". " + patronymic.charAt(0) + ". " + lastName;
-        if (name.length() > 24) {
-            name = name.substring(0, 22) + "...";
-        }
-        return name;
     }
 }

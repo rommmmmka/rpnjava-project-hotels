@@ -1,7 +1,5 @@
 package com.kravets.hotels.rpnjava.entity;
 
-import org.hibernate.annotations.UpdateTimestamp;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
@@ -15,8 +13,7 @@ public class SessionEntity {
 
     private String sessionKey = UUID.randomUUID().toString();
 
-    @UpdateTimestamp
-    private Date updateTimestamp;
+    private Date lastAccessTime;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "users.id")
@@ -25,7 +22,7 @@ public class SessionEntity {
     public SessionEntity() {
     }
 
-    public SessionEntity(UserEntity userId) {
+    public SessionEntity(UserEntity userId, Date lastAccessTime) {
         this.userId = userId;
     }
 
@@ -45,12 +42,12 @@ public class SessionEntity {
         this.sessionKey = sessionKey;
     }
 
-    public Date getUpdateTimestamp() {
-        return updateTimestamp;
+    public Date getLastAccessTime() {
+        return lastAccessTime;
     }
 
-    public void setUpdateTimestamp(Date updateTimestamp) {
-        this.updateTimestamp = updateTimestamp;
+    public void setLastAccessTime(Date lastAccessTime) {
+        this.lastAccessTime = lastAccessTime;
     }
 
     public UserEntity getUserId() {

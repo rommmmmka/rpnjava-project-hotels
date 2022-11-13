@@ -9,7 +9,7 @@
             <div class="card shadow-lg border-0 rounded-lg mt-5">
                 <div class="card-header"><h3 class="text-center font-weight-light my-4">Рэгістрацыя</h3></div>
                 <div class="card-body">
-                    <form id="registerForm" action="#" method="post" th:object="${userEntity}">
+                    <form id="registerForm" action="#" method="post" th:object="${registerForm}">
                         <div class="row mb-3">
                             <div class="col-md-4">
                                 <div class="form-floating mb-3 mb-md-0">
@@ -42,7 +42,7 @@
                             <div class="col-md-6">
                                 <div class="form-floating mb-3 mb-md-0">
                                     <input class="form-control" id="inputPassword" type="password" placeholder=" "
-                                           th:field="*{passwordHash}"/>
+                                           th:field="*{password}"/>
                                     <label for="inputPassword">Пароль*</label>
                                 </div>
                             </div>

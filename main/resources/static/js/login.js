@@ -17,7 +17,7 @@ const validationConstraints = {
             message: "У логіне дазваляюцца сімвалы англійскага алфавіту, лічбы, працяжнік і падкрэсліванне"
         }
     },
-    passwordHash: {
+    password: {
         presence: {
             allowEmpty: false,
             message: "Увядзіце пароль"

@@ -9,13 +9,13 @@
             <div class="card shadow-lg border-0 rounded-lg mt-5">
                 <div class="card-header"><h3 class="text-center font-weight-light my-4">Уваход</h3></div>
                 <div class="card-body">
-                    <form id="loginForm" action="#" method="post" th:object="${userEntity}">
+                    <form id="loginForm" action="#" method="post" th:object="${loginForm}">
                         <div class="form-floating mb-3">
                             <input class="form-control" id="inputLogin" type="text" placeholder=" " th:field="*{login}"/>
                             <label for="inputLogin">Логін</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input class="form-control" id="inputPassword" type="password" placeholder=" " th:field="*{passwordHash}"/>
+                            <input class="form-control" id="inputPassword" type="password" placeholder=" " th:field="*{password}"/>
                             <label for="inputPassword">Пароль</label>
                         </div>
                         <div class="form-check mb-3">

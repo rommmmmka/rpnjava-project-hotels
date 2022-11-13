@@ -4,6 +4,8 @@ import com.kravets.hotels.rpnjava.entity.UserEntity;
 import com.kravets.hotels.rpnjava.exception.InvalidPasswordException;
 import com.kravets.hotels.rpnjava.exception.UserAlreadyExistsException;
 import com.kravets.hotels.rpnjava.exception.UserNotFoundException;
+import com.kravets.hotels.rpnjava.form.LoginForm;
+import com.kravets.hotels.rpnjava.form.RegisterForm;
 import com.kravets.hotels.rpnjava.repository.UserRepository;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,6 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-
     private final UserRepository userRepository;
 
     @Autowired
@@ -26,7 +27,6 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    //дазволеныя сімвалы ў пароле: _-!?.;@#$
     private static String createHash(String login, String password, String salt) throws NoSuchAlgorithmException {
         String nonHashedPassword = login + '/' + password + '/' + salt;
         MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
@@ -34,35 +34,37 @@ public class UserService {
         return Base64.encodeBase64String(hashedPassword);
     }
 
-    public void registerUser(UserEntity userEntity) throws UserAlreadyExistsException, NoSuchAlgorithmException {
-        if (userRepository.findByLogin(userEntity.getLogin()) != null) {
+    public void registerUser(RegisterForm registerForm) throws UserAlreadyExistsException, NoSuchAlgorithmException {
+        if (userRepository.findUserEntityByLogin(registerForm.getLogin()) != null) {
             throw new UserAlreadyExistsException();
         }
+
+        UserEntity userEntity = new UserEntity(registerForm);
 
         SecureRandom secureRandom = new SecureRandom();
         byte[] salt = new byte[32];
         secureRandom.nextBytes(salt);
         userEntity.setPasswordSalt(Base64.encodeBase64String(salt));
 
-        String hashedPassword = createHash(userEntity.getLogin(), userEntity.getPasswordHash(), userEntity.getPasswordSalt());
+        String hashedPassword = createHash(registerForm.getLogin(), registerForm.getPassword(), userEntity.getPasswordSalt());
         userEntity.setPasswordHash(hashedPassword);
 
         userRepository.save(userEntity);
     }
 
-    public UserEntity loginUser(UserEntity userEntity) throws UserNotFoundException, NoSuchAlgorithmException, InvalidPasswordException {
-        UserEntity userEntityDb = userRepository.findByLogin(userEntity.getLogin());
+    public UserEntity loginUser(LoginForm loginForm) throws UserNotFoundException, NoSuchAlgorithmException, InvalidPasswordException {
+        UserEntity userEntity = userRepository.findUserEntityByLogin(loginForm.getLogin());
 
-        if (userEntityDb == null) {
+        if (userEntity == null) {
             throw new UserNotFoundException();
         }
 
-        String hashedPassword = createHash(userEntity.getLogin(), userEntity.getPasswordHash(), userEntityDb.getPasswordSalt());
-        if (!Objects.equals(hashedPassword, userEntityDb.getPasswordHash())) {
+        String hashedPassword = createHash(loginForm.getLogin(), loginForm.getPassword(), userEntity.getPasswordSalt());
+        if (!Objects.equals(hashedPassword, userEntity.getPasswordHash())) {
             throw new InvalidPasswordException();
         }
 
-        return userEntityDb;
+        return userEntity;
     }
 
     public UserEntity getUser(Long id) {

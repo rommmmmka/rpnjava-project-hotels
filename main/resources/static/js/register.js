@@ -55,7 +55,7 @@ const validationConstraints = {
             message: "У логіне дазваляюцца сімвалы англійскага алфавіту, лічбы, працяжнік і падкрэсліванне"
         }
     },
-    passwordHash: {
+    password: {
         presence: {
             allowEmpty: false,
             message: "Увядзіце пароль"
@@ -73,7 +73,7 @@ const validationConstraints = {
     },
     passwordRepeat: {
         equality: {
-            attribute: "passwordHash",
+            attribute: "password",
             message: "Паролі не супадаюць"
         }
     }

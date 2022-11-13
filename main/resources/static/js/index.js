@@ -29,17 +29,14 @@ inputChildrenNumber.addEventListener("change", function () {
 
 inputCheckInDate.addEventListener("change", function () {
     let checkInDate = new Date(inputCheckInDate.value);
-    console.log(checkInDate);
     let checkOutMinDate = new Date();
     checkOutMinDate.setDate(checkInDate.getDate() + 1);
     let checkOutMinDateString = `${checkOutMinDate.getFullYear()}-${checkOutMinDate.getMonth() + 1}-${checkOutMinDate.getDate()}`;
     inputCheckOutDate.setAttribute("min", checkOutMinDateString);
 
-    let checkOutDate = inputCheckOutDate.valueAsDate;
-    if (checkOutMinDate > checkOutDate) {
-        checkOutDate = checkOutMinDate;
+    if (checkOutMinDate > inputCheckOutDate.valueAsDate) {
+        inputCheckOutDate.value = checkOutMinDateString;
     }
-    inputCheckOutDate.valueAsDate = checkOutDate;
 });
 
 searchForm.addEventListener("submit", event => {

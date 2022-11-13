@@ -15,16 +15,16 @@
                     <div class="col-md-4">
                         <div class="form-floating mb-3 mb-md-0">
                             <select class="form-select" id="selectCity" required th:field="*{city}">
-                                <option th:each="cityPair : ${citiesList}" th:value="${cityPair.city}"
-                                        th:text="${cityPair.city}" th:disabled="${cityPair.disabled}"></option>
+                                <option th:each="cityEntity : ${citiesList}" th:value="${cityEntity.id}"
+                                        th:text="${cityEntity.name}" th:disabled="${cityEntity.disabled}"></option>
                             </select>
                             <label for="selectCity">Горад</label>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-floating">
-                            <input class="form-control" id="inputAdultsNumber" type="number" min="1"
-                                   th:field="*{adultsNumber}"/>
+                            <input class="form-control" id="inputAdultsNumber" type="number" name="adultsNumber" min="1"
+                                   value="1"/>
                             <label for="inputAdultsNumber">Колькасць дарослых</label>
                         </div>
                     </div>
