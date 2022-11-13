@@ -12,6 +12,7 @@ public class LoginForm {
     @Pattern(regexp = "[A-z0-9\\-_]+")
     private String password;
 
+
     public LoginForm() {
     }
 

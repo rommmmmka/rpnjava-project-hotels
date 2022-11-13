@@ -2,8 +2,7 @@ package com.kravets.hotels.rpnjava.controller;
 
 import com.kravets.hotels.rpnjava.entity.SessionEntity;
 import com.kravets.hotels.rpnjava.misc.SessionChecker;
-import com.kravets.hotels.rpnjava.service.SessionService;
-import com.kravets.hotels.rpnjava.service.UserService;
+import com.kravets.hotels.rpnjava.service.LogoutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,23 +15,27 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class LogoutController {
-    private final UserService userService;
-    private final SessionService sessionService;
+    private final LogoutService logoutService;
+    private final SessionChecker sessionChecker;
+
 
     @Autowired
-    public LogoutController(UserService userService, SessionService sessionService) {
-        this.userService = userService;
-        this.sessionService = sessionService;
+    public LogoutController(LogoutService logoutService, SessionChecker sessionChecker) {
+        this.logoutService = logoutService;
+        this.sessionChecker = sessionChecker;
     }
 
+
     @GetMapping("/logout")
-    public String logoutAction(Model model,
-                               HttpServletRequest request,
-                               HttpServletResponse response,
-                               RedirectAttributes redirectAttributes) {
+    public String logoutAction(
+            Model model,
+            HttpServletRequest request,
+            HttpServletResponse response,
+            RedirectAttributes redirectAttributes
+    ) {
         try {
-            SessionEntity sessionEntity = SessionChecker.userAccess(model, request, userService, sessionService);
-            sessionService.deleteSession(sessionEntity);
+            SessionEntity sessionEntity = sessionChecker.userAccess(model, request);
+            logoutService.deleteSession(sessionEntity);
 
             Cookie cookie = new Cookie("session_key", null);
             cookie.setMaxAge(0);

@@ -27,6 +27,7 @@ public class RegisterForm {
     @Pattern(regexp = "[A-zА-яЁёІіЎў'\\- ]+")
     private String patronymic;
 
+
     public RegisterForm() {
     }
 

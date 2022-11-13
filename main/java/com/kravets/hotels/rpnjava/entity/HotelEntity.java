@@ -13,8 +13,6 @@ public class HotelEntity {
 
     private String name;
 
-    private String coverPhoto;
-
     private String description;
 
     @ManyToOne
@@ -43,14 +41,6 @@ public class HotelEntity {
         this.name = name;
     }
 
-    public String getCoverPhoto() {
-        return coverPhoto;
-    }
-
-    public void setCoverPhoto(String coverPhoto) {
-        this.coverPhoto = coverPhoto;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -63,11 +53,11 @@ public class HotelEntity {
         return city;
     }
 
-    public void setCityId(CityEntity city) {
+    public void setCity(CityEntity city) {
         this.city = city;
     }
 
-    public void setCity(CityEntity city) {
+    public void setCityId(CityEntity city) {
         this.city = city;
     }
 

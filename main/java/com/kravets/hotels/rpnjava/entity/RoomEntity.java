@@ -15,6 +15,8 @@ public class RoomEntity {
 
     private String description;
 
+    private String coverPhoto;
+
     private int guestsLimit;
 
     private int childrenLimit;
@@ -28,6 +30,8 @@ public class RoomEntity {
     private int bedsForTwoPersonsCount;
 
     private boolean isPrepaymentRequired;
+
+    private int roomsNumber;
 
     @ManyToOne
     private HotelEntity hotel;
@@ -61,6 +65,14 @@ public class RoomEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getCoverPhoto() {
+        return coverPhoto;
+    }
+
+    public void setCoverPhoto(String coverPhoto) {
+        this.coverPhoto = coverPhoto;
     }
 
     public int getGuestsLimit() {
@@ -133,5 +145,13 @@ public class RoomEntity {
 
     public void setOrders(List<OrderEntity> orders) {
         this.orders = orders;
+    }
+
+    public int getRoomsNumber() {
+        return roomsNumber;
+    }
+
+    public void setRoomsNumber(int roomsNumber) {
+        this.roomsNumber = roomsNumber;
     }
 }

@@ -18,12 +18,12 @@ public class SessionEntity {
     @ManyToOne
     private UserEntity user;
 
-
     public SessionEntity() {
     }
 
     public SessionEntity(UserEntity user, Date lastAccessTime) {
         this.user = user;
+        this.lastAccessTime = lastAccessTime;
     }
 
     public Long getId() {

@@ -5,8 +5,7 @@ import com.kravets.hotels.rpnjava.entity.UserEntity;
 import com.kravets.hotels.rpnjava.exception.FormValidationException;
 import com.kravets.hotels.rpnjava.form.LoginForm;
 import com.kravets.hotels.rpnjava.misc.SessionChecker;
-import com.kravets.hotels.rpnjava.service.SessionService;
-import com.kravets.hotels.rpnjava.service.UserService;
+import com.kravets.hotels.rpnjava.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,19 +22,20 @@ import javax.validation.Valid;
 
 @Controller
 public class LoginController {
-    private final UserService userService;
-    private final SessionService sessionService;
+    private final LoginService loginService;
+    private final SessionChecker sessionChecker;
+
 
     @Autowired
-    public LoginController(UserService userService, SessionService sessionService) {
-        this.userService = userService;
-        this.sessionService = sessionService;
+    public LoginController(LoginService loginService, SessionChecker sessionChecker) {
+        this.loginService = loginService;
+        this.sessionChecker = sessionChecker;
     }
 
     @GetMapping("/login")
     public String loginPage(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         try {
-            SessionChecker.loggedOutAccess(model, request, userService, sessionService);
+            sessionChecker.loggedOutAccess(model, request);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/";
@@ -50,23 +50,25 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String loginAction(Model model,
-                              @Valid @ModelAttribute LoginForm loginForm,
-                              BindingResult result,
-                              HttpServletRequest request,
-                              HttpServletResponse response,
-                              RedirectAttributes redirectAttributes) {
+    public String loginAction(
+            Model model,
+            @Valid @ModelAttribute LoginForm loginForm,
+            BindingResult result,
+            HttpServletRequest request,
+            HttpServletResponse response,
+            RedirectAttributes redirectAttributes
+    ) {
         try {
             if (result.hasErrors()) {
                 throw new FormValidationException();
             }
-            SessionChecker.loggedOutAccess(model, request, userService, sessionService);
+            sessionChecker.loggedOutAccess(model, request);
 
-            UserEntity userEntity = userService.loginUser(loginForm);
-            SessionEntity sessionEntity = sessionService.createSession(userEntity);
+            UserEntity userEntity = loginService.loginUser(loginForm);
+            SessionEntity sessionEntity = loginService.createSession(userEntity);
+
             response.addCookie(new Cookie("session_key", sessionEntity.getSessionKey()));
             response.addCookie(new Cookie("user_id", userEntity.getId().toString()));
-
             return "redirect:/";
         } catch (Exception e) {
             loginForm.setPassword("");

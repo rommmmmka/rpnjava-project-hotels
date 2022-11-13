@@ -1,8 +1,6 @@
 package com.kravets.hotels.rpnjava.controller;
 
 import com.kravets.hotels.rpnjava.misc.SessionChecker;
-import com.kravets.hotels.rpnjava.service.SessionService;
-import com.kravets.hotels.rpnjava.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,18 +11,17 @@ import java.util.Random;
 
 @Controller
 public class EasterEggsController {
-    private final UserService userService;
-    private final SessionService sessionService;
+    private final SessionChecker sessionChecker;
+
 
     @Autowired
-    public EasterEggsController(UserService userService, SessionService sessionService) {
-        this.userService = userService;
-        this.sessionService = sessionService;
+    public EasterEggsController(SessionChecker sessionChecker) {
+        this.sessionChecker = sessionChecker;
     }
 
     @GetMapping("/privacypolicy")
     public String memesPage(Model model, HttpServletRequest request) {
-        SessionChecker.noRestrictionAccess(model, request, userService, sessionService);
+        sessionChecker.noRestrictionAccess(model, request);
 
         Random rand = new Random();
         model.addAttribute("memeNumber", rand.nextInt(7) + 1);
@@ -35,7 +32,7 @@ public class EasterEggsController {
 
     @GetMapping("/termsofuse")
     public String anecdotesPage(Model model, HttpServletRequest request) {
-        SessionChecker.noRestrictionAccess(model, request, userService, sessionService);
+        sessionChecker.noRestrictionAccess(model, request);
         return "";
     }
 }

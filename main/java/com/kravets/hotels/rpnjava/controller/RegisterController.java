@@ -4,8 +4,7 @@ import com.kravets.hotels.rpnjava.exception.FormValidationException;
 import com.kravets.hotels.rpnjava.form.LoginForm;
 import com.kravets.hotels.rpnjava.form.RegisterForm;
 import com.kravets.hotels.rpnjava.misc.SessionChecker;
-import com.kravets.hotels.rpnjava.service.SessionService;
-import com.kravets.hotels.rpnjava.service.UserService;
+import com.kravets.hotels.rpnjava.service.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,19 +19,20 @@ import javax.validation.Valid;
 
 @Controller
 public class RegisterController {
-    private final UserService userService;
-    private final SessionService sessionService;
+    private final RegisterService registerService;
+    private final SessionChecker sessionChecker;
 
+    
     @Autowired
-    public RegisterController(UserService userService, SessionService sessionService) {
-        this.userService = userService;
-        this.sessionService = sessionService;
+    public RegisterController(RegisterService registerService, SessionChecker sessionChecker) {
+        this.registerService = registerService;
+        this.sessionChecker = sessionChecker;
     }
 
     @GetMapping("/register")
     public String registerPage(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         try {
-            SessionChecker.loggedOutAccess(model, request, userService, sessionService);
+            sessionChecker.loggedOutAccess(model, request);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/";
@@ -47,18 +47,21 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String registerAction(Model model,
-                                 @Valid @ModelAttribute RegisterForm registerForm,
-                                 BindingResult result,
-                                 HttpServletRequest request,
-                                 RedirectAttributes redirectAttributes) {
+    public String registerAction(
+            Model model,
+            @Valid @ModelAttribute RegisterForm registerForm,
+            BindingResult result,
+            HttpServletRequest request,
+            RedirectAttributes redirectAttributes
+    ) {
         try {
             if (result.hasErrors()) {
                 throw new FormValidationException();
             }
-            SessionChecker.loggedOutAccess(model, request, userService, sessionService);
+            sessionChecker.loggedOutAccess(model, request);
 
-            userService.registerUser(registerForm);
+            registerService.registerUser(registerForm);
+
             LoginForm loginForm = new LoginForm(registerForm.getLogin());
             redirectAttributes.addFlashAttribute("loginForm", loginForm);
             redirectAttributes.addFlashAttribute("successMessage", "Акаўнт паспяхова створаны!");

@@ -17,6 +17,7 @@ public class SearchForm {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date checkOutDate;
 
+
     public SearchForm() {
     }
 

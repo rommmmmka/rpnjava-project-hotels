@@ -1,7 +1,7 @@
 package com.kravets.hotels.rpnjava.validator;
 
 import com.kravets.hotels.rpnjava.form.SearchForm;
-import com.kravets.hotels.rpnjava.service.CityService;
+import com.kravets.hotels.rpnjava.service.IndexPageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
@@ -9,11 +9,11 @@ import org.springframework.validation.Validator;
 
 @Service
 public class SearchValidatior implements Validator {
-    private final CityService cityService;
+    private final IndexPageService indexPageService;
 
     @Autowired
-    public SearchValidatior(CityService cityService) {
-        this.cityService = cityService;
+    public SearchValidatior(IndexPageService indexPageService) {
+        this.indexPageService = indexPageService;
     }
 
     @Override
@@ -25,7 +25,7 @@ public class SearchValidatior implements Validator {
     public void validate(Object target, Errors errors) {
         SearchForm searchForm = (SearchForm) target;
 
-        if (!cityService.getAllEnabledCitiesIds().contains(searchForm.getCity())) {
+        if (!indexPageService.getAllEnabledCitiesIds().contains(searchForm.getCity())) {
             errors.rejectValue("city", "1");
         }
         if (searchForm.getAdultsNumber() < 1 || searchForm.getAdultsNumber() > 30) {
