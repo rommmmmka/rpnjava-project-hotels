@@ -27,8 +27,11 @@ public class UserEntity {
 
     private boolean isAdmin;
 
-    @OneToMany(mappedBy = "userId")
-    private List<SessionEntity> sessionsList = new ArrayList<>();
+    @OneToMany(mappedBy = "user")
+    private List<SessionEntity> sessions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<OrderEntity> orders = new ArrayList<>();
 
     public UserEntity() {
     }
@@ -117,11 +120,19 @@ public class UserEntity {
         isAdmin = admin;
     }
 
-    public List<SessionEntity> getSessionsList() {
-        return sessionsList;
+    public List<SessionEntity> getSessions() {
+        return sessions;
     }
 
-    public void setSessionsList(List<SessionEntity> sessionsList) {
-        this.sessionsList = sessionsList;
+    public void setSessions(List<SessionEntity> sessionsList) {
+        this.sessions = sessionsList;
+    }
+
+    public List<OrderEntity> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<OrderEntity> orders) {
+        this.orders = orders;
     }
 }

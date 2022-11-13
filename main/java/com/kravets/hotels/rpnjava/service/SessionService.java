@@ -24,7 +24,7 @@ public class SessionService {
     }
 
     public SessionEntity getSession(UserEntity userEntity, String sessionKey) {
-        return sessionRepository.findSessionEntityByUserIdAndSessionKey(userEntity, sessionKey);
+        return sessionRepository.findSessionEntityByUserAndSessionKey(userEntity, sessionKey);
     }
 
     public void deleteSession(SessionEntity sessionEntity) {

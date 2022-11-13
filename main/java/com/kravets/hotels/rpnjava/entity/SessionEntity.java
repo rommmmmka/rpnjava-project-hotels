@@ -15,15 +15,15 @@ public class SessionEntity {
 
     private Date lastAccessTime;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "users.id")
-    private UserEntity userId;
+    @ManyToOne
+    private UserEntity user;
+
 
     public SessionEntity() {
     }
 
-    public SessionEntity(UserEntity userId, Date lastAccessTime) {
-        this.userId = userId;
+    public SessionEntity(UserEntity user, Date lastAccessTime) {
+        this.user = user;
     }
 
     public Long getId() {
@@ -50,11 +50,11 @@ public class SessionEntity {
         this.lastAccessTime = lastAccessTime;
     }
 
-    public UserEntity getUserId() {
-        return userId;
+    public UserEntity getUser() {
+        return user;
     }
 
-    public void setUserId(UserEntity userId) {
-        this.userId = userId;
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 }

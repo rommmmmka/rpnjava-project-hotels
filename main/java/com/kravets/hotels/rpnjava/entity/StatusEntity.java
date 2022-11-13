@@ -5,21 +5,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "cities")
-public class CityEntity {
+@Table(name = "statuses")
+public class StatusEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
 
-    private boolean disabled;
+    private String color;
 
-    @OneToMany(mappedBy = "city")
-    private List<HotelEntity> hotels = new ArrayList<>();
+    @OneToMany(mappedBy = "status")
+    private List<OrderEntity> orders = new ArrayList<>();
 
 
-    public CityEntity() {
+    public StatusEntity() {
     }
 
     public Long getId() {
@@ -38,19 +38,19 @@ public class CityEntity {
         this.name = name;
     }
 
-    public boolean isDisabled() {
-        return disabled;
+    public String getColor() {
+        return color;
     }
 
-    public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
+    public void setColor(String color) {
+        this.color = color;
     }
 
-    public List<HotelEntity> getHotels() {
-        return hotels;
+    public List<OrderEntity> getOrders() {
+        return orders;
     }
 
-    public void setHotels(List<HotelEntity> hotels) {
-        this.hotels = hotels;
+    public void setOrders(List<OrderEntity> orders) {
+        this.orders = orders;
     }
 }
