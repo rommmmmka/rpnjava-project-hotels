@@ -286,3 +286,21 @@ body {
 }
 
 
+textarea {
+    resize: none;
+    height: 100% !important;
+}
+
+.card-img-top {
+    aspect-ratio: 1;
+    object-fit: cover;
+}
+
+.white-icon {
+    color: white;
+}
+
+.card-buttons-flex {
+    display: flex;
+    justify-content: space-between;
+}

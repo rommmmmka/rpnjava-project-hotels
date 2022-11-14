@@ -24,7 +24,7 @@ public class EasterEggsController {
         sessionChecker.noRestrictionAccess(model, request);
 
         Random rand = new Random();
-        model.addAttribute("memeNumber", rand.nextInt(7) + 1);
+        model.addAttribute("memeNumber", rand.nextInt(11) + 1);
 
         model.addAttribute("templateName", "privacypolicy");
         return "base";

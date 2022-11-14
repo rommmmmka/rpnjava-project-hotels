@@ -1,5 +1,8 @@
 package com.kravets.hotels.rpnjava.misc;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,4 +25,10 @@ public class CurrentDate {
     public static String getStringDate() {
         return convertToStringDate(getZonedDateTime());
     }
+
+    public static Date getDate() throws ParseException {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        return df.parse(getStringDate());
+    }
+
 }

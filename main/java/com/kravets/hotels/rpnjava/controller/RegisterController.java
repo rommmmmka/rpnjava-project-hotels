@@ -22,7 +22,7 @@ public class RegisterController {
     private final RegisterService registerService;
     private final SessionChecker sessionChecker;
 
-    
+
     @Autowired
     public RegisterController(RegisterService registerService, SessionChecker sessionChecker) {
         this.registerService = registerService;

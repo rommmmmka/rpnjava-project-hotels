@@ -1,5 +1,3 @@
-const registerForm = document.getElementById("registerForm");
-
 const validationConstraints = {
     lastName: {
         presence: {
@@ -78,6 +76,8 @@ const validationConstraints = {
         }
     }
 };
+
+const registerForm = document.getElementById("registerForm");
 
 registerForm.addEventListener("submit", event => {
     let attributes = validate.collectFormValues(registerForm);

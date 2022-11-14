@@ -1,5 +1,7 @@
 package com.kravets.hotels.rpnjava.entity;
 
+import com.kravets.hotels.rpnjava.form.AddHotelForm;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,8 @@ public class HotelEntity {
 
     private String description;
 
+    private String coverPhoto;
+
     @ManyToOne
     private CityEntity city;
 
@@ -23,6 +27,11 @@ public class HotelEntity {
 
 
     public HotelEntity() {
+    }
+
+    public HotelEntity(AddHotelForm addHotelForm) {
+        this.name = addHotelForm.getName();
+        this.description = addHotelForm.getDescription();
     }
 
     public Long getId() {
@@ -47,6 +56,14 @@ public class HotelEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getCoverPhoto() {
+        return coverPhoto;
+    }
+
+    public void setCoverPhoto(String coverPhoto) {
+        this.coverPhoto = coverPhoto;
     }
 
     public CityEntity getCity() {

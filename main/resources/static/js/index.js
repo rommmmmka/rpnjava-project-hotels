@@ -1,9 +1,3 @@
-const searchForm = document.getElementById("searchForm");
-const inputAdultsNumber = document.getElementById("inputAdultsNumber");
-const inputChildrenNumber = document.getElementById("inputChildrenNumber");
-const inputCheckInDate = document.getElementById("inputCheckInDate");
-const inputCheckOutDate = document.getElementById("inputCheckOutDate");
-
 const validationConstraints = {
     adultsNumber: {
         numericality: {
@@ -18,6 +12,12 @@ const validationConstraints = {
         }
     }
 };
+
+const searchForm = document.getElementById("searchForm");
+const inputAdultsNumber = document.getElementById("inputAdultsNumber");
+const inputChildrenNumber = document.getElementById("inputChildrenNumber");
+const inputCheckInDate = document.getElementById("inputCheckInDate");
+const inputCheckOutDate = document.getElementById("inputCheckOutDate");
 
 inputAdultsNumber.addEventListener("change", function () {
     inputAdultsNumber.value = Math.max(1, inputAdultsNumber.value);

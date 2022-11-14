@@ -66,7 +66,6 @@ public class IndexPageController {
         try {
             searchValidatior.validate(searchForm, result);
             if (result.hasErrors()) {
-                System.out.println(result.getAllErrors().get(0).toString());
                 throw new FormValidationException();
             }
             sessionChecker.noRestrictionAccess(model, request);
