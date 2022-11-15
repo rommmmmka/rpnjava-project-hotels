@@ -76,9 +76,7 @@ const validationConstraints = {
         }
     }
 };
-
 const registerForm = document.getElementById("registerForm");
-
 registerForm.addEventListener("submit", event => {
     let attributes = validate.collectFormValues(registerForm);
     let errors = validate(attributes, validationConstraints, validationOptions);

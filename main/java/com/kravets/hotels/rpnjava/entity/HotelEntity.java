@@ -22,7 +22,7 @@ public class HotelEntity {
     @ManyToOne
     private CityEntity city;
 
-    @OneToMany(mappedBy = "hotel")
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RoomEntity> rooms = new ArrayList<>();
 
 

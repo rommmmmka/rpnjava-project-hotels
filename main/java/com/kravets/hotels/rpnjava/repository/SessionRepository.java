@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SessionRepository extends JpaRepository<SessionEntity, Long> {
     SessionEntity findSessionEntityByUserAndSessionKey(UserEntity user, String sessionKey);
+
 }

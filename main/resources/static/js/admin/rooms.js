@@ -24,20 +24,25 @@ const validationConstraints = {
         }
     }
 };
-const addHotelForm = document.getElementById("addHotelForm");
+const addRoomForm = document.getElementById("addRoomForm");
 const inputFile = document.getElementById("inputFile");
-addHotelForm.addEventListener("submit", event => {
-    let attributes = validate.collectFormValues(addHotelForm);
+addRoomForm.addEventListener("submit", event => {
+    let attributes = validate.collectFormValues(addRoomForm);
     let errors = validate(attributes, validationConstraints, validationOptions);
 
     if (typeof errors !== 'undefined' && errors.length > 0) {
         event.preventDefault();
         toastr.error(errors[0]);
-    } else {
-        if (inputFile.files[0].size / 1024 / 1024 > 3.0) {
-            event.preventDefault();
-            toastr.error("Памер файла не можа быць больш чым 3 МБ");
-        }
+        return;
+    }
+    if (inputFile.files[0].size / 1024 / 1024 > 3.0) {
+        event.preventDefault();
+        toastr.error("Памер файла не можа быць больш чым 3 МБ");
+        return;
+    }
+    if (attributes.guestsLimit <= attributes.childrenLimit) {
+        event.preventDefault();
+        toastr.error("Агульная колькасць месц павінна быць больш, чым колькасць дзіцячых");
     }
 });
 
@@ -70,34 +75,38 @@ editCardFormsArray.forEach(function (form) {
         if (typeof errors !== 'undefined' && errors.length > 0) {
             event.preventDefault();
             toastr.error(errors[0]);
+            return;
+        }
+        if (attributes.guestsLimit <= attributes.childrenLimit) {
+            event.preventDefault();
+            toastr.error("Агульная колькасць месц павінна быць больш, чым колькасць дзіцячых");
         }
     });
 });
 
-const textareasArray = Array.from(document.getElementsByTagName("textarea"));
-textareasArray.forEach(function (textarea) {
-    textarea.addEventListener("scroll", function () {
-        let labelId = textarea.id + "Label";
-        console.log(labelId);
-        if (textarea.scrollTop !== 0) {
-            $('#' + labelId).hide(0);
-            console.log("hide");
-        } else {
-            $('#' + labelId).show(0);
-            console.log("show");
-        }
+const inputNumberElements = [
+    document.getElementById("inputGuestsLimit"),
+    document.getElementById("inputСostPerNight"),
+    document.getElementById("inputRoomsNumber")
+];
+inputNumberElements.forEach(function (element) {
+    element.addEventListener("change", function () {
+        element.value = Math.max(1, element.value);
     });
 });
 
 function editCard(id) {
-    let cardContent = document.getElementById("cardContent" + id);
+    let cardContentTop = document.getElementById("cardContentTop" + id);
+    let cardContentBottom = Array.from(document.getElementsByClassName("card-content-bottom-" + id));
     let cardEditor = document.getElementById("cardEditor" + id);
 
     if (cardEditor.style.display === "none") {
         cardEditor.style.display = "block";
-        cardContent.style.display = "none";
+        cardContentTop.style.display = "none";
+        cardContentBottom.forEach(el => el.style.display = "none");
     } else {
         cardEditor.style.display = "none";
-        cardContent.style.display = "block";
+        cardContentTop.style.display = "block";
+        cardContentBottom.forEach(el => el.style.display = "block");
     }
 }

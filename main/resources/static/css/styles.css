@@ -302,5 +302,12 @@ textarea {
 
 .card-buttons-flex {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.icon-box {
+    width: 22px;
+    display: inline-block;
+    text-align: center;
 }

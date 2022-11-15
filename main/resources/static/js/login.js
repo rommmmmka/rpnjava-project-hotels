@@ -32,11 +32,7 @@ const validationConstraints = {
         }
     }
 };
-
 const loginForm = document.getElementById("loginForm");
-
-
-
 loginForm.addEventListener("submit", event => {
     let attributes = validate.collectFormValues(loginForm);
     let errors = validate(attributes, validationConstraints, validationOptions);

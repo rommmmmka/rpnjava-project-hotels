@@ -16,7 +16,7 @@
                     <div class="col-md-12">
                         <div class="form-floating">
                             <input class="form-control" id="inputName" type="text" placeholder=" " th:field="*{name}"/>
-                            <label for="inputName">Назва</label>
+                            <label for="inputName">Назва*</label>
                         </div>
                     </div>
                 </div>
@@ -36,14 +36,15 @@
                                 <option th:each="cityEntity : ${citiesList}" th:value="${cityEntity.id}"
                                         th:text="${cityEntity.name}" th:disabled="${cityEntity.disabled}"></option>
                             </select>
-                            <label for="selectCity">Горад</label>
+                            <label for="selectCity">Горад*</label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating mb-3 mb-md-0">
                             <div class="mb-3">
-                                <label for="inputFile" class="form-label text-secondary mb-0"><small>Выява
-                                    гатэля</small></label>
+                                <label for="inputFile" class="form-label text-secondary mb-0">
+                                    <small>Выява гатэля*</small>
+                                </label>
                                 <input class="form-control form-control-sm" id="inputFile" type="file" accept=".jpg"
                                        th:field="*{coverPhotoFile}">
                             </div>
@@ -65,7 +66,7 @@
         </div>
         <div class="card-body container">
             <div class="row">
-                <div class="col-md-3" th:each="hotel : ${hotels}">
+                <div class="col-md-3" th:each="hotel : ${hotelsList}">
                     <div class="card my-3">
                         <img class="card-img-top" alt="..." th:src="|/uploads/${hotel.coverPhoto}|">
                         <div class="card-body">
@@ -85,7 +86,8 @@
                                 <div class="form-floating mb-1">
                                     <textarea class="form-control" th:id="|inputDescription${hotel.id}|"
                                               th:name="description" th:text="${hotel.description}"></textarea>
-                                    <label th:for="|inputDescription${hotel.id}|" th:id="|inputDescription${hotel.id}Label|">Апісанне</label>
+                                    <label th:for="|inputDescription${hotel.id}|"
+                                           th:id="|inputDescription${hotel.id}Label|">Апісанне</label>
                                 </div>
                                 <div class="mb-0">
                                     <div class="d-grid">
@@ -96,20 +98,23 @@
 
                         </div>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Колькасць нумароў:</li>
-                            <li class="list-group-item">Горад: [[${hotel.city.name}]]</li>
+                            <li class="list-group-item">Колькасць нумароў: [[${hotel.rooms.size}]]</li>
+                            <li class="list-group-item">
+                                Горад:
+                                <a th:href="|hotels?filterCity=${hotel.city.id}|" th:text="${hotel.city.name}"/>
+                            </li>
                         </ul>
-                        <div class="card-body card-buttons-flex">
-                            <a class="btn btn-success" th:href="|/admin/rooms?hotel=${hotel.id}|">
+                        <div class="card-body pt-0 card-buttons-flex">
+                            <a class="btn btn-success mt-3" th:href="|/admin/rooms?hotel=${hotel.id}|">
                                 <i class="fa-solid fa-plus"></i>
                             </a>
-                            <a class="btn btn-warning" th:href="|/admin/rooms?filterHotel=${hotel.id}|">
+                            <a class="btn btn-warning mt-3" th:href="|/admin/rooms?filterHotel=${hotel.id}|">
                                 <i class="fa-solid fa-magnifying-glass white-icon"></i>
                             </a>
-                            <button type="button" class="btn btn-info" th:onclick="|editCard(${hotel.id})|">
+                            <button type="button" class="btn btn-info mt-3" th:onclick="|editCard(${hotel.id})|">
                                 <i class="fa-solid fa-pen-to-square white-icon"></i>
                             </button>
-                            <form action="hotels/remove" method="post">
+                            <form action="hotels/remove" method="post" class=" mt-3">
                                 <input type="hidden" name="id" th:value="${hotel.id}">
                                 <button type="submit" class="btn btn-danger">
                                     <i class="fa-solid fa-trash"></i>

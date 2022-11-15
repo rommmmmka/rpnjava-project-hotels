@@ -2,8 +2,6 @@ package com.kravets.hotels.rpnjava.form;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-
 public class AddHotelForm {
     private String name;
 

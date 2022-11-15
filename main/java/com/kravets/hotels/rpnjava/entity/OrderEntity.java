@@ -22,9 +22,6 @@ public class OrderEntity {
     @ManyToOne
     private RoomEntity room;
 
-    @ManyToOne
-    private StatusEntity status;
-
 
     public OrderEntity() {
     }
@@ -75,13 +72,5 @@ public class OrderEntity {
 
     public void setRoom(RoomEntity room) {
         this.room = room;
-    }
-
-    public StatusEntity getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusEntity status) {
-        this.status = status;
     }
 }

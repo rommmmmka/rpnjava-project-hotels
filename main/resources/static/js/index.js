@@ -12,21 +12,30 @@ const validationConstraints = {
         }
     }
 };
-
 const searchForm = document.getElementById("searchForm");
-const inputAdultsNumber = document.getElementById("inputAdultsNumber");
-const inputChildrenNumber = document.getElementById("inputChildrenNumber");
-const inputCheckInDate = document.getElementById("inputCheckInDate");
-const inputCheckOutDate = document.getElementById("inputCheckOutDate");
+searchForm.addEventListener("submit", event => {
+    let attributes = validate.collectFormValues(searchForm);
+    let errors = validate(attributes, validationConstraints, validationOptions);
+    console.log(attributes)
+    console.log(errors)
+    if (typeof errors !== 'undefined' && errors.length > 0) {
+        event.preventDefault();
+        toastr.error(errors[0]);
+    }
+});
 
+const inputAdultsNumber = document.getElementById("inputAdultsNumber");
 inputAdultsNumber.addEventListener("change", function () {
     inputAdultsNumber.value = Math.max(1, inputAdultsNumber.value);
 });
 
+const inputChildrenNumber = document.getElementById("inputChildrenNumber");
 inputChildrenNumber.addEventListener("change", function () {
     inputChildrenNumber.value = Math.max(0, inputChildrenNumber.value);
 });
 
+const inputCheckInDate = document.getElementById("inputCheckInDate");
+const inputCheckOutDate = document.getElementById("inputCheckOutDate");
 inputCheckInDate.addEventListener("change", function () {
     let checkInDate = new Date(inputCheckInDate.value);
     let checkOutMinDate = new Date();
@@ -36,17 +45,6 @@ inputCheckInDate.addEventListener("change", function () {
 
     if (checkOutMinDate > inputCheckOutDate.valueAsDate) {
         inputCheckOutDate.value = checkOutMinDateString;
-    }
-});
-
-searchForm.addEventListener("submit", event => {
-    let attributes = validate.collectFormValues(searchForm);
-    let errors = validate(attributes, validationConstraints, validationOptions);
-    console.log(attributes)
-    console.log(errors)
-    if (typeof errors !== 'undefined' && errors.length > 0) {
-        event.preventDefault();
-        toastr.error(errors[0]);
     }
 });
 

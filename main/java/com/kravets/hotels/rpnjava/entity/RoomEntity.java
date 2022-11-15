@@ -1,5 +1,7 @@
 package com.kravets.hotels.rpnjava.entity;
 
+import com.kravets.hotels.rpnjava.form.AddRoomForm;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,24 +25,34 @@ public class RoomEntity {
 
     private int costPerNight;
 
-    private int area;
-
     private int bedsForOnePersonCount;
 
     private int bedsForTwoPersonsCount;
 
-    private boolean isPrepaymentRequired;
-
     private int roomsNumber;
+
+    private boolean isPrepaymentRequired;
 
     @ManyToOne
     private HotelEntity hotel;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderEntity> orders = new ArrayList<>();
 
 
     public RoomEntity() {
+    }
+
+    public RoomEntity(AddRoomForm addRoomForm) {
+        this.name = addRoomForm.getName();
+        this.description = addRoomForm.getDescription();
+        this.guestsLimit = addRoomForm.getGuestsLimit();
+        this.childrenLimit = addRoomForm.getChildrenLimit();
+        this.costPerNight = addRoomForm.getCostPerNight();
+        this.bedsForOnePersonCount = addRoomForm.getBedsForOnePersonCount();
+        this.bedsForTwoPersonsCount = addRoomForm.getBedsForTwoPersonsCount();
+        this.roomsNumber = addRoomForm.getRoomsNumber();
+        this.isPrepaymentRequired = addRoomForm.isPrepaymentRequired();
     }
 
     public Long getId() {
@@ -97,14 +109,6 @@ public class RoomEntity {
 
     public void setCostPerNight(int costPerNight) {
         this.costPerNight = costPerNight;
-    }
-
-    public int getArea() {
-        return area;
-    }
-
-    public void setArea(int area) {
-        this.area = area;
     }
 
     public int getBedsForOnePersonCount() {

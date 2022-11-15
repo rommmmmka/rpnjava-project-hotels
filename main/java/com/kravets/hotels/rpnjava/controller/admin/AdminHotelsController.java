@@ -1,12 +1,12 @@
 package com.kravets.hotels.rpnjava.controller.admin;
 
-import com.kravets.hotels.rpnjava.entity.HotelEntity;
 import com.kravets.hotels.rpnjava.exception.FormValidationException;
 import com.kravets.hotels.rpnjava.form.AddHotelForm;
 import com.kravets.hotels.rpnjava.form.EditHotelForm;
 import com.kravets.hotels.rpnjava.misc.SessionChecker;
 import com.kravets.hotels.rpnjava.service.AdminService;
 import com.kravets.hotels.rpnjava.validator.AddHotelValidator;
+import com.kravets.hotels.rpnjava.validator.EditHotelValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,16 +24,19 @@ public class AdminHotelsController {
     private final AdminService adminService;
     private final SessionChecker sessionChecker;
     private final AddHotelValidator addHotelValidator;
+    private final EditHotelValidator editHotelValidator;
 
     @Autowired
     public AdminHotelsController(
             AdminService adminService,
             SessionChecker sessionChecker,
-            AddHotelValidator addHotelValidator
+            AddHotelValidator addHotelValidator,
+            EditHotelValidator editHotelValidator
     ) {
         this.adminService = adminService;
         this.sessionChecker = sessionChecker;
         this.addHotelValidator = addHotelValidator;
+        this.editHotelValidator = editHotelValidator;
     }
 
     @GetMapping("/admin/hotels")
@@ -43,12 +46,11 @@ public class AdminHotelsController {
 
             model.addAttribute("addHotelForm", new AddHotelForm());
             model.addAttribute("citiesList", adminService.getAllCities());
-            model.addAttribute("hotels", adminService.getAllHotels());
+            model.addAttribute("hotelsList", adminService.getAllHotels());
 //            model.addAttribute()
 
             model.addAttribute("templateName", "admin/hotels");
             return "base";
-
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/";
@@ -70,7 +72,7 @@ public class AdminHotelsController {
             }
             sessionChecker.adminAccess(model, request);
 
-            HotelEntity hotelEntity = adminService.addHotel(addHotelForm);
+            adminService.addHotel(addHotelForm);
 
             redirectAttributes.addFlashAttribute("successMessage", "Новы гатэль паспяхова дабаўлены");
             return "redirect:/admin/hotels";
@@ -106,10 +108,15 @@ public class AdminHotelsController {
     public String editHotelAction(
             Model model,
             @ModelAttribute EditHotelForm editHotelForm,
+            BindingResult result,
             HttpServletRequest request,
             RedirectAttributes redirectAttributes
     ) {
         try {
+            editHotelValidator.validate(editHotelForm, result);
+            if (result.hasErrors()) {
+                throw new FormValidationException();
+            }
             sessionChecker.adminAccess(model, request);
 
             adminService.editHotel(editHotelForm);

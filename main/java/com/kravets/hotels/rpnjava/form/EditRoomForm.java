@@ -1,35 +1,39 @@
 package com.kravets.hotels.rpnjava.form;
 
-import org.springframework.web.multipart.MultipartFile;
+public class EditRoomForm {
+    private Long id;
 
-public class AddRoomForm {
     private String name;
 
     private String description;
-
-    private MultipartFile coverPhotoFile;
-
-    private Long hotel;
 
     private int guestsLimit;
 
     private int childrenLimit;
 
+    private int costPerNight;
+
     private int bedsForOnePersonCount;
 
     private int bedsForTwoPersonsCount;
-
-    private int costPerNight;
 
     private int roomsNumber;
 
     private String isPrepaymentRequired;
 
-    public AddRoomForm() {
+    public EditRoomForm() {
     }
 
     public boolean isPrepaymentRequired() {
         return isPrepaymentRequired.equals("true");
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -46,22 +50,6 @@ public class AddRoomForm {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public MultipartFile getCoverPhotoFile() {
-        return coverPhotoFile;
-    }
-
-    public void setCoverPhotoFile(MultipartFile coverPhotoFile) {
-        this.coverPhotoFile = coverPhotoFile;
-    }
-
-    public Long getHotel() {
-        return hotel;
-    }
-
-    public void setHotel(Long hotel) {
-        this.hotel = hotel;
     }
 
     public int getGuestsLimit() {
@@ -104,19 +92,19 @@ public class AddRoomForm {
         this.bedsForTwoPersonsCount = bedsForTwoPersonsCount;
     }
 
-    public String getIsPrepaymentRequired() {
-        return isPrepaymentRequired;
-    }
-
-    public void setIsPrepaymentRequired(String isPrepaymentRequired) {
-        this.isPrepaymentRequired = isPrepaymentRequired;
-    }
-
     public int getRoomsNumber() {
         return roomsNumber;
     }
 
     public void setRoomsNumber(int roomsNumber) {
         this.roomsNumber = roomsNumber;
+    }
+
+    public String getIsPrepaymentRequired() {
+        return isPrepaymentRequired;
+    }
+
+    public void setIsPrepaymentRequired(String isPrepaymentRequired) {
+        this.isPrepaymentRequired = isPrepaymentRequired;
     }
 }
