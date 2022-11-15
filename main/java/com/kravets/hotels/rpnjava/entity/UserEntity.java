@@ -56,6 +56,10 @@ public class UserEntity {
         return name;
     }
 
+    public String getFullName() {
+        return lastName + ' ' + firstName + ' ' + patronymic;
+    }
+
     public Long getId() {
         return id;
     }
@@ -124,8 +128,8 @@ public class UserEntity {
         return sessions;
     }
 
-    public void setSessions(List<SessionEntity> sessionsList) {
-        this.sessions = sessionsList;
+    public void setSessions(List<SessionEntity> sessions) {
+        this.sessions = sessions;
     }
 
     public List<OrderEntity> getOrders() {

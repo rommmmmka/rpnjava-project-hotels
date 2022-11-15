@@ -11,24 +11,24 @@
         </div>
         <div class="card-body container">
             <form action="/results" method="get" id="searchForm" th:object="${searchForm}">
-                <div class="row mb-3">
-                    <div class="col-md-4">
-                        <div class="form-floating mb-3 mb-md-0">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="form-floating mb-md-0">
                             <select class="form-select" id="selectCity" required th:field="*{city}">
                                 <option th:each="cityEntity : ${citiesList}" th:value="${cityEntity.id}"
-                                        th:text="${cityEntity.name}" th:disabled="${cityEntity.disabled}"></option>
+                                        th:text="${cityEntity.name}" th:disabled="${cityEntity.disabled}"/>
                             </select>
                             <label for="selectCity">Горад</label>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 mb-3">
                         <div class="form-floating">
                             <input class="form-control" id="inputAdultsNumber" type="number" name="adultsNumber" min="1"
                                    value="1"/>
                             <label for="inputAdultsNumber">Колькасць дарослых</label>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 mb-3">
                         <div class="form-floating">
                             <input class="form-control" id="inputChildrenNumber" type="number" min="0"
                                    th:field="*{childrenNumber}"/>
@@ -36,15 +36,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mb-3">
-                    <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
                         <div class="form-floating">
                             <input class="form-control" id="inputCheckInDate" type="date" name="checkInDate"
                                    th:min="${currentDate}" th:value="${currentDate}"/>
                             <label for="inputCheckInDate">Дата заезду</label>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-3">
                         <div class="form-floating">
                             <input class="form-control" id="inputCheckOutDate" type="date" name="checkOutDate"
                                    th:min="${currentDatePlusDay}" th:value="${currentDatePlusDay}"/>
@@ -52,7 +52,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-4 mb-0">
+                <div class="mt-1 mb-0">
                     <div class="d-grid">
                         <button id="createAccountButton" class="btn btn-primary btn-block">Знайсці</button>
                     </div>

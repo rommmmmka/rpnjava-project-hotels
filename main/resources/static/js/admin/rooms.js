@@ -17,6 +17,12 @@ const validationConstraints = {
             tooLong: "Апісанне павінна быць не больш за 300 сімвалаў"
         }
     },
+    hotel: {
+        presence: {
+            allowEmpty: false,
+            message: "Выберыце гатэль"
+        }
+    },
     coverPhotoFile: {
         presence: {
             allowEmpty: false,
@@ -57,6 +63,12 @@ const validationConstraints2 = {
             maximum: 45,
             tooShort: "Назва павінна быць не менш за 6 сімвалаў",
             tooLong: "Назва павінна быць не больш за 45 сімвалаў"
+        }
+    },
+    hotel: {
+        presence: {
+            allowEmpty: false,
+            message: "Выберыце гатэль"
         }
     },
     description: {

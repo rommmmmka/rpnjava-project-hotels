@@ -54,7 +54,8 @@ public final class SessionChecker {
 
     public SessionEntity adminAccess(Model model, HttpServletRequest request) throws NoAccessException {
         SessionEntity sessionEntity = addAttributes(model, request);
-        if (!(Boolean) model.getAttribute("isAdmin")) {
+        Object attribute =  model.getAttribute("isAdmin");
+        if (attribute == null || !(Boolean) attribute) {
             throw new NoAccessException();
         }
         return sessionEntity;
@@ -62,7 +63,8 @@ public final class SessionChecker {
 
     public SessionEntity userAccess(Model model, HttpServletRequest request) throws NoAccessException {
         SessionEntity sessionEntity = addAttributes(model, request);
-        if (!(Boolean) model.getAttribute("isLoggedIn")) {
+        Object attribute =  model.getAttribute("isLoggedIn");
+        if (attribute == null || !(Boolean) attribute) {
             throw new NoAccessException();
         }
         return sessionEntity;
@@ -75,7 +77,8 @@ public final class SessionChecker {
 
     public SessionEntity loggedOutAccess(Model model, HttpServletRequest request) throws NoAccessException {
         SessionEntity sessionEntity = addAttributes(model, request);
-        if ((Boolean) model.getAttribute("isLoggedIn")) {
+        Object attribute =  model.getAttribute("isLoggedIn");
+        if (attribute == null || (Boolean) attribute) {
             throw new NoAccessException();
         }
         return sessionEntity;

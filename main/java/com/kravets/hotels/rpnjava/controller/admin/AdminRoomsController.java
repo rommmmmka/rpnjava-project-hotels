@@ -43,7 +43,10 @@ public class AdminRoomsController {
     public String adminRoomsPage(
             Model model,
             @RequestParam(required = false) Long hotel,
-            @RequestParam(required = false) Long filterHotel,
+            @RequestParam(required = false, defaultValue = "0") Long filterHotel,
+            @RequestParam(required = false, defaultValue = "0") Long filterCity,
+            @RequestParam(required = false, defaultValue = "creationDate") String sortingProperty,
+            @RequestParam(required = false, defaultValue = "descending") String sortingDirection,
             HttpServletRequest request,
             RedirectAttributes redirectAttributes
     ) {
@@ -52,11 +55,20 @@ public class AdminRoomsController {
 
             model.addAttribute("addRoomForm", new AddRoomForm());
             model.addAttribute("hotelsList", adminService.getAllHotels());
-            model.addAttribute("roomsList", adminService.getAllRooms());
             model.addAttribute("pickHotelId", hotel);
-            model.addAttribute("filterHotel", filterHotel);
 
-            model.addAttribute("templateName", "admin/rooms");
+            model.addAttribute(
+                    "roomsList",
+                    adminService.getAllRooms(filterHotel, filterCity, sortingProperty, sortingDirection)
+            );
+            model.addAttribute("citiesList", adminService.getAllCities());
+            model.addAttribute("filterHotel", filterHotel);
+            model.addAttribute("filterCity", filterCity);
+            model.addAttribute("sortingProperty", sortingProperty);
+            model.addAttribute("sortingDirection", sortingDirection);
+
+            model.addAttribute("templateName", "rooms");
+            model.addAttribute("templateType", "admin");
             return "base";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
@@ -82,12 +94,11 @@ public class AdminRoomsController {
             adminService.addRoom(addRoomForm);
 
             redirectAttributes.addFlashAttribute("successMessage", "Новы пакой паспяхова дабаўлены");
-            return "redirect:/admin/rooms";
-
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-            return "redirect:/admin/rooms";
         }
+
+        return "redirect:/admin/rooms";
     }
 
     @PostMapping("/admin/rooms/remove")
@@ -103,11 +114,11 @@ public class AdminRoomsController {
             adminService.removeRoom(id);
 
             redirectAttributes.addFlashAttribute("successMessage", "Пакой паспяхова выдалены");
-            return "redirect:/admin/rooms";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-            return "redirect:/admin/rooms";
         }
+
+        return "redirect:/admin/rooms";
     }
 
     @PostMapping("/admin/rooms/edit")
@@ -128,10 +139,10 @@ public class AdminRoomsController {
             adminService.editRoom(editRoomForm);
 
             redirectAttributes.addFlashAttribute("successMessage", "Інфармацыя пра пакой паспяхова зменена");
-            return "redirect:/admin/rooms";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-            return "redirect:/admin/rooms";
         }
+
+        return "redirect:/admin/rooms";
     }
 }

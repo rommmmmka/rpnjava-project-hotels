@@ -14,4 +14,7 @@ public interface RoomRepository extends JpaRepository<RoomEntity, Long> {
             int guestsLimit,
             int childrenLimit
     );
+
+    List<RoomEntity> findRoomEntitiesByHotel(HotelEntity hotelEntity);
+    List<RoomEntity> findRoomEntitiesByHotelIn(List<HotelEntity> hotelEntities);
 }

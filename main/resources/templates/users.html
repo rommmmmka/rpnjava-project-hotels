@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="be">
+
+<title th:fragment="title">Адмін-панэль | Booker - браніраванне гатэляў</title>
+
+<th:block th:fragment="content">
+    <div class="card my-4">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            Фільтры
+        </div>
+        <div class="card-body container">
+            <form action="/admin/users" method="get">
+                <div class="row justify-content-md-center">
+                    <div class="col-md-6 mb-3">
+                        <div class="form-floating mb-1">
+                            <select class="form-select" id="sortingProperty" name="sortingProperty" required>
+                                <option value="registrationDate">
+                                    Па даце рэгістрацыі
+                                </option>
+                                <option value="ordersCount" th:selected="${sortingProperty} == 'ordersCount'">
+                                    Па колькасці заказаў
+                                </option>
+                                <option value="sessionsCount" th:selected="${sortingProperty} == 'sessionsCount'">
+                                    Па колькасці сесій
+                                </option>
+                            </select>
+                            <label for="sortingProperty">Фільтр</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="form-floating mb-1">
+                            <select class="form-select" id="sortingDirection" name="sortingDirection" required>
+                                <option value="descending">
+                                    Па змяншэнні
+                                </option>
+                                <option value="ascending" th:selected="${sortingDirection} == 'ascending'">
+                                    Па ўзрастанні
+                                </option>
+                            </select>
+                            <label for="sortingDirection">Сарціроўка</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-md-center">
+                    <div class="col-md-12 mt-1 mb-0">
+                        <div class="d-grid">
+                            <button id="applyFiltersButton" class="btn btn-primary btn-block">Прымяніць</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card my-4">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            Спіс карыстальнікаў
+        </div>
+
+        <div class="card-body container">
+            <div class="row">
+                <div class="col-md-4" th:each="user : ${usersList}">
+                    <div class="card my-3">
+                        <div class="card-body">
+                            <div th:id="|cardContent${user.id}|">
+                                <div>
+                                    <div class="icon-box" th:switch="${user.isAdmin}">
+                                        <i class="fa-solid fa-user" th:case="false"></i>
+                                        <i class="fa-solid fa-crown" th:case="true"></i>
+                                    </div>
+                                    <h5 class="card-title d-inline" th:text="${user.fullName}"/>
+                                </div>
+                                <div>
+                                    <div class="icon-box">
+                                        <i class="fa-solid fa-at"></i>
+                                    </div>
+                                    <span class="card-text" th:text="${user.login}"/>
+                                </div>
+                            </div>
+                            <form action="/admin/users/edit" method="post" class="editCardForm" style="display: none;"
+                                  th:id="|cardEditor${user.id}|">
+                                <input type="hidden" name="id" th:value="${user.id}">
+                                <div class="form-floating mb-1">
+                                    <input class="form-control" type="text" name="lastName"
+                                           th:id="|inputName${user.id}|" th:value="${user.lastName}"/>
+                                    <label th:for="|inputName${user.id}|">Прозвішча</label>
+                                </div>
+                                <div class="form-floating mb-1">
+                                    <input class="form-control" type="text" name="firstName"
+                                           th:id="|inputName${user.id}|" th:value="${user.firstName}"/>
+                                    <label th:for="|inputName${user.id}|">Імя</label>
+                                </div>
+                                <div class="form-floating mb-1">
+                                    <input class="form-control" type="text" name="patronymic"
+                                           th:id="|inputName${user.id}|" th:value="${user.patronymic}"/>
+                                    <label th:for="|inputName${user.id}|">Імя па бацьку</label>
+                                </div>
+                                <div class="form-floating mb-1">
+                                    <select class="form-select" required name="isAdmin"
+                                            th:id="|selectIsAdmin${user.id}|">
+                                        <option value="false" th:selected="${!user.isAdmin}">
+                                            Карыстальнік
+                                        </option>
+                                        <option value="true" th:selected="${user.isAdmin}">
+                                            Адміністратар
+                                        </option>
+                                    </select>
+                                    <label th:for="|selectIsAdmin${user.id}|">Роль</label>
+                                </div>
+                                <div class="mb-0">
+                                    <div class="d-grid">
+                                        <button class="btn btn-primary btn-block">Захаваць</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Колькасць заказаў: [[${user.orders.size}]]</li>
+                            <li class="list-group-item">Колькасць актыўных сесій: [[${user.sessions.size}]]</li>
+                        </ul>
+                        <div class="card-body pt-0 card-buttons-flex">
+                            <a class="btn btn-warning mt-3" th:href="|/admin/orders?filterUser=${user.id}|">
+                                <i class="fa-solid fa-magnifying-glass white-icon"></i>
+                            </a>
+                            <button type="button" class="btn btn-info mt-3" th:onclick="|editCard(${user.id})|">
+                                <i class="fa-solid fa-pen-to-square white-icon"></i>
+                            </button>
+                            <form action="/admin/users/kill_sessions" method="post" class=" mt-3">
+                                <input type="hidden" name="id" th:value="${user.id}">
+                                <button type="submit" class="btn btn-dark">
+                                    <i class="fa-solid fa-skull"></i>
+                                </button>
+                            </form>
+                            <form action="/admin/users/remove" method="post" class=" mt-3">
+                                <input type="hidden" name="id" th:value="${user.id}">
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</th:block>
+
+<script th:fragmemt="script" src="/js/admin/users.js"></script>

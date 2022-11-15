@@ -4,14 +4,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-public class RegisterForm {
-    @Size(min = 6, max = 32)
-    @Pattern(regexp = "[A-z0-9\\-_]+")
-    private String login;
-
-    @Size(min = 6, max = 32)
-    @Pattern(regexp = "[A-z0-9\\-_]+")
-    private String password;
+public class EditUserForm {
+    private Long id;
 
     @Size(max = 32)
     @Pattern(regexp = "[A-zА-яЁёІіЎў'\\- ]+")
@@ -25,24 +19,33 @@ public class RegisterForm {
     @Pattern(regexp = "[A-zА-яЁёІіЎў'\\- ]*")
     private String patronymic;
 
+    @Pattern(regexp = "true|false")
+    private String isAdmin;
 
-    public RegisterForm() {
+    public EditUserForm() {
     }
 
-    public String getLogin() {
-        return login;
+    @Override
+    public String toString() {
+        return "EditUserForm{" +
+                "id=" + id +
+                ", lastName='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", patronymic='" + patronymic + '\'' +
+                ", isAdmin='" + isAdmin + '\'' +
+                '}';
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public boolean isAdmin() {
+        return isAdmin.equals("true");
     }
 
-    public String getPassword() {
-        return password;
+    public Long getId() {
+        return id;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getLastName() {
@@ -67,5 +70,13 @@ public class RegisterForm {
 
     public void setPatronymic(String patronymic) {
         this.patronymic = patronymic;
+    }
+
+    public String getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(String isAdmin) {
+        this.isAdmin = isAdmin;
     }
 }

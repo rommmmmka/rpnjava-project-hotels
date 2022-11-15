@@ -40,16 +40,27 @@ public class AdminHotelsController {
     }
 
     @GetMapping("/admin/hotels")
-    public String adminHotelsPage(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public String adminHotelsPage(
+            Model model,
+            @RequestParam(required = false, defaultValue = "0") Long filterCity,
+            @RequestParam(required = false, defaultValue = "creationDate") String sortingProperty,
+            @RequestParam(required = false, defaultValue = "descending") String sortingDirection,
+            HttpServletRequest request,
+            RedirectAttributes redirectAttributes
+    ) {
         try {
             sessionChecker.adminAccess(model, request);
 
             model.addAttribute("addHotelForm", new AddHotelForm());
             model.addAttribute("citiesList", adminService.getAllCities());
-            model.addAttribute("hotelsList", adminService.getAllHotels());
-//            model.addAttribute()
 
-            model.addAttribute("templateName", "admin/hotels");
+            model.addAttribute("hotelsList", adminService.getAllHotels(filterCity, sortingProperty, sortingDirection));
+            model.addAttribute("filterCity", filterCity);
+            model.addAttribute("sortingProperty", sortingProperty);
+            model.addAttribute("sortingDirection", sortingDirection);
+
+            model.addAttribute("templateName", "hotels");
+            model.addAttribute("templateType", "admin");
             return "base";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
@@ -75,12 +86,11 @@ public class AdminHotelsController {
             adminService.addHotel(addHotelForm);
 
             redirectAttributes.addFlashAttribute("successMessage", "Новы гатэль паспяхова дабаўлены");
-            return "redirect:/admin/hotels";
-
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-            return "redirect:/admin/hotels";
         }
+
+        return "redirect:/admin/hotels";
     }
 
     @PostMapping("/admin/hotels/remove")
@@ -96,12 +106,11 @@ public class AdminHotelsController {
             adminService.removeHotel(id);
 
             redirectAttributes.addFlashAttribute("successMessage", "Гатэль паспяхова выдалены");
-            return "redirect:/admin/hotels";
-
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-            return "redirect:/admin/hotels";
         }
+
+        return "redirect:/admin/hotels";
     }
 
     @PostMapping("/admin/hotels/edit")
@@ -122,11 +131,10 @@ public class AdminHotelsController {
             adminService.editHotel(editHotelForm);
 
             redirectAttributes.addFlashAttribute("successMessage", "Інфармацыя пра гатэль паспяхова зменена");
-            return "redirect:/admin/hotels";
-
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-            return "redirect:/admin/hotels";
         }
+
+        return "redirect:/admin/hotels";
     }
 }

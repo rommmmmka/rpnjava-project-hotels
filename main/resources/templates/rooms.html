@@ -1,27 +1,29 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org" lang="be">
 
-<title th:fragment="title">Панэль адміністратара | Booker - браніраванне гатэляў</title>
+<title th:fragment="title">
+    [[${templateType == 'admin'} ? 'Адмін-панэль' : 'Спіс пакояў']] | Booker - браніраванне гатэляў
+</title>
 
 <th:block th:fragment="content">
-    <div class="card my-4">
+    <div class="card my-4" th:remove="${templateType != 'admin'} ? 'all'">
         <div class="card-header">
             <i class="fas fa-table me-1"></i>
             Дабавіць пакой
         </div>
         <div class="card-body container">
-            <form action="rooms/create" method="post" id="addRoomForm" enctype="multipart/form-data"
+            <form action="/admin/rooms/create" method="post" id="addRoomForm" enctype="multipart/form-data"
                   th:object="${addRoomForm}">
-                <div class="row mb-3">
-                    <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12 mb-3">
                         <div class="form-floating">
                             <input class="form-control" id="inputName" type="text" placeholder=" " th:field="*{name}"/>
                             <label for="inputName">Назва*</label>
                         </div>
                     </div>
                 </div>
-                <div class="row mb-3">
-                    <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12 mb-3">
                         <div class="form-floating">
                             <textarea class="form-control" id="inputDescription" rows="3" placeholder=" "
                                       th:field="*{description}"></textarea>
@@ -29,18 +31,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mb-3">
-                    <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
                         <div class="form-floating">
-                            <select class="form-select" id="selectCity" required th:name="hotel">
+                            <select class="form-select" id="selectHotel" th:name="hotel">
                                 <option th:each="hotelEntity : ${hotelsList}" th:value="${hotelEntity.id}"
-                                        th:selected="${hotelEntity.id == pickHotelId} ? selected"
-                                        th:text="${hotelEntity.name}"></option>
+                                        th:selected="${hotelEntity.id == pickHotelId}"
+                                        th:text="${hotelEntity.name}"/>
                             </select>
-                            <label for="selectCity">Гатэль*</label>
+                            <label for="selectHotel">Гатэль*</label>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-3">
                         <div class="form-floating mb-md-0">
                             <div>
                                 <label for="inputFile" class="form-label text-secondary mb-0">
@@ -52,29 +54,29 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mb-3">
-                    <div class="col-md-3">
+                <div class="row">
+                    <div class="col-md-3 mb-3">
                         <div class="form-floating">
                             <input class="form-control" id="inputGuestsLimit" type="number" min="1" value="1"
                                    name="guestsLimit"/>
                             <label for="inputGuestsLimit">Колькасць месц*</label>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 mb-3">
                         <div class="form-floating">
                             <input class="form-control" id="inputChildrenLimit" type="number" placeholder=" "
                                    th:field="*{childrenLimit}"/>
                             <label for="inputChildrenLimit">Сярод іх - колькасць дзіцячых*</label>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 mb-3">
                         <div class="form-floating">
                             <input class="form-control" id="inputBedsForOnePersonCount" type="number" placeholder=" "
                                    th:field="*{bedsForOnePersonCount}"/>
                             <label for="inputBedsForOnePersonCount">Колькасць аднамесных ложкаў*</label>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 mb-3">
                         <div class="form-floating">
                             <input class="form-control" id="inputBedsForTwoPersonsCount" type="number" placeholder=" "
                                    th:field="*{bedsForTwoPersonsCount}"/>
@@ -82,25 +84,25 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mb-3">
-                    <div class="col-md-3">
+                <div class="row">
+                    <div class="col-md-3 mb-3">
                         <div class="form-floating">
                             <input class="form-control" id="inputСostPerNight" type="number" min="1" value="1"
                                    name="costPerNight"/>
                             <label for="inputСostPerNight">Кошт (за ноч, руб.)*</label>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 mb-3">
                         <div class="form-floating">
                             <input class="form-control" id="inputRoomsNumber" type="number" min="1" value="1"
                                    name="roomsNumber"/>
                             <label for="inputRoomsNumber">Колькасць нумароў*</label>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-3">
                         <div class="form-floating">
-                            <select class="form-select" id="selectIsPrepaymentRequired" required
-                                    th:name="isPrepaymentRequired">
+                            <select class="form-select" id="selectIsPrepaymentRequired" name="isPrepaymentRequired"
+                                    required>
                                 <option value="false">Не патрабуецца</option>
                                 <option value="true">Патрабуецца</option>
                             </select>
@@ -108,7 +110,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-4 mb-0">
+                <div class="mt-1 mb-0">
                     <div class="d-grid">
                         <button id="addHotelButton" class="btn btn-primary btn-block">Дабавіць</button>
                     </div>
@@ -116,7 +118,82 @@
             </form>
         </div>
     </div>
-    <div class="card my-4" id="rooms-list">
+
+    <div class="card my-4">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            Фільтры
+        </div>
+        <div class="card-body container">
+            <form action="/admin/rooms" method="get">
+                <div class="row justify-content-md-center">
+                    <div class="col-md-3 mb-3">
+                        <div class="form-floating mb-1">
+                            <select class="form-select" id="filterHotel" name="filterHotel" required>
+                                <option th:value="0">Любы</option>
+                                <option th:each="hotelEntity : ${hotelsList}" th:value="${hotelEntity.id}"
+                                        th:selected="${hotelEntity.id == filterHotel}"
+                                        th:text="${hotelEntity.name}"/>
+                            </select>
+                            <label for="filterHotel">Гатэль</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="form-floating mb-1">
+                            <select class="form-select" id="filterCity" name="filterCity" required>
+                                <option th:value="0">Любы</option>
+                                <option th:each="cityEntity : ${citiesList}" th:value="${cityEntity.id}"
+                                        th:selected="${cityEntity.id == filterCity}"
+                                        th:text="${cityEntity.name}" th:disabled="${cityEntity.disabled}"/>
+                            </select>
+                            <label for="filterCity">Горад</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="form-floating mb-1">
+                            <select class="form-select" id="sortingProperty" name="sortingProperty" required>
+                                <option value="creationDate">
+                                    Па даце дабаўлення
+                                </option>
+                                <option value="guestsLimit" th:selected="${sortingProperty} == 'guestsLimit'">
+                                    Па колькасці месцаў
+                                </option>
+                                <option value="costPerNight" th:selected="${sortingProperty} == 'costPerNight'">
+                                    Па кошце
+                                </option>
+                                <option value="roomsNumber" th:selected="${sortingProperty} == 'roomsNumber'">
+                                    Па колькасці нумароў
+                                </option>
+                            </select>
+                            <label for="sortingProperty">Фільтр</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="form-floating mb-1">
+                            <select class="form-select" id="sortingDirection" name="sortingDirection" required>
+                                <option value="descending">
+                                    Па змяншэнні
+                                </option>
+                                <option value="ascending" th:selected="${sortingDirection} == 'ascending'">
+                                    Па ўзрастанні
+                                </option>
+                            </select>
+                            <label for="sortingDirection">Сарціроўка</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-md-center">
+                    <div class="col-md-12 mt-1 mb-0">
+                        <div class="d-grid">
+                            <button id="applyFiltersButton" class="btn btn-primary btn-block">Прымяніць</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card my-4">
         <div class="card-header">
             <i class="fas fa-table me-1"></i>
             Спіс пакояў
@@ -125,44 +202,49 @@
             <div class="row">
                 <div class="col-md-3" th:each="room : ${roomsList}">
                     <div class="card my-3">
-                        <img class="card-img-top" alt="..." th:src="|/uploads/${room.coverPhoto}|">
+                        <img class="card-img-top" alt="Фота пакоя" th:src="|/uploads/${room.coverPhoto}|">
                         <div class="card-body">
                             <div th:id="|cardContentTop${room.id}|">
                                 <h5 class="card-title" th:text="${room.name}"/>
                                 <p class="card-text" th:text="${room.description}"/>
                             </div>
-                            <form action="rooms/edit" method="post" class="editCardForm" style="display: none;"
+                            <form action="/admin/rooms/edit" method="post" class="editCardForm" style="display: none;"
                                   th:id="|cardEditor${room.id}|">
                                 <input type="hidden" name="id" th:value="${room.id}">
                                 <div class="form-floating mb-1">
                                     <input class="form-control" type="text" th:id="|inputName${room.id}|"
                                            th:name="name"
                                            th:value="${room.name}"/>
-                                    <label th:for="|inputName${room.id}|">Назва</label>
+                                    <label th:for="|inputName${room.id}|">
+                                        Назва
+                                    </label>
                                 </div>
                                 <div class="form-floating mb-1">
                                     <textarea class="form-control" th:id="|inputDescription${room.id}|"
                                               th:name="description" th:text="${room.description}"></textarea>
                                     <label th:for="|inputDescription${room.id}|"
-                                           th:id="|inputDescription${room.id}Label|">Апісанне</label>
+                                           th:id="|inputDescription${room.id}Label|">
+                                        Апісанне
+                                    </label>
                                 </div>
                                 <div class="form-floating mb-1">
                                     <input class="form-control" type="number" th:id="|inputGuestsLimit${room.id}|"
-                                           th:name="guestsLimit"
-                                           th:value="${room.guestsLimit}"/>
-                                    <label th:for="|inputGuestsLimit${room.id}|">Колькасць месц</label>
+                                           th:name="guestsLimit" th:value="${room.guestsLimit}"/>
+                                    <label th:for="|inputGuestsLimit${room.id}|">
+                                        Колькасць месц
+                                    </label>
                                 </div>
                                 <div class="form-floating mb-1">
                                     <input class="form-control" type="number" th:id="|inputChildrenLimit${room.id}|"
-                                           th:name="childrenLimit"
-                                           th:value="${room.childrenLimit}"/>
-                                    <label th:for="|inputGuestsLimit${room.id}|">Сярод іх - колькасць дзіцячых</label>
+                                           th:name="childrenLimit" th:value="${room.childrenLimit}"/>
+                                    <label th:for="|inputGuestsLimit${room.id}|">
+                                        Сярод іх - колькасць дзіцячых
+                                    </label>
                                 </div>
                                 <div class="form-floating mb-1">
                                     <input class="form-control" type="number"
                                            th:id="|inputBedsForOnePersonCount${room.id}|"
-                                           th:name="bedsForOnePersonCount"
-                                           th:value="${room.bedsForOnePersonCount}"/>
+                                           th:name="bedsForOnePersonCount" th:value="${room.bedsForOnePersonCount}"/>
                                     <label th:for="|inputBedsForOnePersonCount${room.id}|">
                                         Колькасць аднамесных ложкаў
                                     </label>
@@ -170,35 +252,36 @@
                                 <div class="form-floating mb-1">
                                     <input class="form-control" type="number"
                                            th:id="|inputBedsForTwoPersonsCount${room.id}|"
-                                           th:name="bedsForTwoPersonsCount"
-                                           th:value="${room.bedsForTwoPersonsCount}"/>
+                                           th:name="bedsForTwoPersonsCount" th:value="${room.bedsForTwoPersonsCount}"/>
                                     <label th:for="|inputBedsForTwoPersonsCount${room.id}|">
                                         Колькасць двумесных ложкаў
                                     </label>
                                 </div>
                                 <div class="form-floating mb-1">
                                     <input class="form-control" type="number" th:id="|inputCostPerNight${room.id}|"
-                                           th:name="costPerNight"
-                                           th:value="${room.costPerNight}"/>
-                                    <label th:for="|inputCostPerNight${room.id}|">Кошт (за ноч, руб.)</label>
+                                           th:name="costPerNight" th:value="${room.costPerNight}"/>
+                                    <label th:for="|inputCostPerNight${room.id}|">
+                                        Кошт (за ноч, руб.)
+                                    </label>
                                 </div>
                                 <div class="form-floating mb-1">
                                     <input class="form-control" type="number" th:id="|inputRoomsNumber${room.id}|"
-                                           th:name="roomsNumber"
-                                           th:value="${room.roomsNumber}"/>
-                                    <label th:for="|inputRoomsNumber${room.id}|">Колькасць нумароў</label>
+                                           th:name="roomsNumber" th:value="${room.roomsNumber}"/>
+                                    <label th:for="|inputRoomsNumber${room.id}|">
+                                        Колькасць нумароў
+                                    </label>
                                 </div>
                                 <div class="form-floating mb-1">
                                     <select class="form-select" th:id="|selectIsPrepaymentRequired${room.id}|" required
                                             th:name="isPrepaymentRequired">
-                                        <option value="false" th:selected="${!room.isPrepaymentRequired} ? selected">
+                                        <option value="false" th:selected="${!room.isPrepaymentRequired}">
                                             Не патрабуецца
                                         </option>
-                                        <option value="true" th:selected="${room.isPrepaymentRequired} ? selected">
+                                        <option value="true" th:selected="${room.isPrepaymentRequired}">
                                             Патрабуецца
                                         </option>
                                     </select>
-                                    <label for="selectIsPrepaymentRequired">Перадаплата</label>
+                                    <label th:for="|selectIsPrepaymentRequired${room.id}|">Перадаплата</label>
                                 </div>
                                 <div class="mb-0">
                                     <div class="d-grid">
@@ -207,12 +290,13 @@
                                 </div>
                             </form>
                         </div>
+
                         <ul class="list-group list-group-flush">
                             <li th:class="|list-group-item card-content-bottom-${room.id}|">
                                 <div class="icon-box">
                                     <i class="fa-solid fa-user"></i>
                                 </div>
-                                колькасць месц — [[${room.guestsLimit}]] (сярод іх дзіцячых — [[${room.childrenLimit}]])
+                                месцаў — [[${room.guestsLimit}]] (сярод іх дзіцячых — [[${room.childrenLimit}]])
                             </li>
                             <li th:class="|list-group-item card-content-bottom-${room.id}|">
                                 <div class="icon-box">
@@ -225,9 +309,8 @@
                                 <div class="icon-box">
                                     <i class="fa-solid fa-wallet"></i>
                                 </div>
-                                кошт — [[${room.costPerNight}]] руб. (за ноч), [[${room.isPrepaymentRequired} ?
-                                'патрабуецца
-                                перадаплата' : 'без перадаплаты']]
+                                кошт — [[${room.costPerNight}]] руб. (за ноч),
+                                [[${room.isPrepaymentRequired} ? 'патрабуецца перадаплата' : 'без перадаплаты']]
                             </li>
                             <li th:class="|list-group-item card-content-bottom-${room.id}|">
                                 <div class="icon-box">
@@ -245,15 +328,16 @@
                                    th:text="${room.hotel.city.name}"/>
                             </li>
                         </ul>
-                        <div class="card-body card-buttons-flex">
+
+                        <div class="card-body card-buttons-flex" th:remove="${templateType != 'admin'} ? 'all'">
                             <a class="btn btn-warning" th:href="|orders?filterRoom=${room.id}|">
                                 <i class="fa-solid fa-magnifying-glass white-icon"></i>
                             </a>
                             <button type="button" class="btn btn-info" th:onclick="|editCard(${room.id})|">
                                 <i class="fa-solid fa-pen-to-square white-icon"></i>
                             </button>
-                            <form action="rooms/remove" method="post">
-                                <input type="hidden" name="id" th:value="${room.id}">
+                            <form action="/admin/rooms/remove" method="post">
+                                <input type="hidden" name="id" th:value="${room.id}"/>
                                 <button type="submit" class="btn btn-danger">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>

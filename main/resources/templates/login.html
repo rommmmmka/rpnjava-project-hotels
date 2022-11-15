@@ -11,15 +11,17 @@
                 <div class="card-body">
                     <form id="loginForm" action="#" method="post" th:object="${loginForm}">
                         <div class="form-floating mb-3">
-                            <input class="form-control" id="inputLogin" type="text" placeholder=" " th:field="*{login}"/>
+                            <input class="form-control" id="inputLogin" type="text" placeholder=" "
+                                   th:field="*{login}"/>
                             <label for="inputLogin">Логін</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input class="form-control" id="inputPassword" type="password" placeholder=" " th:field="*{password}"/>
+                            <input class="form-control" id="inputPassword" type="password" placeholder=" "
+                                   th:field="*{password}"/>
                             <label for="inputPassword">Пароль</label>
                         </div>
                         <div class="form-check mb-3">
-                            <input class="form-check-input" id="inputRememberPassword" type="checkbox" value="" />
+                            <input class="form-check-input" id="inputRememberPassword" type="checkbox" value=""/>
                             <label class="form-check-label" for="inputRememberPassword">Запомніць мяне</label>
                         </div>
                         <div class="mt-4 mb-0">

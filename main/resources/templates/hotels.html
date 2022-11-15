@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org" lang="be">
 
-<title th:fragment="title">Панэль адміністратара | Booker - браніраванне гатэляў</title>
+<title th:fragment="title">
+    [[${templateType == 'admin'} ? 'Адмін-панэль' : 'Спіс гатэляў']] | Booker - браніраванне гатэляў
+</title>
 
 <th:block th:fragment="content">
-    <div class="card my-4">
+    <div class="card my-4" th:remove="${templateType != 'admin'} ? 'all'">
         <div class="card-header">
             <i class="fas fa-table me-1"></i>
             Дабавіць гатэль
         </div>
+
         <div class="card-body container">
-            <form action="hotels/create" method="post" id="addHotelForm" enctype="multipart/form-data"
+            <form action="/admin/hotels/create" method="post" id="addHotelForm" enctype="multipart/form-data"
                   th:object="${addHotelForm}">
-                <div class="row mb-3">
-                    <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12 mb-3">
                         <div class="form-floating">
                             <input class="form-control" id="inputName" type="text" placeholder=" " th:field="*{name}"/>
                             <label for="inputName">Назва*</label>
                         </div>
                     </div>
                 </div>
-                <div class="row mb-3">
-                    <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12 mb-3">
                         <div class="form-floating">
                             <textarea class="form-control" id="inputDescription" rows="3" placeholder=" "
                                       th:field="*{description}"></textarea>
@@ -29,19 +32,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <div class="form-floating mb-3 mb-md-0">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="form-floating">
                             <select class="form-select" id="selectCity" required th:field="*{city}">
                                 <option th:each="cityEntity : ${citiesList}" th:value="${cityEntity.id}"
-                                        th:text="${cityEntity.name}" th:disabled="${cityEntity.disabled}"></option>
+                                        th:text="${cityEntity.name}" th:disabled="${cityEntity.disabled}"/>
                             </select>
                             <label for="selectCity">Горад*</label>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-floating mb-3 mb-md-0">
-                            <div class="mb-3">
+                    <div class="col-md-6 mb-3">
+                        <div class="form-floating">
+                            <div>
                                 <label for="inputFile" class="form-label text-secondary mb-0">
                                     <small>Выява гатэля*</small>
                                 </label>
@@ -51,7 +54,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-4 mb-0">
+                <div class="mt-1 mb-0">
                     <div class="d-grid">
                         <button id="addHotelButton" class="btn btn-primary btn-block">Дабавіць</button>
                     </div>
@@ -59,6 +62,64 @@
             </form>
         </div>
     </div>
+
+    <div class="card my-4">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            Фільтры
+        </div>
+        <div class="card-body container">
+            <form action="/admin/hotels" method="get">
+                <div class="row justify-content-md-center">
+                    <div class="col-md-4 mb-3">
+                        <div class="form-floating mb-1">
+                            <select class="form-select" id="filterCity" name="filterCity" required>
+                                <option th:value="0">Любы</option>
+                                <option th:each="cityEntity : ${citiesList}" th:value="${cityEntity.id}"
+                                        th:text="${cityEntity.name}" th:disabled="${cityEntity.disabled}"
+                                        th:selected="${cityEntity.id == filterCity}"/>
+                            </select>
+                            <label for="filterCity">Горад</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="form-floating mb-1">
+                            <select class="form-select" id="sortingProperty" name="sortingProperty" required>
+                                <option value="creationDate">
+                                    Па даце дабаўлення
+                                </option>
+                                <option value="roomsNumber" th:selected="${sortingProperty} == 'roomsNumber'">
+                                    Па колькасці нумароў
+                                </option>
+                            </select>
+                            <label for="sortingProperty">Фільтр</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="form-floating mb-1">
+                            <select class="form-select" id="sortingDirection" name="sortingDirection" required>
+                                <option value="descending">
+                                    Па змяншэнні
+                                </option>
+                                <option value="ascending" th:selected="${sortingDirection} == 'ascending'">
+                                    Па ўзрастанні
+                                </option>
+                            </select>
+                            <label for="sortingDirection">Сарціроўка</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-md-center">
+                    <div class="col-md-12 mt-1 mb-0">
+                        <div class="d-grid">
+                            <button id="applyFiltersButton" class="btn btn-primary btn-block">Прымяніць</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div class="card my-4">
         <div class="card-header">
             <i class="fas fa-table me-1"></i>
@@ -68,26 +129,28 @@
             <div class="row">
                 <div class="col-md-3" th:each="hotel : ${hotelsList}">
                     <div class="card my-3">
-                        <img class="card-img-top" alt="..." th:src="|/uploads/${hotel.coverPhoto}|">
+                        <img class="card-img-top" alt="Фота гатэля" th:src="|/uploads/${hotel.coverPhoto}|">
                         <div class="card-body">
                             <div th:id="|cardContent${hotel.id}|">
                                 <h5 class="card-title" th:text="${hotel.name}"/>
                                 <p class="card-text" th:text="${hotel.description}"/>
                             </div>
-                            <form action="hotels/edit" method="post" class="editCardForm" style="display: none;"
-                                  th:id="|cardEditor${hotel.id}|">
+
+                            <form action="/admin/hotels/edit" method="post" class="editCardForm" style="display: none;"
+                                  th:id="|cardEditor${hotel.id}|" th:remove="${templateType != 'admin'} ? 'all'">
                                 <input type="hidden" name="id" th:value="${hotel.id}">
                                 <div class="form-floating mb-1">
                                     <input class="form-control" type="text" th:id="|inputName${hotel.id}|"
-                                           th:name="name"
-                                           th:value="${hotel.name}"/>
+                                           th:name="name" th:value="${hotel.name}"/>
                                     <label th:for="|inputName${hotel.id}|">Назва</label>
                                 </div>
                                 <div class="form-floating mb-1">
                                     <textarea class="form-control" th:id="|inputDescription${hotel.id}|"
                                               th:name="description" th:text="${hotel.description}"></textarea>
                                     <label th:for="|inputDescription${hotel.id}|"
-                                           th:id="|inputDescription${hotel.id}Label|">Апісанне</label>
+                                           th:id="|inputDescription${hotel.id}Label|">
+                                        Апісанне
+                                    </label>
                                 </div>
                                 <div class="mb-0">
                                     <div class="d-grid">
@@ -95,8 +158,8 @@
                                     </div>
                                 </div>
                             </form>
-
                         </div>
+
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">Колькасць нумароў: [[${hotel.rooms.size}]]</li>
                             <li class="list-group-item">
@@ -104,7 +167,8 @@
                                 <a th:href="|hotels?filterCity=${hotel.city.id}|" th:text="${hotel.city.name}"/>
                             </li>
                         </ul>
-                        <div class="card-body pt-0 card-buttons-flex">
+
+                        <div class="card-body pt-0 card-buttons-flex" th:remove="${templateType != 'admin'} ? 'all'">
                             <a class="btn btn-success mt-3" th:href="|/admin/rooms?hotel=${hotel.id}|">
                                 <i class="fa-solid fa-plus"></i>
                             </a>
@@ -114,7 +178,7 @@
                             <button type="button" class="btn btn-info mt-3" th:onclick="|editCard(${hotel.id})|">
                                 <i class="fa-solid fa-pen-to-square white-icon"></i>
                             </button>
-                            <form action="hotels/remove" method="post" class=" mt-3">
+                            <form action="/admin/hotels/remove" method="post" class=" mt-3">
                                 <input type="hidden" name="id" th:value="${hotel.id}">
                                 <button type="submit" class="btn btn-danger">
                                     <i class="fa-solid fa-trash"></i>
@@ -129,4 +193,4 @@
     </div>
 </th:block>
 
-<script th:fragmemt="script" src="/js/admin/hotels.js"></script>
+<script th:fragmemt="script" th:src="'/js/' + ${templateType} + '/hotels.js'"></script>
