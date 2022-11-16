@@ -3,8 +3,8 @@ package com.kravets.hotels.rpnjava.controller.admin;
 import com.kravets.hotels.rpnjava.exception.FormValidationException;
 import com.kravets.hotels.rpnjava.form.AddRoomForm;
 import com.kravets.hotels.rpnjava.form.EditRoomForm;
-import com.kravets.hotels.rpnjava.misc.SessionChecker;
-import com.kravets.hotels.rpnjava.service.AdminService;
+import com.kravets.hotels.rpnjava.misc.DatabaseServices;
+import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import com.kravets.hotels.rpnjava.validator.AddRoomValidator;
 import com.kravets.hotels.rpnjava.validator.EditRoomValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,20 +21,20 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class AdminRoomsController {
-    private final AdminService adminService;
-    private final SessionChecker sessionChecker;
+    private final DatabaseServices databaseServices;
+    private final SessionCheck sessionCheck;
     private final AddRoomValidator addRoomValidator;
     private final EditRoomValidator editRoomValidator;
 
     @Autowired
     public AdminRoomsController(
-            AdminService adminService,
-            SessionChecker sessionChecker,
+            DatabaseServices databaseServices,
+            SessionCheck sessionCheck,
             AddRoomValidator addRoomValidator,
             EditRoomValidator editRoomValidator
     ) {
-        this.adminService = adminService;
-        this.sessionChecker = sessionChecker;
+        this.databaseServices = databaseServices;
+        this.sessionCheck = sessionCheck;
         this.addRoomValidator = addRoomValidator;
         this.editRoomValidator = editRoomValidator;
     }
@@ -51,17 +51,14 @@ public class AdminRoomsController {
             RedirectAttributes redirectAttributes
     ) {
         try {
-            sessionChecker.adminAccess(model, request);
+            sessionCheck.adminAccess(model, request);
 
             model.addAttribute("addRoomForm", new AddRoomForm());
-            model.addAttribute("hotelsList", adminService.getAllHotels());
+            model.addAttribute("hotelsList", databaseServices.hotel.getAllHotels());
             model.addAttribute("pickHotelId", hotel);
 
-            model.addAttribute(
-                    "roomsList",
-                    adminService.getAllRooms(filterHotel, filterCity, sortingProperty, sortingDirection)
-            );
-            model.addAttribute("citiesList", adminService.getAllCities());
+            model.addAttribute("roomsList", databaseServices.room.getRoomsByParameters(filterHotel, filterCity, sortingProperty, sortingDirection));
+            model.addAttribute("citiesList", databaseServices.cities.getAllCities());
             model.addAttribute("filterHotel", filterHotel);
             model.addAttribute("filterCity", filterCity);
             model.addAttribute("sortingProperty", sortingProperty);
@@ -89,9 +86,9 @@ public class AdminRoomsController {
             if (result.hasErrors()) {
                 throw new FormValidationException();
             }
-            sessionChecker.adminAccess(model, request);
+            sessionCheck.adminAccess(model, request);
 
-            adminService.addRoom(addRoomForm);
+            databaseServices.room.addRoom(addRoomForm);
 
             redirectAttributes.addFlashAttribute("successMessage", "Новы пакой паспяхова дабаўлены");
         } catch (Exception e) {
@@ -109,9 +106,9 @@ public class AdminRoomsController {
             RedirectAttributes redirectAttributes
     ) {
         try {
-            sessionChecker.adminAccess(model, request);
+            sessionCheck.adminAccess(model, request);
 
-            adminService.removeRoom(id);
+            databaseServices.room.removeRoom(id);
 
             redirectAttributes.addFlashAttribute("successMessage", "Пакой паспяхова выдалены");
         } catch (Exception e) {
@@ -134,9 +131,9 @@ public class AdminRoomsController {
             if (result.hasErrors()) {
                 throw new FormValidationException();
             }
-            sessionChecker.adminAccess(model, request);
+            sessionCheck.adminAccess(model, request);
 
-            adminService.editRoom(editRoomForm);
+            databaseServices.room.editRoom(editRoomForm);
 
             redirectAttributes.addFlashAttribute("successMessage", "Інфармацыя пра пакой паспяхова зменена");
         } catch (Exception e) {

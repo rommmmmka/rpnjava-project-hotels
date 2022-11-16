@@ -3,8 +3,6 @@ package com.kravets.hotels.rpnjava.misc;
 import com.kravets.hotels.rpnjava.entity.SessionEntity;
 import com.kravets.hotels.rpnjava.entity.UserEntity;
 import com.kravets.hotels.rpnjava.exception.NoAccessException;
-import com.kravets.hotels.rpnjava.repository.SessionRepository;
-import com.kravets.hotels.rpnjava.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
@@ -14,14 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 
 
 @Component
-public final class SessionChecker {
-    private final UserRepository userRepository;
-    private final SessionRepository sessionRepository;
+public final class SessionCheck {
+    private final DatabaseServices databaseServices;
 
     @Autowired
-    public SessionChecker(UserRepository userRepository, SessionRepository sessionRepository) {
-        this.userRepository = userRepository;
-        this.sessionRepository = sessionRepository;
+    public SessionCheck(DatabaseServices databaseServices) {
+        this.databaseServices = databaseServices;
     }
 
     private SessionEntity addAttributes(Model model, HttpServletRequest request) {
@@ -30,17 +26,17 @@ public final class SessionChecker {
             String sessionKey = WebUtils.getCookie(request, "session_key").getValue();
             Long userId = Long.parseLong(WebUtils.getCookie(request, "user_id").getValue());
 
-            UserEntity userEntity = userRepository.findById(userId).orElse(null);
+            UserEntity userEntity = databaseServices.user.getUserById(userId);
             if (userEntity == null) {
                 return null;
             }
-            SessionEntity sessionEntity = sessionRepository.findSessionEntityByUserAndSessionKey(userEntity, sessionKey);
+            SessionEntity sessionEntity = databaseServices.session.getSessionByUserAndSessionKey(userEntity, sessionKey);
             if (sessionEntity == null) {
                 return null;
             }
 
             sessionEntity.setLastAccessTime(CurrentDate.getDateTime());
-            sessionRepository.save(sessionEntity);
+            databaseServices.session.editSession(sessionEntity);
 
             model.addAttribute("isLoggedIn", true);
             model.addAttribute("isAdmin", userEntity.isAdmin());
@@ -54,7 +50,7 @@ public final class SessionChecker {
 
     public SessionEntity adminAccess(Model model, HttpServletRequest request) throws NoAccessException {
         SessionEntity sessionEntity = addAttributes(model, request);
-        Object attribute =  model.getAttribute("isAdmin");
+        Object attribute = model.getAttribute("isAdmin");
         if (attribute == null || !(Boolean) attribute) {
             throw new NoAccessException();
         }
@@ -63,7 +59,7 @@ public final class SessionChecker {
 
     public SessionEntity userAccess(Model model, HttpServletRequest request) throws NoAccessException {
         SessionEntity sessionEntity = addAttributes(model, request);
-        Object attribute =  model.getAttribute("isLoggedIn");
+        Object attribute = model.getAttribute("isLoggedIn");
         if (attribute == null || !(Boolean) attribute) {
             throw new NoAccessException();
         }
@@ -77,7 +73,7 @@ public final class SessionChecker {
 
     public SessionEntity loggedOutAccess(Model model, HttpServletRequest request) throws NoAccessException {
         SessionEntity sessionEntity = addAttributes(model, request);
-        Object attribute =  model.getAttribute("isLoggedIn");
+        Object attribute = model.getAttribute("isLoggedIn");
         if (attribute == null || (Boolean) attribute) {
             throw new NoAccessException();
         }

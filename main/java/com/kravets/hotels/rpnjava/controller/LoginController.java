@@ -4,8 +4,8 @@ import com.kravets.hotels.rpnjava.entity.SessionEntity;
 import com.kravets.hotels.rpnjava.entity.UserEntity;
 import com.kravets.hotels.rpnjava.exception.FormValidationException;
 import com.kravets.hotels.rpnjava.form.LoginForm;
-import com.kravets.hotels.rpnjava.misc.SessionChecker;
-import com.kravets.hotels.rpnjava.service.LoginService;
+import com.kravets.hotels.rpnjava.misc.DatabaseServices;
+import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,20 +22,19 @@ import javax.validation.Valid;
 
 @Controller
 public class LoginController {
-    private final LoginService loginService;
-    private final SessionChecker sessionChecker;
-
+    private final DatabaseServices databaseServices;
+    private final SessionCheck sessionCheck;
 
     @Autowired
-    public LoginController(LoginService loginService, SessionChecker sessionChecker) {
-        this.loginService = loginService;
-        this.sessionChecker = sessionChecker;
+    public LoginController(DatabaseServices databaseServices, SessionCheck sessionCheck) {
+        this.databaseServices = databaseServices;
+        this.sessionCheck = sessionCheck;
     }
 
     @GetMapping("/login")
     public String loginPage(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         try {
-            sessionChecker.loggedOutAccess(model, request);
+            sessionCheck.loggedOutAccess(model, request);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/";
@@ -62,10 +61,10 @@ public class LoginController {
             if (result.hasErrors()) {
                 throw new FormValidationException();
             }
-            sessionChecker.loggedOutAccess(model, request);
+            sessionCheck.loggedOutAccess(model, request);
 
-            UserEntity userEntity = loginService.loginUser(loginForm);
-            SessionEntity sessionEntity = loginService.createSession(userEntity);
+            UserEntity userEntity = databaseServices.user.loginUser(loginForm);
+            SessionEntity sessionEntity = databaseServices.session.createSession(userEntity);
 
             response.addCookie(new Cookie("session_key", sessionEntity.getSessionKey()));
             response.addCookie(new Cookie("user_id", userEntity.getId().toString()));

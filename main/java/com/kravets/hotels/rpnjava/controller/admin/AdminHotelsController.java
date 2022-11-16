@@ -3,8 +3,8 @@ package com.kravets.hotels.rpnjava.controller.admin;
 import com.kravets.hotels.rpnjava.exception.FormValidationException;
 import com.kravets.hotels.rpnjava.form.AddHotelForm;
 import com.kravets.hotels.rpnjava.form.EditHotelForm;
-import com.kravets.hotels.rpnjava.misc.SessionChecker;
-import com.kravets.hotels.rpnjava.service.AdminService;
+import com.kravets.hotels.rpnjava.misc.DatabaseServices;
+import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import com.kravets.hotels.rpnjava.validator.AddHotelValidator;
 import com.kravets.hotels.rpnjava.validator.EditHotelValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,20 +21,20 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class AdminHotelsController {
-    private final AdminService adminService;
-    private final SessionChecker sessionChecker;
+    private final DatabaseServices databaseServices;
+    private final SessionCheck sessionCheck;
     private final AddHotelValidator addHotelValidator;
     private final EditHotelValidator editHotelValidator;
 
     @Autowired
     public AdminHotelsController(
-            AdminService adminService,
-            SessionChecker sessionChecker,
+            DatabaseServices databaseServices,
+            SessionCheck sessionCheck,
             AddHotelValidator addHotelValidator,
             EditHotelValidator editHotelValidator
     ) {
-        this.adminService = adminService;
-        this.sessionChecker = sessionChecker;
+        this.databaseServices = databaseServices;
+        this.sessionCheck = sessionCheck;
         this.addHotelValidator = addHotelValidator;
         this.editHotelValidator = editHotelValidator;
     }
@@ -49,12 +49,12 @@ public class AdminHotelsController {
             RedirectAttributes redirectAttributes
     ) {
         try {
-            sessionChecker.adminAccess(model, request);
+            sessionCheck.adminAccess(model, request);
 
             model.addAttribute("addHotelForm", new AddHotelForm());
-            model.addAttribute("citiesList", adminService.getAllCities());
+            model.addAttribute("citiesList", databaseServices.cities.getAllCities());
 
-            model.addAttribute("hotelsList", adminService.getAllHotels(filterCity, sortingProperty, sortingDirection));
+            model.addAttribute("hotelsList", databaseServices.hotel.getHotelsByParameters(filterCity, sortingProperty, sortingDirection));
             model.addAttribute("filterCity", filterCity);
             model.addAttribute("sortingProperty", sortingProperty);
             model.addAttribute("sortingDirection", sortingDirection);
@@ -81,9 +81,9 @@ public class AdminHotelsController {
             if (result.hasErrors()) {
                 throw new FormValidationException();
             }
-            sessionChecker.adminAccess(model, request);
+            sessionCheck.adminAccess(model, request);
 
-            adminService.addHotel(addHotelForm);
+            databaseServices.hotel.addHotel(addHotelForm);
 
             redirectAttributes.addFlashAttribute("successMessage", "Новы гатэль паспяхова дабаўлены");
         } catch (Exception e) {
@@ -101,9 +101,9 @@ public class AdminHotelsController {
             RedirectAttributes redirectAttributes
     ) {
         try {
-            sessionChecker.adminAccess(model, request);
+            sessionCheck.adminAccess(model, request);
 
-            adminService.removeHotel(id);
+            databaseServices.hotel.removeHotel(id);
 
             redirectAttributes.addFlashAttribute("successMessage", "Гатэль паспяхова выдалены");
         } catch (Exception e) {
@@ -126,9 +126,9 @@ public class AdminHotelsController {
             if (result.hasErrors()) {
                 throw new FormValidationException();
             }
-            sessionChecker.adminAccess(model, request);
+            sessionCheck.adminAccess(model, request);
 
-            adminService.editHotel(editHotelForm);
+            databaseServices.hotel.editHotel(editHotelForm);
 
             redirectAttributes.addFlashAttribute("successMessage", "Інфармацыя пра гатэль паспяхова зменена");
         } catch (Exception e) {

@@ -1,11 +1,10 @@
 package com.kravets.hotels.rpnjava.controller;
 
-import com.kravets.hotels.rpnjava.entity.RoomEntity;
 import com.kravets.hotels.rpnjava.exception.FormValidationException;
 import com.kravets.hotels.rpnjava.form.SearchForm;
 import com.kravets.hotels.rpnjava.misc.CurrentDate;
-import com.kravets.hotels.rpnjava.misc.SessionChecker;
-import com.kravets.hotels.rpnjava.service.IndexPageService;
+import com.kravets.hotels.rpnjava.misc.DatabaseServices;
+import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import com.kravets.hotels.rpnjava.validator.SearchValidatior;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,34 +16,31 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.ZonedDateTime;
-import java.util.List;
 
 @Controller
 public class IndexPageController {
-    private final IndexPageService indexPageService;
+    private final DatabaseServices databaseServices;
+    private final SessionCheck sessionCheck;
     private final SearchValidatior searchValidatior;
-    private final SessionChecker sessionChecker;
-
 
     @Autowired
     public IndexPageController(
-            IndexPageService indexPageService,
-            SearchValidatior searchValidatior,
-            SessionChecker sessionChecker
+            DatabaseServices databaseServices,
+            SessionCheck sessionCheck,
+            SearchValidatior searchValidatior
     ) {
-        this.indexPageService = indexPageService;
+        this.databaseServices = databaseServices;
+        this.sessionCheck = sessionCheck;
         this.searchValidatior = searchValidatior;
-        this.sessionChecker = sessionChecker;
     }
-
 
     @GetMapping("/")
     public String indexPage(Model model, HttpServletRequest request) {
-        sessionChecker.noRestrictionAccess(model, request);
+        sessionCheck.noRestrictionAccess(model, request);
 
         ZonedDateTime currentZonedDateTime = CurrentDate.getZonedDateTime();
         model.addAttribute("searchForm", new SearchForm());
-        model.addAttribute("citiesList", indexPageService.getAllCities());
+        model.addAttribute("citiesList", databaseServices.cities.getAllCities());
         model.addAttribute("currentDate", CurrentDate.convertToStringDate(currentZonedDateTime));
         model.addAttribute(
                 "currentDatePlusDay",
@@ -68,9 +64,9 @@ public class IndexPageController {
             if (result.hasErrors()) {
                 throw new FormValidationException();
             }
-            sessionChecker.noRestrictionAccess(model, request);
+            sessionCheck.noRestrictionAccess(model, request);
 
-            List<RoomEntity> rooms = indexPageService.getEmptyRooms(searchForm);
+//            List<RoomEntity> rooms = indexPageService.getEmptyRooms(searchForm);
 
             model.addAttribute("templateName", "results");
             return "base";

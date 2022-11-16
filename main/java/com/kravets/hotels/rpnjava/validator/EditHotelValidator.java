@@ -8,6 +8,7 @@ import org.springframework.validation.Validator;
 
 @Service
 public class EditHotelValidator implements Validator {
+
     @Override
     public boolean supports(Class c) {
         return AddHotelForm.class.equals(c);

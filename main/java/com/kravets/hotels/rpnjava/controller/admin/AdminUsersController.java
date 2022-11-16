@@ -2,8 +2,8 @@ package com.kravets.hotels.rpnjava.controller.admin;
 
 import com.kravets.hotels.rpnjava.exception.FormValidationException;
 import com.kravets.hotels.rpnjava.form.EditUserForm;
-import com.kravets.hotels.rpnjava.misc.SessionChecker;
-import com.kravets.hotels.rpnjava.service.AdminService;
+import com.kravets.hotels.rpnjava.misc.DatabaseServices;
+import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,13 +19,13 @@ import javax.validation.Valid;
 
 @Controller
 public class AdminUsersController {
-    private final AdminService adminService;
-    private final SessionChecker sessionChecker;
+    private final DatabaseServices databaseServices;
+    private final SessionCheck sessionCheck;
 
     @Autowired
-    public AdminUsersController(AdminService adminService, SessionChecker sessionChecker) {
-        this.adminService = adminService;
-        this.sessionChecker = sessionChecker;
+    public AdminUsersController(DatabaseServices databaseServices, SessionCheck sessionCheck) {
+        this.databaseServices = databaseServices;
+        this.sessionCheck = sessionCheck;
     }
 
     @GetMapping("/admin/users")
@@ -37,11 +37,11 @@ public class AdminUsersController {
             RedirectAttributes redirectAttributes
     ) {
         try {
-            sessionChecker.adminAccess(model, request);
+            sessionCheck.adminAccess(model, request);
 
             model.addAttribute("sortingProperty", sortingProperty);
             model.addAttribute("sortingDirection", sortingDirection);
-            model.addAttribute("usersList", adminService.getAllUsers(sortingProperty, sortingDirection));
+            model.addAttribute("usersList", databaseServices.user.getUsersByParameters(sortingProperty, sortingDirection));
 
             model.addAttribute("templateName", "users");
             return "base";
@@ -59,9 +59,9 @@ public class AdminUsersController {
             RedirectAttributes redirectAttributes
     ) {
         try {
-            sessionChecker.adminAccess(model, request);
+            sessionCheck.adminAccess(model, request);
 
-            adminService.removeUser(id);
+            databaseServices.user.removeUser(id);
 
             redirectAttributes.addFlashAttribute("successMessage", "Карыстальнік паспяхова выдалены");
         } catch (Exception e) {
@@ -85,9 +85,9 @@ public class AdminUsersController {
                 System.out.println(result.getAllErrors().toString());
                 throw new FormValidationException();
             }
-            sessionChecker.adminAccess(model, request);
+            sessionCheck.adminAccess(model, request);
 
-            adminService.editUser(editUserForm);
+            databaseServices.user.editUser(editUserForm);
 
             redirectAttributes.addFlashAttribute("successMessage", "Інфармацыя пра карыстальніка паспяхова зменена");
         } catch (Exception e) {
@@ -105,9 +105,9 @@ public class AdminUsersController {
             RedirectAttributes redirectAttributes
     ) {
         try {
-            sessionChecker.adminAccess(model, request);
+            sessionCheck.adminAccess(model, request);
 
-            adminService.killUserSessions(id);
+            databaseServices.session.removeSessionsByUserId(id);
 
             redirectAttributes.addFlashAttribute("successMessage", "Сесіі карыстальніка паспяхова выдалены");
         } catch (Exception e) {

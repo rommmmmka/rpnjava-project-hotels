@@ -1,20 +1,19 @@
 package com.kravets.hotels.rpnjava.validator;
 
 import com.kravets.hotels.rpnjava.form.AddHotelForm;
-import com.kravets.hotels.rpnjava.service.AdminService;
+import com.kravets.hotels.rpnjava.misc.DatabaseServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-
 @Service
 public class AddHotelValidator implements Validator {
-    private final AdminService adminService;
+    private final DatabaseServices databaseServices;
 
     @Autowired
-    public AddHotelValidator(AdminService adminService) {
-        this.adminService = adminService;
+    public AddHotelValidator(DatabaseServices databaseServices) {
+        this.databaseServices = databaseServices;
     }
 
     @Override
@@ -35,7 +34,7 @@ public class AddHotelValidator implements Validator {
         if (addHotelForm.getDescription().length() > 300) {
             errors.rejectValue("description", "1");
         }
-        if (!adminService.getAllEnabledCitiesIds().contains(addHotelForm.getCity())) {
+        if (!databaseServices.cities.getEnabledCitiesIds().contains(addHotelForm.getCity())) {
             errors.rejectValue("city", "1");
         }
         try {

@@ -7,6 +7,7 @@ import org.springframework.validation.Validator;
 
 @Service
 public class EditRoomValidator implements Validator {
+
     @Override
     public boolean supports(Class c) {
         return EditRoomForm.class.equals(c);

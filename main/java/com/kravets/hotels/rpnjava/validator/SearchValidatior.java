@@ -2,7 +2,7 @@ package com.kravets.hotels.rpnjava.validator;
 
 import com.kravets.hotels.rpnjava.form.SearchForm;
 import com.kravets.hotels.rpnjava.misc.CurrentDate;
-import com.kravets.hotels.rpnjava.service.IndexPageService;
+import com.kravets.hotels.rpnjava.misc.DatabaseServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
@@ -12,11 +12,11 @@ import java.text.ParseException;
 
 @Service
 public class SearchValidatior implements Validator {
-    private final IndexPageService indexPageService;
+    private final DatabaseServices databaseServices;
 
     @Autowired
-    public SearchValidatior(IndexPageService indexPageService) {
-        this.indexPageService = indexPageService;
+    public SearchValidatior(DatabaseServices databaseServices) {
+        this.databaseServices = databaseServices;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class SearchValidatior implements Validator {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-        if (!indexPageService.getAllEnabledCitiesIds().contains(searchForm.getCity())) {
+        if (!databaseServices.cities.getEnabledCitiesIds().contains(searchForm.getCity())) {
             errors.rejectValue("city", "1");
         }
         if (searchForm.getAdultsNumber() < 1 || searchForm.getAdultsNumber() > 30) {
