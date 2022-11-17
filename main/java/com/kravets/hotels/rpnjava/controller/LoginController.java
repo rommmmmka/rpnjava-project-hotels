@@ -4,7 +4,7 @@ import com.kravets.hotels.rpnjava.entity.SessionEntity;
 import com.kravets.hotels.rpnjava.entity.UserEntity;
 import com.kravets.hotels.rpnjava.exception.FormValidationException;
 import com.kravets.hotels.rpnjava.form.LoginForm;
-import com.kravets.hotels.rpnjava.misc.DatabaseServices;
+import com.kravets.hotels.rpnjava.misc.Services;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,12 +22,12 @@ import javax.validation.Valid;
 
 @Controller
 public class LoginController {
-    private final DatabaseServices databaseServices;
+    private final Services services;
     private final SessionCheck sessionCheck;
 
     @Autowired
-    public LoginController(DatabaseServices databaseServices, SessionCheck sessionCheck) {
-        this.databaseServices = databaseServices;
+    public LoginController(Services services, SessionCheck sessionCheck) {
+        this.services = services;
         this.sessionCheck = sessionCheck;
     }
 
@@ -63,8 +63,8 @@ public class LoginController {
             }
             sessionCheck.loggedOutAccess(model, request);
 
-            UserEntity userEntity = databaseServices.user.loginUser(loginForm);
-            SessionEntity sessionEntity = databaseServices.session.createSession(userEntity, loginForm.isRememberMe());
+            UserEntity userEntity = services.user.loginUser(loginForm);
+            SessionEntity sessionEntity = services.session.createSession(userEntity, loginForm.isRememberMe());
 
             Cookie cookie = new Cookie("session_key", sessionEntity.getSessionKey());
             if (loginForm.isRememberMe()) {

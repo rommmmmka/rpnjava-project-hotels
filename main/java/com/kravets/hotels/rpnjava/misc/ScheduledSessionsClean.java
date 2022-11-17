@@ -8,15 +8,15 @@ import org.springframework.stereotype.Component;
 @Component
 @EnableScheduling
 public class ScheduledSessionsClean {
-    private final DatabaseServices databaseServices;
+    private final Services services;
 
     @Autowired
-    public ScheduledSessionsClean(DatabaseServices databaseServices) {
-        this.databaseServices = databaseServices;
+    public ScheduledSessionsClean(Services services) {
+        this.services = services;
     }
 
     @Scheduled(cron = "0 0 0 ? * *")
     public void clean() {
-        databaseServices.session.removeOutdatedSessions();
+        services.session.removeOutdatedSessions();
     }
 }

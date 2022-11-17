@@ -3,7 +3,7 @@ package com.kravets.hotels.rpnjava.controller;
 import com.kravets.hotels.rpnjava.exception.FormValidationException;
 import com.kravets.hotels.rpnjava.form.SearchForm;
 import com.kravets.hotels.rpnjava.misc.CurrentDate;
-import com.kravets.hotels.rpnjava.misc.DatabaseServices;
+import com.kravets.hotels.rpnjava.misc.Services;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import com.kravets.hotels.rpnjava.validator.SearchValidatior;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,17 +19,17 @@ import java.time.ZonedDateTime;
 
 @Controller
 public class IndexPageController {
-    private final DatabaseServices databaseServices;
+    private final Services services;
     private final SessionCheck sessionCheck;
     private final SearchValidatior searchValidatior;
 
     @Autowired
     public IndexPageController(
-            DatabaseServices databaseServices,
+            Services services,
             SessionCheck sessionCheck,
             SearchValidatior searchValidatior
     ) {
-        this.databaseServices = databaseServices;
+        this.services = services;
         this.sessionCheck = sessionCheck;
         this.searchValidatior = searchValidatior;
     }
@@ -40,7 +40,7 @@ public class IndexPageController {
 
         ZonedDateTime currentZonedDateTime = CurrentDate.getZonedDateTime();
         model.addAttribute("searchForm", new SearchForm());
-        model.addAttribute("citiesList", databaseServices.cities.getAllCities());
+        model.addAttribute("citiesList", services.cities.getAllCities());
         model.addAttribute("currentDate", CurrentDate.convertToStringDate(currentZonedDateTime));
         model.addAttribute(
                 "currentDatePlusDay",

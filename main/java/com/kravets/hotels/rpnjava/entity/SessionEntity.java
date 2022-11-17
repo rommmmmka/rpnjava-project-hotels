@@ -1,5 +1,8 @@
 package com.kravets.hotels.rpnjava.entity;
 
+import org.hibernate.validator.constraints.Length;
+import org.springframework.lang.NonNull;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
@@ -11,13 +14,17 @@ public class SessionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NonNull
+    @Length(max=40)
     private String sessionKey = UUID.randomUUID().toString();
 
+    @NonNull
     private Date lastAccessTime;
 
     private boolean rememberMe;
 
     @ManyToOne
+    @NonNull
     private UserEntity user;
 
     public SessionEntity() {

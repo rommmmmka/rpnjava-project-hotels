@@ -1,7 +1,7 @@
 package com.kravets.hotels.rpnjava.controller.list;
 
-import com.kravets.hotels.rpnjava.form.AddHotelForm;
-import com.kravets.hotels.rpnjava.misc.DatabaseServices;
+import com.kravets.hotels.rpnjava.entity.HotelEntity;
+import com.kravets.hotels.rpnjava.misc.Services;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,15 +11,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class ListHotelsContoller {
-    private final DatabaseServices databaseServices;
+    private final Services services;
     private final SessionCheck sessionCheck;
 
     @Autowired
-    public ListHotelsContoller(DatabaseServices databaseServices, SessionCheck sessionCheck) {
-        this.databaseServices = databaseServices;
+    public ListHotelsContoller(Services services, SessionCheck sessionCheck) {
+        this.services = services;
         this.sessionCheck = sessionCheck;
     }
 
@@ -35,8 +36,11 @@ public class ListHotelsContoller {
         try {
             sessionCheck.noRestrictionAccess(model, request);
 
-            model.addAttribute("citiesList", databaseServices.cities.getAllCities());
-            model.addAttribute("hotelsList", databaseServices.hotel.getHotelsByParameters(filterCity, sortingProperty, sortingDirection));
+            List<HotelEntity> hotelsList = services.hotel.getHotelsByParameters(filterCity, sortingProperty, sortingDirection);
+
+            model.addAttribute("citiesList", services.cities.getAllCities());
+            model.addAttribute("hotelsList", hotelsList);
+            model.addAttribute("roomsCountList", services.room.getRoomsCountListByHotelsList(hotelsList));
             model.addAttribute("filterCity", filterCity);
             model.addAttribute("sortingProperty", sortingProperty);
             model.addAttribute("sortingDirection", sortingDirection);

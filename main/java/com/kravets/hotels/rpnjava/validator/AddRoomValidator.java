@@ -2,7 +2,7 @@ package com.kravets.hotels.rpnjava.validator;
 
 import com.kravets.hotels.rpnjava.form.AddHotelForm;
 import com.kravets.hotels.rpnjava.form.AddRoomForm;
-import com.kravets.hotels.rpnjava.misc.DatabaseServices;
+import com.kravets.hotels.rpnjava.misc.Services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
@@ -10,11 +10,11 @@ import org.springframework.validation.Validator;
 
 @Service
 public class AddRoomValidator implements Validator {
-    private final DatabaseServices databaseServices;
+    private final Services services;
 
     @Autowired
-    public AddRoomValidator(DatabaseServices databaseServices) {
-        this.databaseServices = databaseServices;
+    public AddRoomValidator(Services services) {
+        this.services = services;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class AddRoomValidator implements Validator {
         if (addRoomForm.getDescription().length() > 300) {
             errors.rejectValue("description", "1");
         }
-        if (databaseServices.hotel.getHotelById(addRoomForm.getHotel()) == null) {
+        if (services.hotel.getHotelById(addRoomForm.getHotel()) == null) {
             errors.rejectValue("hotel", "1");
         }
         try {

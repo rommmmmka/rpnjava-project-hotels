@@ -6,7 +6,7 @@ const validationConstraints = {
         },
         length: {
             maximum: 32,
-            tooLong: "Прозвішча павінна быць не больш за 32 сімвалы"
+            tooLong: "Прозвішча павінна быць не больш за 45 сімвалаў"
         },
         format: {
             pattern: "[A-zА-яЁёІіЎў'\\- ]+",
@@ -20,7 +20,7 @@ const validationConstraints = {
         },
         length: {
             maximum: 32,
-            tooLong: "Імя павінна быць не больш за 32 сімвалы"
+            tooLong: "Імя павінна быць не больш за 45 сімвалаў"
         },
         format: {
             pattern: "[A-zА-яЁёІіЎў'\\- ]+",
@@ -30,7 +30,7 @@ const validationConstraints = {
     patronymic: {
         length: {
             maximum: 32,
-            tooLong: "Імя па бацьку павінна быць не больш за 32 сімвалы"
+            tooLong: "Імя па бацьку павінна быць не больш за 45 сімвалаў"
         },
         format: {
             pattern: "[A-zА-яЁёІіЎў'\\- ]+",

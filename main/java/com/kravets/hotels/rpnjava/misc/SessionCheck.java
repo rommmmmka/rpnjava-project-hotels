@@ -12,24 +12,24 @@ import javax.servlet.http.HttpServletRequest;
 
 @Component
 public final class SessionCheck {
-    private final DatabaseServices databaseServices;
+    private final Services services;
 
     @Autowired
-    public SessionCheck(DatabaseServices databaseServices) {
-        this.databaseServices = databaseServices;
+    public SessionCheck(Services services) {
+        this.services = services;
     }
 
     private SessionEntity addAttributes(Model model, HttpServletRequest request) {
         model.addAttribute("isLoggedIn", false);
         try {
             String sessionKey = WebUtils.getCookie(request, "session_key").getValue();
-            SessionEntity sessionEntity = databaseServices.session.getSessionBySessionKey(sessionKey);
+            SessionEntity sessionEntity = services.session.getSessionBySessionKey(sessionKey);
             if (sessionEntity == null) {
                 return null;
             }
 
             sessionEntity.setLastAccessTime(CurrentDate.getDateTime());
-            databaseServices.session.editSession(sessionEntity);
+            services.session.editSession(sessionEntity);
 
             UserEntity userEntity = sessionEntity.getUser();
 

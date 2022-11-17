@@ -3,7 +3,7 @@ package com.kravets.hotels.rpnjava.controller.admin;
 import com.kravets.hotels.rpnjava.exception.FormValidationException;
 import com.kravets.hotels.rpnjava.form.AddRoomForm;
 import com.kravets.hotels.rpnjava.form.EditRoomForm;
-import com.kravets.hotels.rpnjava.misc.DatabaseServices;
+import com.kravets.hotels.rpnjava.misc.Services;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import com.kravets.hotels.rpnjava.validator.AddRoomValidator;
 import com.kravets.hotels.rpnjava.validator.EditRoomValidator;
@@ -21,19 +21,19 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class AdminRoomsController {
-    private final DatabaseServices databaseServices;
+    private final Services services;
     private final SessionCheck sessionCheck;
     private final AddRoomValidator addRoomValidator;
     private final EditRoomValidator editRoomValidator;
 
     @Autowired
     public AdminRoomsController(
-            DatabaseServices databaseServices,
+            Services services,
             SessionCheck sessionCheck,
             AddRoomValidator addRoomValidator,
             EditRoomValidator editRoomValidator
     ) {
-        this.databaseServices = databaseServices;
+        this.services = services;
         this.sessionCheck = sessionCheck;
         this.addRoomValidator = addRoomValidator;
         this.editRoomValidator = editRoomValidator;
@@ -55,9 +55,9 @@ public class AdminRoomsController {
 
             model.addAttribute("addRoomForm", new AddRoomForm());
             model.addAttribute("pickHotelId", hotel);
-            model.addAttribute("hotelsList", databaseServices.hotel.getAllHotels());
-            model.addAttribute("roomsList", databaseServices.room.getRoomsByParameters(filterHotel, filterCity, sortingProperty, sortingDirection));
-            model.addAttribute("citiesList", databaseServices.cities.getAllCities());
+            model.addAttribute("hotelsList", services.hotel.getAllHotels());
+            model.addAttribute("roomsList", services.room.getRoomsByParameters(filterHotel, filterCity, sortingProperty, sortingDirection));
+            model.addAttribute("citiesList", services.cities.getAllCities());
             model.addAttribute("filterHotel", filterHotel);
             model.addAttribute("filterCity", filterCity);
             model.addAttribute("sortingProperty", sortingProperty);
@@ -87,7 +87,7 @@ public class AdminRoomsController {
             }
             sessionCheck.adminAccess(model, request);
 
-            databaseServices.room.addRoom(addRoomForm);
+            services.room.addRoom(addRoomForm);
 
             redirectAttributes.addFlashAttribute("successMessage", "Новы пакой паспяхова дабаўлены");
         } catch (Exception e) {
@@ -107,7 +107,7 @@ public class AdminRoomsController {
         try {
             sessionCheck.adminAccess(model, request);
 
-            databaseServices.room.removeRoom(id);
+            services.room.removeRoom(id);
 
             redirectAttributes.addFlashAttribute("successMessage", "Пакой паспяхова выдалены");
         } catch (Exception e) {
@@ -132,7 +132,7 @@ public class AdminRoomsController {
             }
             sessionCheck.adminAccess(model, request);
 
-            databaseServices.room.editRoom(editRoomForm);
+            services.room.editRoom(editRoomForm);
 
             redirectAttributes.addFlashAttribute("successMessage", "Інфармацыя пра пакой паспяхова зменена");
         } catch (Exception e) {

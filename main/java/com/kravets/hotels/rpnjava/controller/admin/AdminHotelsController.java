@@ -1,9 +1,10 @@
 package com.kravets.hotels.rpnjava.controller.admin;
 
+import com.kravets.hotels.rpnjava.entity.HotelEntity;
 import com.kravets.hotels.rpnjava.exception.FormValidationException;
 import com.kravets.hotels.rpnjava.form.AddHotelForm;
 import com.kravets.hotels.rpnjava.form.EditHotelForm;
-import com.kravets.hotels.rpnjava.misc.DatabaseServices;
+import com.kravets.hotels.rpnjava.misc.Services;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import com.kravets.hotels.rpnjava.validator.AddHotelValidator;
 import com.kravets.hotels.rpnjava.validator.EditHotelValidator;
@@ -18,22 +19,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class AdminHotelsController {
-    private final DatabaseServices databaseServices;
+    private final Services services;
     private final SessionCheck sessionCheck;
     private final AddHotelValidator addHotelValidator;
     private final EditHotelValidator editHotelValidator;
 
     @Autowired
     public AdminHotelsController(
-            DatabaseServices databaseServices,
+            Services services,
             SessionCheck sessionCheck,
             AddHotelValidator addHotelValidator,
             EditHotelValidator editHotelValidator
     ) {
-        this.databaseServices = databaseServices;
+        this.services = services;
         this.sessionCheck = sessionCheck;
         this.addHotelValidator = addHotelValidator;
         this.editHotelValidator = editHotelValidator;
@@ -51,9 +53,12 @@ public class AdminHotelsController {
         try {
             sessionCheck.adminAccess(model, request);
 
+            List<HotelEntity> hotelsList = services.hotel.getHotelsByParameters(filterCity, sortingProperty, sortingDirection);
+
             model.addAttribute("addHotelForm", new AddHotelForm());
-            model.addAttribute("citiesList", databaseServices.cities.getAllCities());
-            model.addAttribute("hotelsList", databaseServices.hotel.getHotelsByParameters(filterCity, sortingProperty, sortingDirection));
+            model.addAttribute("citiesList", services.cities.getAllCities());
+            model.addAttribute("hotelsList", hotelsList);
+            model.addAttribute("roomsCountList", services.room.getRoomsCountListByHotelsList(hotelsList));
             model.addAttribute("filterCity", filterCity);
             model.addAttribute("sortingProperty", sortingProperty);
             model.addAttribute("sortingDirection", sortingDirection);
@@ -82,7 +87,7 @@ public class AdminHotelsController {
             }
             sessionCheck.adminAccess(model, request);
 
-            databaseServices.hotel.addHotel(addHotelForm);
+            services.hotel.addHotel(addHotelForm);
 
             redirectAttributes.addFlashAttribute("successMessage", "Новы гатэль паспяхова дабаўлены");
         } catch (Exception e) {
@@ -102,7 +107,7 @@ public class AdminHotelsController {
         try {
             sessionCheck.adminAccess(model, request);
 
-            databaseServices.hotel.removeHotel(id);
+            services.hotel.removeHotel(id);
 
             redirectAttributes.addFlashAttribute("successMessage", "Гатэль паспяхова выдалены");
         } catch (Exception e) {
@@ -127,7 +132,7 @@ public class AdminHotelsController {
             }
             sessionCheck.adminAccess(model, request);
 
-            databaseServices.hotel.editHotel(editHotelForm);
+            services.hotel.editHotel(editHotelForm);
 
             redirectAttributes.addFlashAttribute("successMessage", "Інфармацыя пра гатэль паспяхова зменена");
         } catch (Exception e) {

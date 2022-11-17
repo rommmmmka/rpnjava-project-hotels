@@ -1,6 +1,8 @@
 package com.kravets.hotels.rpnjava.entity;
 
 import com.kravets.hotels.rpnjava.form.RegisterForm;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,16 +15,27 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NonNull
+    @Length(max=32)
     private String login;
 
+    @NonNull
+    @Length(max=44)
     private String passwordHash;
 
+    @NonNull
+    @Length(max=44)
     private String passwordSalt;
 
+    @NonNull
+    @Length(max=45)
     private String lastName;
 
+    @NonNull
+    @Length(max=45)
     private String firstName;
 
+    @Length(max=45)
     private String patronymic;
 
     private boolean isAdmin;

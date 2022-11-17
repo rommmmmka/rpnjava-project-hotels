@@ -1,6 +1,8 @@
 package com.kravets.hotels.rpnjava.entity;
 
 import com.kravets.hotels.rpnjava.form.AddHotelForm;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,13 +15,19 @@ public class HotelEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NonNull
+    @Length(min=6, max=45)
     private String name;
 
+    @Length(max=300)
     private String description;
 
+    @NonNull
+    @Length(max=40)
     private String coverPhoto;
 
     @ManyToOne
+    @NonNull
     private CityEntity city;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)

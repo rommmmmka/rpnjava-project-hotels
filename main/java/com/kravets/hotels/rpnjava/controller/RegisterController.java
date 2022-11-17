@@ -3,7 +3,7 @@ package com.kravets.hotels.rpnjava.controller;
 import com.kravets.hotels.rpnjava.exception.FormValidationException;
 import com.kravets.hotels.rpnjava.form.LoginForm;
 import com.kravets.hotels.rpnjava.form.RegisterForm;
-import com.kravets.hotels.rpnjava.misc.DatabaseServices;
+import com.kravets.hotels.rpnjava.misc.Services;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,12 +19,12 @@ import javax.validation.Valid;
 
 @Controller
 public class RegisterController {
-    private final DatabaseServices databaseServices;
+    private final Services services;
     private final SessionCheck sessionCheck;
 
     @Autowired
-    public RegisterController(DatabaseServices databaseServices, SessionCheck sessionCheck) {
-        this.databaseServices = databaseServices;
+    public RegisterController(Services services, SessionCheck sessionCheck) {
+        this.services = services;
         this.sessionCheck = sessionCheck;
     }
 
@@ -59,7 +59,7 @@ public class RegisterController {
             }
             sessionCheck.loggedOutAccess(model, request);
 
-            databaseServices.user.registerUser(registerForm);
+            services.user.registerUser(registerForm);
 
             LoginForm loginForm = new LoginForm(registerForm.getLogin());
             redirectAttributes.addFlashAttribute("loginForm", loginForm);

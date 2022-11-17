@@ -127,7 +127,7 @@
         </div>
         <div class="card-body container">
             <div class="row">
-                <div class="col-md-3" th:each="hotel : ${hotelsList}">
+                <div class="col-md-3" th:each="hotel,iterStat : ${hotelsList}">
                     <div class="card my-3">
                         <img class="card-img-top" alt="Фота гатэля" th:src="|/uploads/${hotel.coverPhoto}|">
                         <div class="card-body">
@@ -163,7 +163,7 @@
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">
                                 Колькасць нумароў:
-                                <a th:href="|/${templateType}/rooms?filterHotel=${hotel.id}|" th:text="${hotel.rooms.size}"/>
+                                <a th:href="|/${templateType}/rooms?filterHotel=${hotel.id}|" th:text="${roomsCountList[iterStat.index]}"/>
                             </li>
                             <li class="list-group-item">
                                 Горад:

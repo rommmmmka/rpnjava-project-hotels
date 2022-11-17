@@ -2,7 +2,7 @@ package com.kravets.hotels.rpnjava.controller.admin;
 
 import com.kravets.hotels.rpnjava.exception.FormValidationException;
 import com.kravets.hotels.rpnjava.form.EditUserForm;
-import com.kravets.hotels.rpnjava.misc.DatabaseServices;
+import com.kravets.hotels.rpnjava.misc.Services;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,12 +19,12 @@ import javax.validation.Valid;
 
 @Controller
 public class AdminUsersController {
-    private final DatabaseServices databaseServices;
+    private final Services services;
     private final SessionCheck sessionCheck;
 
     @Autowired
-    public AdminUsersController(DatabaseServices databaseServices, SessionCheck sessionCheck) {
-        this.databaseServices = databaseServices;
+    public AdminUsersController(Services services, SessionCheck sessionCheck) {
+        this.services = services;
         this.sessionCheck = sessionCheck;
     }
 
@@ -41,7 +41,7 @@ public class AdminUsersController {
 
             model.addAttribute("sortingProperty", sortingProperty);
             model.addAttribute("sortingDirection", sortingDirection);
-            model.addAttribute("usersList", databaseServices.user.getUsersByParameters(sortingProperty, sortingDirection));
+            model.addAttribute("usersList", services.user.getUsersByParameters(sortingProperty, sortingDirection));
 
             model.addAttribute("templateName", "users");
             return "base";
@@ -61,7 +61,7 @@ public class AdminUsersController {
         try {
             sessionCheck.adminAccess(model, request);
 
-            databaseServices.user.removeUser(id);
+            services.user.removeUser(id);
 
             redirectAttributes.addFlashAttribute("successMessage", "Карыстальнік паспяхова выдалены");
         } catch (Exception e) {
@@ -87,7 +87,7 @@ public class AdminUsersController {
             }
             sessionCheck.adminAccess(model, request);
 
-            databaseServices.user.editUser(editUserForm);
+            services.user.editUser(editUserForm);
 
             redirectAttributes.addFlashAttribute("successMessage", "Інфармацыя пра карыстальніка паспяхова зменена");
         } catch (Exception e) {
@@ -107,7 +107,7 @@ public class AdminUsersController {
         try {
             sessionCheck.adminAccess(model, request);
 
-            databaseServices.session.removeSessionsByUserId(id);
+            services.session.removeSessionsByUserId(id);
 
             redirectAttributes.addFlashAttribute("successMessage", "Сесіі карыстальніка паспяхова выдалены");
         } catch (Exception e) {

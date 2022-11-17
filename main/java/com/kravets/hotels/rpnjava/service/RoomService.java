@@ -70,6 +70,18 @@ public class RoomService {
         return roomEntities;
     }
 
+    public List<Long> getRoomsCountListByHotelsList(List<HotelEntity> hotelEntities) {
+        List<Long> answer = new ArrayList<>();
+        for (HotelEntity hotelEntity : hotelEntities) {
+            long currentAnswer = 0;
+            for (RoomEntity roomEntity : hotelEntity.getRooms()) {
+                currentAnswer += roomEntity.getRoomsNumber();
+            }
+            answer.add(currentAnswer);
+        }
+        return answer;
+    }
+
     public void addRoom(AddRoomForm addRoomForm) throws IOException {
         RoomEntity roomEntity = new RoomEntity(addRoomForm);
         roomEntity.setCoverPhoto(CoverPhoto.upload(addRoomForm.getCoverPhotoFile()));

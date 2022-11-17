@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DatabaseServices {
+public class Services {
     public final CitiesService cities;
     public final HotelService hotel;
     public final OrderService order;
@@ -14,7 +14,7 @@ public class DatabaseServices {
     public final UserService user;
 
     @Autowired
-    public DatabaseServices(
+    public Services(
             CitiesService citiesService,
             HotelService hotelService,
             OrderService orderService,

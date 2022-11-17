@@ -1,7 +1,7 @@
 package com.kravets.hotels.rpnjava.controller;
 
 import com.kravets.hotels.rpnjava.entity.SessionEntity;
-import com.kravets.hotels.rpnjava.misc.DatabaseServices;
+import com.kravets.hotels.rpnjava.misc.Services;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,12 +15,12 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class LogoutController {
-    private final DatabaseServices databaseServices;
+    private final Services services;
     private final SessionCheck sessionCheck;
 
     @Autowired
-    public LogoutController(DatabaseServices databaseServices, SessionCheck sessionCheck) {
-        this.databaseServices = databaseServices;
+    public LogoutController(Services services, SessionCheck sessionCheck) {
+        this.services = services;
         this.sessionCheck = sessionCheck;
     }
 
@@ -33,7 +33,7 @@ public class LogoutController {
     ) {
         try {
             SessionEntity sessionEntity = sessionCheck.userAccess(model, request);
-            databaseServices.session.removeSession(sessionEntity);
+            services.session.removeSession(sessionEntity);
 
             Cookie cookie = new Cookie("session_key", null);
             cookie.setMaxAge(0);

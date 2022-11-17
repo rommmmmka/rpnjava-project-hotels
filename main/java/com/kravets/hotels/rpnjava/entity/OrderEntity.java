@@ -1,5 +1,7 @@
 package com.kravets.hotels.rpnjava.entity;
 
+import org.springframework.lang.NonNull;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -10,16 +12,20 @@ public class OrderEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NonNull
     private Date checkInDate;
 
+    @NonNull
     private Date checkOutDate;
 
     private Date expireDate;
 
     @ManyToOne
+    @NonNull
     private UserEntity user;
 
     @ManyToOne
+    @NonNull
     private RoomEntity room;
 
 

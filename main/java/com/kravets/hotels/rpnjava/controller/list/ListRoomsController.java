@@ -1,7 +1,6 @@
 package com.kravets.hotels.rpnjava.controller.list;
 
-import com.kravets.hotels.rpnjava.form.AddRoomForm;
-import com.kravets.hotels.rpnjava.misc.DatabaseServices;
+import com.kravets.hotels.rpnjava.misc.Services;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,12 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class ListRoomsController {
-    private final DatabaseServices databaseServices;
+    private final Services services;
     private final SessionCheck sessionCheck;
 
     @Autowired
-    public ListRoomsController(DatabaseServices databaseServices, SessionCheck sessionCheck) {
-        this.databaseServices = databaseServices;
+    public ListRoomsController(Services services, SessionCheck sessionCheck) {
+        this.services = services;
         this.sessionCheck = sessionCheck;
     }
 
@@ -36,9 +35,9 @@ public class ListRoomsController {
         try {
             sessionCheck.noRestrictionAccess(model, request);
 
-            model.addAttribute("hotelsList", databaseServices.hotel.getAllHotels());
-            model.addAttribute("roomsList", databaseServices.room.getRoomsByParameters(filterHotel, filterCity, sortingProperty, sortingDirection));
-            model.addAttribute("citiesList", databaseServices.cities.getAllCities());
+            model.addAttribute("hotelsList", services.hotel.getAllHotels());
+            model.addAttribute("roomsList", services.room.getRoomsByParameters(filterHotel, filterCity, sortingProperty, sortingDirection));
+            model.addAttribute("citiesList", services.cities.getAllCities());
             model.addAttribute("filterHotel", filterHotel);
             model.addAttribute("filterCity", filterCity);
             model.addAttribute("sortingProperty", sortingProperty);

@@ -1,5 +1,8 @@
 package com.kravets.hotels.rpnjava.entity;
 
+import org.hibernate.validator.constraints.Length;
+import org.springframework.lang.NonNull;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +14,8 @@ public class CityEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NonNull
+    @Length(max=50)
     private String name;
 
     private boolean disabled;
