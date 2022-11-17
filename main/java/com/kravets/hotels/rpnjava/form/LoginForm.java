@@ -12,6 +12,7 @@ public class LoginForm {
     @Pattern(regexp = "[A-z0-9\\-_]+")
     private String password;
 
+    private boolean rememberMe;
 
     public LoginForm() {
     }
@@ -34,5 +35,13 @@ public class LoginForm {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isRememberMe() {
+        return rememberMe;
+    }
+
+    public void setRememberMe(boolean rememberMe) {
+        this.rememberMe = rememberMe;
     }
 }

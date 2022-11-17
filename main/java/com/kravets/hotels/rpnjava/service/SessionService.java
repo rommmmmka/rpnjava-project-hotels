@@ -21,12 +21,12 @@ public class SessionService {
         this.userService = userService;
     }
 
-    public SessionEntity getSessionByUserAndSessionKey(UserEntity userEntity, String sessionKey) {
-        return sessionRepository.findSessionEntityByUserAndSessionKey(userEntity, sessionKey);
+    public SessionEntity getSessionBySessionKey(String sessionKey) {
+        return sessionRepository.findSessionEntityBySessionKey(sessionKey);
     }
 
-    public SessionEntity createSession(UserEntity userEntity) {
-        SessionEntity sessionEntity = new SessionEntity(userEntity, CurrentDate.getDateTime());
+    public SessionEntity createSession(UserEntity userEntity, boolean rememberMe) {
+        SessionEntity sessionEntity = new SessionEntity(userEntity, CurrentDate.getDateTime(), rememberMe);
         sessionRepository.save(sessionEntity);
         return sessionEntity;
     }
@@ -44,5 +44,16 @@ public class SessionService {
         List<SessionEntity> sessions = userEntity.getSessions();
         System.out.println(sessions.size());
         sessionRepository.deleteAllInBatch(sessions);
+    }
+
+    public void removeOutdatedSessions() {
+        List<SessionEntity> sessionEntitiesDoNotRemember = sessionRepository.findSessionEntitiesByLastAccessTimeBeforeAndRememberMe(
+                CurrentDate.getDateTimeMinusDays(1), false
+        );
+        List<SessionEntity> sessionEntitiesRemember = sessionRepository.findSessionEntitiesByLastAccessTimeBeforeAndRememberMe(
+                CurrentDate.getDateTimeMinusDays(7), true
+        );
+        sessionRepository.deleteAllInBatch(sessionEntitiesDoNotRemember);
+        sessionRepository.deleteAllInBatch(sessionEntitiesRemember);
     }
 }

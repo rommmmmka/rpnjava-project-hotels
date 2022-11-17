@@ -1,6 +1,5 @@
 package com.kravets.hotels.rpnjava.form;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 

@@ -18,6 +18,10 @@ public class CurrentDate {
         return Date.from(getZonedDateTime().toInstant());
     }
 
+    public static Date getDateTimeMinusDays(long days) {
+        return Date.from(getZonedDateTime().minusDays(days).toInstant());
+    }
+
     public static String convertToStringDate(ZonedDateTime zonedDateTime) {
         return zonedDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
     }

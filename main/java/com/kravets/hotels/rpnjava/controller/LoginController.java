@@ -64,10 +64,13 @@ public class LoginController {
             sessionCheck.loggedOutAccess(model, request);
 
             UserEntity userEntity = databaseServices.user.loginUser(loginForm);
-            SessionEntity sessionEntity = databaseServices.session.createSession(userEntity);
+            SessionEntity sessionEntity = databaseServices.session.createSession(userEntity, loginForm.isRememberMe());
 
-            response.addCookie(new Cookie("session_key", sessionEntity.getSessionKey()));
-            response.addCookie(new Cookie("user_id", userEntity.getId().toString()));
+            Cookie cookie = new Cookie("session_key", sessionEntity.getSessionKey());
+            if (loginForm.isRememberMe()) {
+                cookie.setMaxAge(7 * 24 * 60 * 60);
+            }
+            response.addCookie(cookie);
             return "redirect:/";
         } catch (Exception e) {
             loginForm.setPassword("");

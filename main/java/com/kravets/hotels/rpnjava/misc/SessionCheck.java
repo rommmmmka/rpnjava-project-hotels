@@ -10,7 +10,6 @@ import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 @Component
 public final class SessionCheck {
     private final DatabaseServices databaseServices;
@@ -24,19 +23,15 @@ public final class SessionCheck {
         model.addAttribute("isLoggedIn", false);
         try {
             String sessionKey = WebUtils.getCookie(request, "session_key").getValue();
-            Long userId = Long.parseLong(WebUtils.getCookie(request, "user_id").getValue());
-
-            UserEntity userEntity = databaseServices.user.getUserById(userId);
-            if (userEntity == null) {
-                return null;
-            }
-            SessionEntity sessionEntity = databaseServices.session.getSessionByUserAndSessionKey(userEntity, sessionKey);
+            SessionEntity sessionEntity = databaseServices.session.getSessionBySessionKey(sessionKey);
             if (sessionEntity == null) {
                 return null;
             }
 
             sessionEntity.setLastAccessTime(CurrentDate.getDateTime());
             databaseServices.session.editSession(sessionEntity);
+
+            UserEntity userEntity = sessionEntity.getUser();
 
             model.addAttribute("isLoggedIn", true);
             model.addAttribute("isAdmin", userEntity.isAdmin());

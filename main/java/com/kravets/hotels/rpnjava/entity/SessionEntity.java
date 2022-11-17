@@ -15,15 +15,18 @@ public class SessionEntity {
 
     private Date lastAccessTime;
 
+    private boolean rememberMe;
+
     @ManyToOne
     private UserEntity user;
 
     public SessionEntity() {
     }
 
-    public SessionEntity(UserEntity user, Date lastAccessTime) {
+    public SessionEntity(UserEntity user, Date lastAccessTime, boolean rememberMe) {
         this.user = user;
         this.lastAccessTime = lastAccessTime;
+        this.rememberMe = rememberMe;
     }
 
     public Long getId() {
@@ -48,6 +51,14 @@ public class SessionEntity {
 
     public void setLastAccessTime(Date lastAccessTime) {
         this.lastAccessTime = lastAccessTime;
+    }
+
+    public boolean isRememberMe() {
+        return rememberMe;
+    }
+
+    public void setRememberMe(boolean rememberMe) {
+        this.rememberMe = rememberMe;
     }
 
     public UserEntity getUser() {
