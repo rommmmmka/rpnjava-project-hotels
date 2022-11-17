@@ -125,7 +125,7 @@
             Фільтры
         </div>
         <div class="card-body container">
-            <form action="/admin/rooms" method="get">
+            <form method="get" th:action="|/${templateType}/rooms|">
                 <div class="row justify-content-md-center">
                     <div class="col-md-3 mb-3">
                         <div class="form-floating mb-1">
@@ -209,7 +209,7 @@
                                 <p class="card-text" th:text="${room.description}"/>
                             </div>
                             <form action="/admin/rooms/edit" method="post" class="editCardForm" style="display: none;"
-                                  th:id="|cardEditor${room.id}|">
+                                  th:id="|cardEditor${room.id}|" th:remove="${templateType != 'admin'} ? 'all'">
                                 <input type="hidden" name="id" th:value="${room.id}">
                                 <div class="form-floating mb-1">
                                     <input class="form-control" type="text" th:id="|inputName${room.id}|"

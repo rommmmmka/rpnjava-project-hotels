@@ -53,7 +53,6 @@ public class AdminHotelsController {
 
             model.addAttribute("addHotelForm", new AddHotelForm());
             model.addAttribute("citiesList", databaseServices.cities.getAllCities());
-
             model.addAttribute("hotelsList", databaseServices.hotel.getHotelsByParameters(filterCity, sortingProperty, sortingDirection));
             model.addAttribute("filterCity", filterCity);
             model.addAttribute("sortingProperty", sortingProperty);

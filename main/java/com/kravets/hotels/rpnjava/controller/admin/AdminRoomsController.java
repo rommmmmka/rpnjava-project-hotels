@@ -54,9 +54,8 @@ public class AdminRoomsController {
             sessionCheck.adminAccess(model, request);
 
             model.addAttribute("addRoomForm", new AddRoomForm());
-            model.addAttribute("hotelsList", databaseServices.hotel.getAllHotels());
             model.addAttribute("pickHotelId", hotel);
-
+            model.addAttribute("hotelsList", databaseServices.hotel.getAllHotels());
             model.addAttribute("roomsList", databaseServices.room.getRoomsByParameters(filterHotel, filterCity, sortingProperty, sortingDirection));
             model.addAttribute("citiesList", databaseServices.cities.getAllCities());
             model.addAttribute("filterHotel", filterHotel);

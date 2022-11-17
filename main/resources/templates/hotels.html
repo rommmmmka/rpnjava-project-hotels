@@ -69,7 +69,7 @@
             Фільтры
         </div>
         <div class="card-body container">
-            <form action="/admin/hotels" method="get">
+            <form method="get" th:action="|/${templateType}/hotels|">
                 <div class="row justify-content-md-center">
                     <div class="col-md-4 mb-3">
                         <div class="form-floating mb-1">
@@ -161,10 +161,13 @@
                         </div>
 
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Колькасць нумароў: [[${hotel.rooms.size}]]</li>
+                            <li class="list-group-item">
+                                Колькасць нумароў:
+                                <a th:href="|/${templateType}/rooms?filterHotel=${hotel.id}|" th:text="${hotel.rooms.size}"/>
+                            </li>
                             <li class="list-group-item">
                                 Горад:
-                                <a th:href="|hotels?filterCity=${hotel.city.id}|" th:text="${hotel.city.name}"/>
+                                <a th:href="|/${templateType}/hotels?filterCity=${hotel.city.id}|" th:text="${hotel.city.name}"/>
                             </li>
                         </ul>
 
@@ -188,9 +191,8 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </th:block>
 
-<script th:fragmemt="script" th:src="'/js/' + ${templateType} + '/hotels.js'"></script>
+<script th:fragmemt="script" th:src="${templateType == 'admin'} ? '/js/admin/hotels.js'" th:remove="${templateType == 'list'} ? 'all'"></script>
