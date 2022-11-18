@@ -1,7 +1,7 @@
 package com.kravets.hotels.rpnjava.controller.admin;
 
 import com.kravets.hotels.rpnjava.exception.FormValidationException;
-import com.kravets.hotels.rpnjava.form.EditUserForm;
+import com.kravets.hotels.rpnjava.data.form.EditUserForm;
 import com.kravets.hotels.rpnjava.misc.Services;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,7 +107,7 @@ public class AdminUsersController {
         try {
             sessionCheck.adminAccess(model, request);
 
-            services.session.removeSessionsByUserId(id);
+            services.db.removeSessionsByUserId(id);
 
             redirectAttributes.addFlashAttribute("successMessage", "Сесіі карыстальніка паспяхова выдалены");
         } catch (Exception e) {

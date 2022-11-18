@@ -1,6 +1,6 @@
-package com.kravets.hotels.rpnjava.entity;
+package com.kravets.hotels.rpnjava.data.entity;
 
-import com.kravets.hotels.rpnjava.form.RegisterForm;
+import com.kravets.hotels.rpnjava.data.form.RegisterForm;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.lang.NonNull;
 

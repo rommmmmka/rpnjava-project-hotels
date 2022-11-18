@@ -57,16 +57,16 @@
                 <div class="row">
                     <div class="col-md-3 mb-3">
                         <div class="form-floating">
-                            <input class="form-control" id="inputGuestsLimit" type="number" min="1" value="1"
-                                   name="guestsLimit"/>
-                            <label for="inputGuestsLimit">Колькасць месц*</label>
+                            <input class="form-control" id="inputAdultsNumber" type="number" min="1" value="1"
+                                   name="adultsNumber"/>
+                            <label for="inputAdultsNumber">Колькасць месц для дарослых*</label>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
                         <div class="form-floating">
-                            <input class="form-control" id="inputChildrenLimit" type="number" placeholder=" "
-                                   th:field="*{childrenLimit}"/>
-                            <label for="inputChildrenLimit">Сярод іх - колькасць дзіцячых*</label>
+                            <input class="form-control" id="inputChildrenNumber" type="number" placeholder=" "
+                                   th:field="*{childrenNumber}"/>
+                            <label for="inputChildrenNumber">Колькасць месц для дзяцей*</label>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
@@ -125,7 +125,7 @@
             Фільтры
         </div>
         <div class="card-body container">
-            <form method="get" th:action="|/${templateType}/rooms|">
+            <form method="get" id="filtersForm" th:action="|/${templateType}/rooms|">
                 <div class="row justify-content-md-center">
                     <div class="col-md-3 mb-3">
                         <div class="form-floating mb-1">
@@ -228,17 +228,17 @@
                                     </label>
                                 </div>
                                 <div class="form-floating mb-1">
-                                    <input class="form-control" type="number" th:id="|inputGuestsLimit${room.id}|"
-                                           th:name="guestsLimit" th:value="${room.guestsLimit}"/>
-                                    <label th:for="|inputGuestsLimit${room.id}|">
-                                        Колькасць месц
+                                    <input class="form-control" type="number" th:id="|inputAdultsNumber$${room.id}|"
+                                           th:name="adultsNumber" th:value="${room.adultsLimit}"/>
+                                    <label th:for="|inputAdultsNumber${room.id}|">
+                                        Колькасць месц для дарослых
                                     </label>
                                 </div>
                                 <div class="form-floating mb-1">
-                                    <input class="form-control" type="number" th:id="|inputChildrenLimit${room.id}|"
-                                           th:name="childrenLimit" th:value="${room.childrenLimit}"/>
-                                    <label th:for="|inputGuestsLimit${room.id}|">
-                                        Сярод іх - колькасць дзіцячых
+                                    <input class="form-control" type="number" th:id="|inputChildrenNumber${room.id}|"
+                                           th:name="childrenNumber" th:value="${room.guestsLimit - room.adultsLimit}"/>
+                                    <label th:for="|inputChildrenNumber${room.id}|">
+                                        Колькасць месц для дзяцей
                                     </label>
                                 </div>
                                 <div class="form-floating mb-1">
@@ -296,7 +296,8 @@
                                 <div class="icon-box">
                                     <i class="fa-solid fa-user"></i>
                                 </div>
-                                месцаў — [[${room.guestsLimit}]] (сярод іх дзіцячых — [[${room.childrenLimit}]])
+                                месцаў — [[${room.guestsLimit}]] (сярод іх дзіцячых — [[${room.guestsLimit - room.adultsLimit}]])
+                                <a href="#" onclick="filterSortingProperty('guestsLimit')">[фільтр]</a>
                             </li>
                             <li th:class="|list-group-item card-content-bottom-${room.id}|">
                                 <div class="icon-box">
@@ -311,21 +312,22 @@
                                 </div>
                                 кошт — [[${room.costPerNight}]] руб. (за ноч),
                                 [[${room.isPrepaymentRequired} ? 'патрабуецца перадаплата' : 'без перадаплаты']]
+                                <a href="#" onclick="filterSortingProperty('costPerNight')">[фільтр]</a>
                             </li>
                             <li th:class="|list-group-item card-content-bottom-${room.id}|">
                                 <div class="icon-box">
                                     <i class="fa-solid fa-house"></i>
                                 </div>
                                 нумароў — [[${room.roomsNumber}]] шт.
+                                <a href="#" onclick="filterSortingProperty('roomsNumber')">[фільтр]</a>
                             </li>
                             <li class="list-group-item">
-                                Гатэль:
-                                <a th:href="|rooms?filterHotel=${room.hotel.id}|" th:text="${room.hotel.name}"/>
+                                Гатэль: [[${room.hotel.name}]]
+                                <a href="#" th:onclick="|filterHotel(${room.hotel.id})|">[фільтр]</a>
                             </li>
                             <li class="list-group-item">
-                                Горад:
-                                <a th:href="|rooms?filterCity=${room.hotel.city.id}|"
-                                   th:text="${room.hotel.city.name}"/>
+                                Горад: [[${room.hotel.city.name}]]
+                                <a href="#" th:onclick="|filterCity(${room.hotel.city.id})|">[фільтр]</a>
                             </li>
                         </ul>
 
@@ -346,9 +348,8 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </th:block>
 
-<script th:fragmemt="script" src="/js/admin/rooms.js"></script>
+<script th:fragmemt="script" th:src="|/js/${templateType}/rooms.js|"></script>

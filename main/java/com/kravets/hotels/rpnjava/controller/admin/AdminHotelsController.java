@@ -1,9 +1,8 @@
 package com.kravets.hotels.rpnjava.controller.admin;
 
-import com.kravets.hotels.rpnjava.entity.HotelEntity;
 import com.kravets.hotels.rpnjava.exception.FormValidationException;
-import com.kravets.hotels.rpnjava.form.AddHotelForm;
-import com.kravets.hotels.rpnjava.form.EditHotelForm;
+import com.kravets.hotels.rpnjava.data.form.AddHotelForm;
+import com.kravets.hotels.rpnjava.data.form.EditHotelForm;
 import com.kravets.hotels.rpnjava.misc.Services;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import com.kravets.hotels.rpnjava.validator.AddHotelValidator;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @Controller
 public class AdminHotelsController {
@@ -53,12 +51,9 @@ public class AdminHotelsController {
         try {
             sessionCheck.adminAccess(model, request);
 
-            List<HotelEntity> hotelsList = services.hotel.getHotelsByParameters(filterCity, sortingProperty, sortingDirection);
-
             model.addAttribute("addHotelForm", new AddHotelForm());
             model.addAttribute("citiesList", services.cities.getAllCities());
-            model.addAttribute("hotelsList", hotelsList);
-            model.addAttribute("roomsCountList", services.room.getRoomsCountListByHotelsList(hotelsList));
+            model.addAttribute("hotelsList", services.db.getHotelsWithRoomsNumberByParameters(filterCity, sortingProperty, sortingDirection));
             model.addAttribute("filterCity", filterCity);
             model.addAttribute("sortingProperty", sortingProperty);
             model.addAttribute("sortingDirection", sortingDirection);
@@ -87,7 +82,7 @@ public class AdminHotelsController {
             }
             sessionCheck.adminAccess(model, request);
 
-            services.hotel.addHotel(addHotelForm);
+            services.db.addHotel(addHotelForm);
 
             redirectAttributes.addFlashAttribute("successMessage", "Новы гатэль паспяхова дабаўлены");
         } catch (Exception e) {

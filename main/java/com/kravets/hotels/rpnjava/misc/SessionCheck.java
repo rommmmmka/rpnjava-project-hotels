@@ -1,7 +1,7 @@
 package com.kravets.hotels.rpnjava.misc;
 
-import com.kravets.hotels.rpnjava.entity.SessionEntity;
-import com.kravets.hotels.rpnjava.entity.UserEntity;
+import com.kravets.hotels.rpnjava.data.entity.SessionEntity;
+import com.kravets.hotels.rpnjava.data.entity.UserEntity;
 import com.kravets.hotels.rpnjava.exception.NoAccessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,7 +28,7 @@ public final class SessionCheck {
                 return null;
             }
 
-            sessionEntity.setLastAccessTime(CurrentDate.getDateTime());
+            sessionEntity.setLastAccessTime(DateUtils.getDateTime());
             services.session.editSession(sessionEntity);
 
             UserEntity userEntity = sessionEntity.getUser();

@@ -1,4 +1,4 @@
-package com.kravets.hotels.rpnjava.form;
+package com.kravets.hotels.rpnjava.data.form;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;

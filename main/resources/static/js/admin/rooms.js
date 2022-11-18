@@ -52,6 +52,7 @@ addRoomForm.addEventListener("submit", event => {
     }
 });
 
+
 const validationConstraints2 = {
     name: {
         presence: {
@@ -63,12 +64,6 @@ const validationConstraints2 = {
             maximum: 45,
             tooShort: "Назва павінна быць не менш за 6 сімвалаў",
             tooLong: "Назва павінна быць не больш за 45 сімвалаў"
-        }
-    },
-    hotel: {
-        presence: {
-            allowEmpty: false,
-            message: "Выберыце гатэль"
         }
     },
     description: {
@@ -96,8 +91,9 @@ editCardFormsArray.forEach(function (form) {
     });
 });
 
+
 const inputNumberElements = [
-    document.getElementById("inputGuestsLimit"),
+    document.getElementById("inputAdultsNumber"),
     document.getElementById("inputСostPerNight"),
     document.getElementById("inputRoomsNumber")
 ];
@@ -106,6 +102,7 @@ inputNumberElements.forEach(function (element) {
         element.value = Math.max(1, element.value);
     });
 });
+
 
 function editCard(id) {
     let cardContentTop = document.getElementById("cardContentTop" + id);
@@ -121,4 +118,19 @@ function editCard(id) {
         cardContentTop.style.display = "block";
         cardContentBottom.forEach(el => el.style.display = "block");
     }
+}
+
+
+const filtersForm = document.getElementById("filtersForm");
+function filterHotel(id) {
+    filtersForm.filterHotel.value = id;
+    filtersForm.submit();
+}
+function filterCity(id) {
+    filtersForm.filterCity.value = id;
+    filtersForm.submit();
+}
+function filterSortingProperty(property) {
+    filtersForm.sortingProperty.value = property;
+    filtersForm.submit();
 }

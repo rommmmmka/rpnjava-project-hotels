@@ -1,39 +1,35 @@
-package com.kravets.hotels.rpnjava.form;
+package com.kravets.hotels.rpnjava.data.form;
 
-public class EditRoomForm {
-    private Long id;
+import org.springframework.web.multipart.MultipartFile;
 
+public class AddRoomForm {
     private String name;
 
     private String description;
 
-    private int guestsLimit;
+    private MultipartFile coverPhotoFile;
 
-    private int childrenLimit;
+    private Long hotel;
 
-    private int costPerNight;
+    private int adultsNumber;
+
+    private int childrenNumber;
 
     private int bedsForOnePersonCount;
 
     private int bedsForTwoPersonsCount;
 
+    private int costPerNight;
+
     private int roomsNumber;
 
     private String isPrepaymentRequired;
 
-    public EditRoomForm() {
+    public AddRoomForm() {
     }
 
     public boolean isPrepaymentRequired() {
         return isPrepaymentRequired.equals("true");
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -52,20 +48,36 @@ public class EditRoomForm {
         this.description = description;
     }
 
-    public int getGuestsLimit() {
-        return guestsLimit;
+    public MultipartFile getCoverPhotoFile() {
+        return coverPhotoFile;
     }
 
-    public void setGuestsLimit(int guestsLimit) {
-        this.guestsLimit = guestsLimit;
+    public void setCoverPhotoFile(MultipartFile coverPhotoFile) {
+        this.coverPhotoFile = coverPhotoFile;
     }
 
-    public int getChildrenLimit() {
-        return childrenLimit;
+    public Long getHotel() {
+        return hotel;
     }
 
-    public void setChildrenLimit(int childrenLimit) {
-        this.childrenLimit = childrenLimit;
+    public void setHotel(Long hotel) {
+        this.hotel = hotel;
+    }
+
+    public int getAdultsNumber() {
+        return adultsNumber;
+    }
+
+    public void setAdultsNumber(int adultsNumber) {
+        this.adultsNumber = adultsNumber;
+    }
+
+    public int getChildrenNumber() {
+        return childrenNumber;
+    }
+
+    public void setChildrenNumber(int childrenNumber) {
+        this.childrenNumber = childrenNumber;
     }
 
     public int getCostPerNight() {
@@ -92,19 +104,19 @@ public class EditRoomForm {
         this.bedsForTwoPersonsCount = bedsForTwoPersonsCount;
     }
 
-    public int getRoomsNumber() {
-        return roomsNumber;
-    }
-
-    public void setRoomsNumber(int roomsNumber) {
-        this.roomsNumber = roomsNumber;
-    }
-
     public String getIsPrepaymentRequired() {
         return isPrepaymentRequired;
     }
 
     public void setIsPrepaymentRequired(String isPrepaymentRequired) {
         this.isPrepaymentRequired = isPrepaymentRequired;
+    }
+
+    public int getRoomsNumber() {
+        return roomsNumber;
+    }
+
+    public void setRoomsNumber(int roomsNumber) {
+        this.roomsNumber = roomsNumber;
     }
 }

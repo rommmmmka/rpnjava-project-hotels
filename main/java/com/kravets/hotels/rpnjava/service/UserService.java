@@ -1,13 +1,13 @@
 package com.kravets.hotels.rpnjava.service;
 
-import com.kravets.hotels.rpnjava.entity.UserEntity;
+import com.kravets.hotels.rpnjava.data.entity.UserEntity;
 import com.kravets.hotels.rpnjava.exception.InvalidFilterException;
 import com.kravets.hotels.rpnjava.exception.InvalidPasswordException;
 import com.kravets.hotels.rpnjava.exception.UserAlreadyExistsException;
 import com.kravets.hotels.rpnjava.exception.UserNotFoundException;
-import com.kravets.hotels.rpnjava.form.EditUserForm;
-import com.kravets.hotels.rpnjava.form.LoginForm;
-import com.kravets.hotels.rpnjava.form.RegisterForm;
+import com.kravets.hotels.rpnjava.data.form.EditUserForm;
+import com.kravets.hotels.rpnjava.data.form.LoginForm;
+import com.kravets.hotels.rpnjava.data.form.RegisterForm;
 import com.kravets.hotels.rpnjava.misc.PasswordHash;
 import com.kravets.hotels.rpnjava.repository.UserRepository;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -67,7 +67,7 @@ public class UserService {
     }
 
     public UserEntity loginUser(LoginForm loginForm) throws UserNotFoundException, NoSuchAlgorithmException, InvalidPasswordException {
-        UserEntity userEntity = userRepository.findUserEntityByLogin(loginForm.getLogin());
+        UserEntity userEntity = userRepository.getByLogin(loginForm.getLogin());
         if (userEntity == null) {
             throw new UserNotFoundException();
         }
@@ -81,7 +81,7 @@ public class UserService {
     }
 
     public void registerUser(RegisterForm registerForm) throws UserAlreadyExistsException, NoSuchAlgorithmException {
-        if (userRepository.findUserEntityByLogin(registerForm.getLogin()) != null) {
+        if (userRepository.getByLogin(registerForm.getLogin()) != null) {
             throw new UserAlreadyExistsException();
         }
 

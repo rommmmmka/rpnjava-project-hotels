@@ -67,6 +67,7 @@ editCardFormsArray.forEach(function (form) {
     });
 });
 
+
 function editCard(id) {
     let cardContent = document.getElementById("cardContent" + id);
     let cardEditor = document.getElementById("cardEditor" + id);
@@ -78,4 +79,10 @@ function editCard(id) {
         cardEditor.style.display = "none";
         cardContent.style.display = "block";
     }
+}
+
+const filtersForm = document.getElementById("filtersForm");
+function filterSortingProperty(property) {
+    filtersForm.sortingProperty.value = property;
+    filtersForm.submit();
 }

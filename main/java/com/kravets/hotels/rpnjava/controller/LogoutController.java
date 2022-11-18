@@ -1,6 +1,6 @@
 package com.kravets.hotels.rpnjava.controller;
 
-import com.kravets.hotels.rpnjava.entity.SessionEntity;
+import com.kravets.hotels.rpnjava.data.entity.SessionEntity;
 import com.kravets.hotels.rpnjava.misc.Services;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.kravets.hotels.rpnjava.form;
+package com.kravets.hotels.rpnjava.data.form;
 
 public class EditHotelForm {
     private Long id;

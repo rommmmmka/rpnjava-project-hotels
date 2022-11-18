@@ -10,7 +10,7 @@
             Фільтры
         </div>
         <div class="card-body container">
-            <form action="/admin/users" method="get">
+            <form action="/admin/users" method="get" id="filtersForm">
                 <div class="row justify-content-md-center">
                     <div class="col-md-6 mb-3">
                         <div class="form-floating mb-1">
@@ -117,8 +117,14 @@
                             </form>
                         </div>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Колькасць заказаў: [[${user.orders.size}]]</li>
-                            <li class="list-group-item">Колькасць актыўных сесій: [[${user.sessions.size}]]</li>
+                            <li class="list-group-item">
+                                Колькасць заказаў: [[${user.orders.size}]]
+                                <a href="#" onclick="filterSortingProperty('ordersCount')">[фільтр]</a>
+                            </li>
+                            <li class="list-group-item">
+                                Колькасць актыўных сесій: [[${user.sessions.size}]]
+                                <a href="#" onclick="filterSortingProperty('sessionsCount')">[фільтр]</a>
+                            </li>
                         </ul>
                         <div class="card-body pt-0 card-buttons-flex">
                             <a class="btn btn-warning mt-3" th:href="|/admin/orders?filterUser=${user.id}|">

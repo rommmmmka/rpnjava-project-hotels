@@ -1,6 +1,6 @@
 package com.kravets.hotels.rpnjava.controller.list;
 
-import com.kravets.hotels.rpnjava.entity.HotelEntity;
+import com.kravets.hotels.rpnjava.data.entity.HotelEntity;
 import com.kravets.hotels.rpnjava.misc.Services;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +36,8 @@ public class ListHotelsContoller {
         try {
             sessionCheck.noRestrictionAccess(model, request);
 
-            List<HotelEntity> hotelsList = services.hotel.getHotelsByParameters(filterCity, sortingProperty, sortingDirection);
-
             model.addAttribute("citiesList", services.cities.getAllCities());
-            model.addAttribute("hotelsList", hotelsList);
-            model.addAttribute("roomsCountList", services.room.getRoomsCountListByHotelsList(hotelsList));
+            model.addAttribute("hotelsList", services.db.getHotelsWithRoomsNumberByParameters(filterCity, sortingProperty, sortingDirection));
             model.addAttribute("filterCity", filterCity);
             model.addAttribute("sortingProperty", sortingProperty);
             model.addAttribute("sortingDirection", sortingDirection);

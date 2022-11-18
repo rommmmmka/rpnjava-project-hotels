@@ -1,6 +1,6 @@
 package com.kravets.hotels.rpnjava.validator;
 
-import com.kravets.hotels.rpnjava.form.AddHotelForm;
+import com.kravets.hotels.rpnjava.data.form.AddHotelForm;
 import com.kravets.hotels.rpnjava.misc.Services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
 package com.kravets.hotels.rpnjava.validator;
 
-import com.kravets.hotels.rpnjava.form.AddHotelForm;
-import com.kravets.hotels.rpnjava.form.AddRoomForm;
+import com.kravets.hotels.rpnjava.data.form.AddHotelForm;
+import com.kravets.hotels.rpnjava.data.form.AddRoomForm;
 import com.kravets.hotels.rpnjava.misc.Services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,10 +46,6 @@ public class AddRoomValidator implements Validator {
             }
         } catch (Exception e) {
             errors.rejectValue("coverPhotoFile", "1");
-        }
-        if (addRoomForm.getGuestsLimit() <= addRoomForm.getChildrenLimit()) {
-            errors.rejectValue("guestsLimit", "1");
-            errors.rejectValue("childrenLimit", "1");
         }
     }
 }

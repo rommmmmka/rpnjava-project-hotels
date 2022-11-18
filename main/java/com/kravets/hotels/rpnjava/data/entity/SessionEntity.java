@@ -1,4 +1,4 @@
-package com.kravets.hotels.rpnjava.entity;
+package com.kravets.hotels.rpnjava.data.entity;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.lang.NonNull;

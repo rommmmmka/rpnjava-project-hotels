@@ -1,6 +1,6 @@
 package com.kravets.hotels.rpnjava.service;
 
-import com.kravets.hotels.rpnjava.entity.CityEntity;
+import com.kravets.hotels.rpnjava.data.entity.CityEntity;
 import com.kravets.hotels.rpnjava.repository.CityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
-public class CitiesService {
+public class CityService {
     private final CityRepository cityRepository;
 
     @Autowired
-    public CitiesService(CityRepository cityRepository) {
+    public CityService(CityRepository cityRepository) {
         this.cityRepository = cityRepository;
     }
 
@@ -31,6 +31,6 @@ public class CitiesService {
 
 
     public List<Long> getEnabledCitiesIds() {
-        return cityRepository.findCityEntitiesByDisabled(false).stream().map(CityEntity::getId).toList();
+        return cityRepository.getAllByDisabled(false).stream().map(CityEntity::getId).toList();
     }
 }

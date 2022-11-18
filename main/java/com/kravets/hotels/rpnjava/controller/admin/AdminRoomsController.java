@@ -1,8 +1,8 @@
 package com.kravets.hotels.rpnjava.controller.admin;
 
 import com.kravets.hotels.rpnjava.exception.FormValidationException;
-import com.kravets.hotels.rpnjava.form.AddRoomForm;
-import com.kravets.hotels.rpnjava.form.EditRoomForm;
+import com.kravets.hotels.rpnjava.data.form.AddRoomForm;
+import com.kravets.hotels.rpnjava.data.form.EditRoomForm;
 import com.kravets.hotels.rpnjava.misc.Services;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import com.kravets.hotels.rpnjava.validator.AddRoomValidator;
@@ -56,7 +56,7 @@ public class AdminRoomsController {
             model.addAttribute("addRoomForm", new AddRoomForm());
             model.addAttribute("pickHotelId", hotel);
             model.addAttribute("hotelsList", services.hotel.getAllHotels());
-            model.addAttribute("roomsList", services.room.getRoomsByParameters(filterHotel, filterCity, sortingProperty, sortingDirection));
+            model.addAttribute("roomsList", services.db.getRoomsByParameters(filterHotel, filterCity, sortingProperty, sortingDirection));
             model.addAttribute("citiesList", services.cities.getAllCities());
             model.addAttribute("filterHotel", filterHotel);
             model.addAttribute("filterCity", filterCity);
@@ -87,7 +87,7 @@ public class AdminRoomsController {
             }
             sessionCheck.adminAccess(model, request);
 
-            services.room.addRoom(addRoomForm);
+            services.db.addRoom(addRoomForm);
 
             redirectAttributes.addFlashAttribute("successMessage", "Новы пакой паспяхова дабаўлены");
         } catch (Exception e) {

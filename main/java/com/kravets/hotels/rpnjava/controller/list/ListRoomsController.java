@@ -36,7 +36,7 @@ public class ListRoomsController {
             sessionCheck.noRestrictionAccess(model, request);
 
             model.addAttribute("hotelsList", services.hotel.getAllHotels());
-            model.addAttribute("roomsList", services.room.getRoomsByParameters(filterHotel, filterCity, sortingProperty, sortingDirection));
+            model.addAttribute("roomsList", services.db.getRoomsByParameters(filterHotel, filterCity, sortingProperty, sortingDirection));
             model.addAttribute("citiesList", services.cities.getAllCities());
             model.addAttribute("filterHotel", filterHotel);
             model.addAttribute("filterCity", filterCity);

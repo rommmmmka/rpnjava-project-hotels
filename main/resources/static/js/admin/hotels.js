@@ -41,6 +41,7 @@ addHotelForm.addEventListener("submit", event => {
     }
 });
 
+
 const validationConstraints2 = {
     name: {
         presence: {
@@ -74,6 +75,7 @@ editCardFormsArray.forEach(function (form) {
     });
 });
 
+
 const textareasArray = Array.from(document.getElementsByTagName("textarea"));
 textareasArray.forEach(function (textarea) {
     textarea.addEventListener("scroll", function () {
@@ -89,6 +91,7 @@ textareasArray.forEach(function (textarea) {
     });
 });
 
+
 function editCard(id) {
     let cardContent = document.getElementById("cardContent" + id);
     let cardEditor = document.getElementById("cardEditor" + id);
@@ -100,4 +103,15 @@ function editCard(id) {
         cardEditor.style.display = "none";
         cardContent.style.display = "block";
     }
+}
+
+
+const filtersForm = document.getElementById("filtersForm");
+function filterRoomsCount() {
+    filtersForm.sortingProperty.value = "roomsNumber";
+    filtersForm.submit();
+}
+function filterCity(id) {
+    filtersForm.filterCity.value = id;
+    filtersForm.submit();
 }

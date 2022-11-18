@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="be">
+
+<title th:fragment="title">Палітыка канфідэнцыяльнасці | Booker - браніраванне гатэляў</title>
+
+<th:block th:fragment="content">
+    <div class="card my-4">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            Нагода выпіць
+        </div>
+        <div class="card-body container">
+            <th:block th:utext="${termsOfUseContent}"></th:block>
+        </div>
+    </div>
+</th:block>
+
+<script th:fragmemt="script" th:remove="all"></script>

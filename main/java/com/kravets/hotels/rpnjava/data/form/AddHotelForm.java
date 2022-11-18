@@ -1,4 +1,4 @@
-package com.kravets.hotels.rpnjava.form;
+package com.kravets.hotels.rpnjava.data.form;
 
 import org.springframework.web.multipart.MultipartFile;
 

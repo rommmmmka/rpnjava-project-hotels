@@ -1,4 +1,4 @@
-package com.kravets.hotels.rpnjava.entity;
+package com.kravets.hotels.rpnjava.data.entity;
 
 import org.springframework.lang.NonNull;
 
@@ -19,6 +19,8 @@ public class OrderEntity {
     private Date checkOutDate;
 
     private Date expireDate;
+
+    private long cost;
 
     @ManyToOne
     @NonNull

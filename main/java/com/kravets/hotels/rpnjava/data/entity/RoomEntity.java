@@ -1,6 +1,6 @@
-package com.kravets.hotels.rpnjava.entity;
+package com.kravets.hotels.rpnjava.data.entity;
 
-import com.kravets.hotels.rpnjava.form.AddRoomForm;
+import com.kravets.hotels.rpnjava.data.form.AddRoomForm;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.lang.NonNull;
 
@@ -28,7 +28,7 @@ public class RoomEntity {
 
     private int guestsLimit;
 
-    private int childrenLimit;
+    private int adultsLimit;
 
     private int costPerNight;
 
@@ -54,8 +54,8 @@ public class RoomEntity {
     public RoomEntity(AddRoomForm addRoomForm) {
         this.name = addRoomForm.getName();
         this.description = addRoomForm.getDescription();
-        this.guestsLimit = addRoomForm.getGuestsLimit();
-        this.childrenLimit = addRoomForm.getChildrenLimit();
+        this.guestsLimit = addRoomForm.getAdultsNumber() + addRoomForm.getChildrenNumber();
+        this.adultsLimit = addRoomForm.getAdultsNumber();
         this.costPerNight = addRoomForm.getCostPerNight();
         this.bedsForOnePersonCount = addRoomForm.getBedsForOnePersonCount();
         this.bedsForTwoPersonsCount = addRoomForm.getBedsForTwoPersonsCount();
@@ -103,12 +103,12 @@ public class RoomEntity {
         this.guestsLimit = guestsLimit;
     }
 
-    public int getChildrenLimit() {
-        return childrenLimit;
+    public int getAdultsLimit() {
+        return adultsLimit;
     }
 
-    public void setChildrenLimit(int childrenLimit) {
-        this.childrenLimit = childrenLimit;
+    public void setAdultsLimit(int adultsLimit) {
+        this.adultsLimit = adultsLimit;
     }
 
     public int getCostPerNight() {

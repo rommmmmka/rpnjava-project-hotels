@@ -8,7 +8,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-public class CurrentDate {
+public class DateUtils {
 
     public static ZonedDateTime getZonedDateTime() {
         return ZonedDateTime.now(ZoneId.of("Europe/Minsk"));
@@ -22,12 +22,25 @@ public class CurrentDate {
         return Date.from(getZonedDateTime().minusDays(days).toInstant());
     }
 
-    public static String convertToStringDate(ZonedDateTime zonedDateTime) {
+    public static String convertZonedDateToString(ZonedDateTime zonedDateTime) {
         return zonedDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
+    public static String convertDateToString(Date date) {
+        ZonedDateTime zonedDateTime = convertDateToZonedDate(date);
+        return convertZonedDateToString(zonedDateTime);
+    }
+
+    public static ZonedDateTime convertDateToZonedDate(Date date) {
+        return ZonedDateTime.ofInstant(date.toInstant(), ZoneId.of("Europe/Minsk"));
+    }
+
+    public static Date convertZonedDateToDate(ZonedDateTime zonedDate) {
+        return Date.from(zonedDate.toInstant());
+    }
+
     public static String getStringDate() {
-        return convertToStringDate(getZonedDateTime());
+        return convertZonedDateToString(getZonedDateTime());
     }
 
     public static Date getDate() throws ParseException {
@@ -35,4 +48,7 @@ public class CurrentDate {
         return df.parse(getStringDate());
     }
 
+    public static String getStringShortDate() {
+        return getZonedDateTime().format(DateTimeFormatter.ofPattern("d-M"));
+    }
 }
