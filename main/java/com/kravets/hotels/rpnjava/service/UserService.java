@@ -1,13 +1,13 @@
 package com.kravets.hotels.rpnjava.service;
 
 import com.kravets.hotels.rpnjava.data.entity.UserEntity;
+import com.kravets.hotels.rpnjava.data.form.EditUserForm;
+import com.kravets.hotels.rpnjava.data.form.LoginForm;
+import com.kravets.hotels.rpnjava.data.form.RegisterForm;
 import com.kravets.hotels.rpnjava.exception.InvalidFilterException;
 import com.kravets.hotels.rpnjava.exception.InvalidPasswordException;
 import com.kravets.hotels.rpnjava.exception.UserAlreadyExistsException;
 import com.kravets.hotels.rpnjava.exception.UserNotFoundException;
-import com.kravets.hotels.rpnjava.data.form.EditUserForm;
-import com.kravets.hotels.rpnjava.data.form.LoginForm;
-import com.kravets.hotels.rpnjava.data.form.RegisterForm;
 import com.kravets.hotels.rpnjava.misc.PasswordHash;
 import com.kravets.hotels.rpnjava.repository.UserRepository;
 import org.apache.tomcat.util.codec.binary.Base64;

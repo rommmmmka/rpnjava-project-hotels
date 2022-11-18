@@ -1,7 +1,7 @@
 package com.kravets.hotels.rpnjava.controller.admin;
 
-import com.kravets.hotels.rpnjava.exception.FormValidationException;
 import com.kravets.hotels.rpnjava.data.form.EditUserForm;
+import com.kravets.hotels.rpnjava.exception.FormValidationException;
 import com.kravets.hotels.rpnjava.misc.Services;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import org.springframework.beans.factory.annotation.Autowired;

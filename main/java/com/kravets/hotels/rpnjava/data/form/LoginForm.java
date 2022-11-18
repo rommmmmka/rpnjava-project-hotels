@@ -14,6 +14,7 @@ public class LoginForm {
 
     private boolean rememberMe;
 
+
     public LoginForm() {
     }
 

@@ -1,8 +1,8 @@
 package com.kravets.hotels.rpnjava.controller.admin;
 
-import com.kravets.hotels.rpnjava.exception.FormValidationException;
 import com.kravets.hotels.rpnjava.data.form.AddRoomForm;
 import com.kravets.hotels.rpnjava.data.form.EditRoomForm;
+import com.kravets.hotels.rpnjava.exception.FormValidationException;
 import com.kravets.hotels.rpnjava.misc.Services;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import com.kravets.hotels.rpnjava.validator.AddRoomValidator;

@@ -1,15 +1,13 @@
 package com.kravets.hotels.rpnjava.service;
 
 import com.kravets.hotels.rpnjava.data.entity.RoomEntity;
-import com.kravets.hotels.rpnjava.misc.DateUtils;
-import com.kravets.hotels.rpnjava.data.other.RoomEntityWithFreeRoomsField;
+import com.kravets.hotels.rpnjava.data.other.RoomWithFreeRoomsLeft;
 import com.kravets.hotels.rpnjava.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -21,35 +19,28 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
-    public int getTakenRoomsCount(RoomEntity roomEntity, Date checkInDate, Date checkOutDate) {
-        ZonedDateTime zonedCheckInDate = DateUtils.convertDateToZonedDate(checkInDate);
-        ZonedDateTime zonedCheckOutDate = DateUtils.convertDateToZonedDate(checkOutDate);
-
-        return orderRepository.getAllByRoomAndCheckInDateBetween(
-                roomEntity, checkInDate, DateUtils.convertZonedDateToDate(zonedCheckOutDate.minusDays(1))
-        ).size() + orderRepository.getAllByRoomAndCheckOutDateBetween(
-                roomEntity, DateUtils.convertZonedDateToDate(zonedCheckInDate.plusDays(1)), checkOutDate
-        ).size() + orderRepository.getAllByRoomAndCheckInDateIsLessThanAndCheckOutDateIsGreaterThan(
-                roomEntity,
-                DateUtils.convertZonedDateToDate(zonedCheckInDate.minusDays(1)),
-                DateUtils.convertZonedDateToDate(zonedCheckOutDate.plusDays(1))
-        ).size();
+    public int getTakenRoomsCount(RoomEntity roomEntity, LocalDate checkInDate, LocalDate checkOutDate) {
+        return orderRepository.getAllByRoomAndCheckInDateBetween(roomEntity, checkInDate, checkOutDate.minusDays(1)).size() +
+                orderRepository.getAllByRoomAndCheckOutDateBetween(roomEntity, checkInDate.plusDays(1), checkOutDate).size() +
+                orderRepository.getAllByRoomAndCheckInDateIsLessThanAndCheckOutDateIsGreaterThan(
+                        roomEntity, checkInDate.minusDays(1), checkOutDate.plusDays(1)
+                ).size();
     }
 
-    public List<RoomEntityWithFreeRoomsField> getFreeRoomsWithFreeRoomsCountFromList(List<RoomEntity> roomEntities, Date checkInDate, Date checkOutDate) {
-        List<RoomEntityWithFreeRoomsField> answer = new ArrayList<>();
+    public List<RoomWithFreeRoomsLeft> getFreeRoomsWithFreeRoomsCountFromList(List<RoomEntity> roomEntities, LocalDate checkInDate, LocalDate checkOutDate) {
+        List<RoomWithFreeRoomsLeft> answer = new ArrayList<>();
 
         for (RoomEntity roomEntity : roomEntities) {
             int takenRoomsCount = getTakenRoomsCount(roomEntity, checkInDate, checkOutDate);
-            if (takenRoomsCount < roomEntity.getRoomsNumber()) {
-                answer.add(new RoomEntityWithFreeRoomsField(roomEntity, roomEntity.getRoomsNumber() - takenRoomsCount));
+            if (takenRoomsCount < roomEntity.getRoomsCount()) {
+                answer.add(new RoomWithFreeRoomsLeft(roomEntity, roomEntity.getRoomsCount() - takenRoomsCount));
             }
         }
 
         return answer;
     }
 
-    public void createOrder(Date checkInDate, Date checkOutDate, long roomId) {
+    public void createOrder(LocalDate checkInDate, LocalDate checkOutDate, long roomId) {
 //        List<RoomEntity> roomEntities =
 
     }

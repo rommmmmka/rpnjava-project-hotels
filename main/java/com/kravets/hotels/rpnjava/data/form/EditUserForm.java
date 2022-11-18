@@ -21,6 +21,7 @@ public class EditUserForm {
     @Pattern(regexp = "true|false")
     private String isAdmin;
 
+
     public EditUserForm() {
     }
 

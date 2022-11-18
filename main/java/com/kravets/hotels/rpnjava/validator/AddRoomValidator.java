@@ -26,10 +26,7 @@ public class AddRoomValidator implements Validator {
     public void validate(Object target, Errors errors) {
         AddRoomForm addRoomForm = (AddRoomForm) target;
 
-        if (addRoomForm.getName() == null
-                || addRoomForm.getName().length() < 6
-                || addRoomForm.getName().length() > 45
-        ) {
+        if (addRoomForm.getName() == null || addRoomForm.getName().length() < 6 || addRoomForm.getName().length() > 45) {
             errors.rejectValue("name", "1");
         }
         if (addRoomForm.getDescription().length() > 300) {

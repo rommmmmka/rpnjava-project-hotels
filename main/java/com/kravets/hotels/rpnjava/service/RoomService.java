@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -42,8 +41,8 @@ public class RoomService {
     }
 
     public List<RoomEntity> getRoomsBySearchFormLimits(SearchForm searchForm, CityEntity cityEntity) {
-        int guestsLimit = searchForm.getAdultsNumber() + searchForm.getChildrenNumber();
-        int adultsLimit = searchForm.getAdultsNumber();
+        int guestsLimit = searchForm.getAdultsCount() + searchForm.getChildrenCount();
+        int adultsLimit = searchForm.getAdultsCount();
 
         List<RoomEntity> roomEntities = roomRepository.getAllByGuestsLimitLessThanEqualAndAdultsLimitLessThanEqual(guestsLimit, adultsLimit);
         List<RoomEntity> answer = new ArrayList<>();
@@ -68,12 +67,12 @@ public class RoomService {
         RoomEntity roomEntity = roomRepository.getReferenceById(editRoomForm.getId());
         roomEntity.setName(editRoomForm.getName());
         roomEntity.setDescription(editRoomForm.getDescription());
-        roomEntity.setGuestsLimit(editRoomForm.getAdultsNumber() + editRoomForm.getChildrenNumber());
-        roomEntity.setAdultsLimit(editRoomForm.getAdultsNumber());
+        roomEntity.setGuestsLimit(editRoomForm.getAdultsCount() + editRoomForm.getChildrenCount());
+        roomEntity.setAdultsLimit(editRoomForm.getAdultsCount());
         roomEntity.setCostPerNight(editRoomForm.getCostPerNight());
         roomEntity.setBedsForOnePersonCount(editRoomForm.getBedsForOnePersonCount());
         roomEntity.setBedsForTwoPersonsCount(editRoomForm.getBedsForTwoPersonsCount());
-        roomEntity.setRoomsNumber(editRoomForm.getRoomsNumber());
+        roomEntity.setRoomsCount(editRoomForm.getRoomsCount());
         roomEntity.setPrepaymentRequired(editRoomForm.isPrepaymentRequired());
         roomRepository.save(roomEntity);
     }

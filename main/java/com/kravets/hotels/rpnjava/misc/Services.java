@@ -1,7 +1,6 @@
 package com.kravets.hotels.rpnjava.misc;
 
 import com.kravets.hotels.rpnjava.service.*;
-import com.kravets.hotels.rpnjava.service.DatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

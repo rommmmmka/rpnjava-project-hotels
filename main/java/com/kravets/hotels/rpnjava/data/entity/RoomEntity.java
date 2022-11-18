@@ -16,14 +16,14 @@ public class RoomEntity {
     private Long id;
 
     @NonNull
-    @Length(min=6, max=45)
+    @Length(min = 6, max = 45)
     private String name;
 
-    @Length(max=300)
+    @Length(max = 300)
     private String description;
 
     @NonNull
-    @Length(max=40)
+    @Length(max = 40)
     private String coverPhoto;
 
     private int guestsLimit;
@@ -36,7 +36,7 @@ public class RoomEntity {
 
     private int bedsForTwoPersonsCount;
 
-    private int roomsNumber;
+    private int roomsCount;
 
     private boolean isPrepaymentRequired;
 
@@ -54,12 +54,12 @@ public class RoomEntity {
     public RoomEntity(AddRoomForm addRoomForm) {
         this.name = addRoomForm.getName();
         this.description = addRoomForm.getDescription();
-        this.guestsLimit = addRoomForm.getAdultsNumber() + addRoomForm.getChildrenNumber();
-        this.adultsLimit = addRoomForm.getAdultsNumber();
+        this.guestsLimit = addRoomForm.getAdultsCount() + addRoomForm.getChildrenCount();
+        this.adultsLimit = addRoomForm.getAdultsCount();
         this.costPerNight = addRoomForm.getCostPerNight();
         this.bedsForOnePersonCount = addRoomForm.getBedsForOnePersonCount();
         this.bedsForTwoPersonsCount = addRoomForm.getBedsForTwoPersonsCount();
-        this.roomsNumber = addRoomForm.getRoomsNumber();
+        this.roomsCount = addRoomForm.getRoomsCount();
         this.isPrepaymentRequired = addRoomForm.isPrepaymentRequired();
     }
 
@@ -71,11 +71,12 @@ public class RoomEntity {
         this.id = id;
     }
 
+    @NonNull
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@NonNull String name) {
         this.name = name;
     }
 
@@ -87,11 +88,12 @@ public class RoomEntity {
         this.description = description;
     }
 
+    @NonNull
     public String getCoverPhoto() {
         return coverPhoto;
     }
 
-    public void setCoverPhoto(String coverPhoto) {
+    public void setCoverPhoto(@NonNull String coverPhoto) {
         this.coverPhoto = coverPhoto;
     }
 
@@ -143,11 +145,12 @@ public class RoomEntity {
         isPrepaymentRequired = prepaymentRequired;
     }
 
+    @NonNull
     public HotelEntity getHotel() {
         return hotel;
     }
 
-    public void setHotel(HotelEntity hotel) {
+    public void setHotel(@NonNull HotelEntity hotel) {
         this.hotel = hotel;
     }
 
@@ -159,11 +162,11 @@ public class RoomEntity {
         this.orders = orders;
     }
 
-    public int getRoomsNumber() {
-        return roomsNumber;
+    public int getRoomsCount() {
+        return roomsCount;
     }
 
-    public void setRoomsNumber(int roomsNumber) {
-        this.roomsNumber = roomsNumber;
+    public void setRoomsCount(int roomsCount) {
+        this.roomsCount = roomsCount;
     }
 }

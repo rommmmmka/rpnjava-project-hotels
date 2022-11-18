@@ -8,7 +8,7 @@
 <th:block th:fragment="content">
     <div class="card my-4" th:remove="${templateType != 'admin'} ? 'all'">
         <div class="card-header">
-            <i class="fas fa-table me-1"></i>
+            <i class="fa-regular fa-square-plus"></i>
             Дабавіць гатэль
         </div>
 
@@ -65,7 +65,7 @@
 
     <div class="card my-4">
         <div class="card-header">
-            <i class="fas fa-table me-1"></i>
+            <i class="fa-solid fa-filter"></i>
             Фільтры
         </div>
         <div class="card-body container">
@@ -88,7 +88,7 @@
                                 <option value="creationDate">
                                     Па даце дабаўлення
                                 </option>
-                                <option value="roomsNumber" th:selected="${sortingProperty} == 'roomsNumber'">
+                                <option value="roomsCount" th:selected="${sortingProperty} == 'roomsCount'">
                                     Па колькасці нумароў
                                 </option>
                             </select>
@@ -122,7 +122,7 @@
 
     <div class="card my-4">
         <div class="card-header">
-            <i class="fas fa-table me-1"></i>
+            <i class="fa-solid fa-list"></i>
             Спіс гатэляў
         </div>
         <div class="card-body container">

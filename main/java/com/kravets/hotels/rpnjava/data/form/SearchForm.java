@@ -2,20 +2,20 @@ package com.kravets.hotels.rpnjava.data.form;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class SearchForm {
     private Long city;
 
-    private int adultsNumber;
+    private int adultsCount;
 
-    private int childrenNumber;
-
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private Date checkInDate;
+    private int childrenCount;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private Date checkOutDate;
+    private LocalDate checkInDate;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate checkOutDate;
 
 
     public SearchForm() {
@@ -29,35 +29,35 @@ public class SearchForm {
         this.city = city;
     }
 
-    public int getAdultsNumber() {
-        return adultsNumber;
+    public int getAdultsCount() {
+        return adultsCount;
     }
 
-    public void setAdultsNumber(int adultsNumber) {
-        this.adultsNumber = adultsNumber;
+    public void setAdultsCount(int adultsCount) {
+        this.adultsCount = adultsCount;
     }
 
-    public int getChildrenNumber() {
-        return childrenNumber;
+    public int getChildrenCount() {
+        return childrenCount;
     }
 
-    public void setChildrenNumber(int childrenNumber) {
-        this.childrenNumber = childrenNumber;
+    public void setChildrenCount(int childrenCount) {
+        this.childrenCount = childrenCount;
     }
 
-    public Date getCheckInDate() {
+    public LocalDate getCheckInDate() {
         return checkInDate;
     }
 
-    public void setCheckInDate(Date checkInDate) {
+    public void setCheckInDate(LocalDate checkInDate) {
         this.checkInDate = checkInDate;
     }
 
-    public Date getCheckOutDate() {
+    public LocalDate getCheckOutDate() {
         return checkOutDate;
     }
 
-    public void setCheckOutDate(Date checkOutDate) {
+    public void setCheckOutDate(LocalDate checkOutDate) {
         this.checkOutDate = checkOutDate;
     }
 }

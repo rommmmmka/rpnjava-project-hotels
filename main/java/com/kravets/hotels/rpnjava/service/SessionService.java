@@ -24,7 +24,7 @@ public class SessionService {
     }
 
     public SessionEntity createSession(UserEntity userEntity, boolean rememberMe) {
-        SessionEntity sessionEntity = new SessionEntity(userEntity, DateUtils.getDateTime(), rememberMe);
+        SessionEntity sessionEntity = new SessionEntity(userEntity, DateUtils.getCurrentDateTime(), rememberMe);
         sessionRepository.save(sessionEntity);
         return sessionEntity;
     }
@@ -44,10 +44,10 @@ public class SessionService {
 
     public void removeOutdatedSessions() {
         List<SessionEntity> sessionEntitiesDoNotRemember = sessionRepository.getAllByLastAccessTimeBeforeAndRememberMe(
-                DateUtils.getDateTimeMinusDays(1), false
+                DateUtils.getCurrentDateTime().minusDays(1), false
         );
         List<SessionEntity> sessionEntitiesRemember = sessionRepository.getAllByLastAccessTimeBeforeAndRememberMe(
-                DateUtils.getDateTimeMinusDays(7), true
+                DateUtils.getCurrentDateTime().minusDays(7), true
         );
         sessionRepository.deleteAllInBatch(sessionEntitiesDoNotRemember);
         sessionRepository.deleteAllInBatch(sessionEntitiesRemember);

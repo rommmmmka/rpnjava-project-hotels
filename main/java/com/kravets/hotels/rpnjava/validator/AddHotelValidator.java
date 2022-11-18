@@ -25,10 +25,7 @@ public class AddHotelValidator implements Validator {
     public void validate(Object target, Errors errors) {
         AddHotelForm addHotelForm = (AddHotelForm) target;
 
-        if (addHotelForm.getName() == null
-                || addHotelForm.getName().length() < 6
-                || addHotelForm.getName().length() > 45
-        ) {
+        if (addHotelForm.getName() == null || addHotelForm.getName().length() < 6 || addHotelForm.getName().length() > 45) {
             errors.rejectValue("name", "1");
         }
         if (addHotelForm.getDescription().length() > 300) {

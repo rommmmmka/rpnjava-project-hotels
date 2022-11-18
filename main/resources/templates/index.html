@@ -24,16 +24,16 @@
                     </div>
                     <div class="col-md-4 mb-3">
                         <div class="form-floating">
-                            <input class="form-control" id="inputAdultsNumber" type="number" name="adultsNumber" min="1"
-                                   th:value="${templateType == 'index'} ? 1 : *{adultsNumber}"/>
-                            <label for="inputAdultsNumber">Колькасць дарослых</label>
+                            <input class="form-control" id="inputAdultsCount" type="number" name="adultsCount" min="1"
+                                   th:value="${templateType == 'index'} ? 1 : *{adultsCount}"/>
+                            <label for="inputAdultsCount">Колькасць дарослых</label>
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <div class="form-floating">
-                            <input class="form-control" id="inputChildrenNumber" type="number" min="0"
-                                   th:field="*{childrenNumber}"/>
-                            <label for="inputChildrenNumber">Колькасць дзяцей</label>
+                            <input class="form-control" id="inputChildrenCount" type="number" min="0"
+                                   th:field="*{childrenCount}"/>
+                            <label for="inputChildrenCount">Колькасць дзяцей</label>
                         </div>
                     </div>
                 </div>
@@ -41,14 +41,14 @@
                     <div class="col-md-6 mb-3">
                         <div class="form-floating">
                             <input class="form-control" id="inputCheckInDate" type="date" name="checkInDate"
-                                   th:min="${currentDate}" th:value="${checkInDate}"/>
+                                   th:min="${currentDate}" th:value="${currentDate}"/>
                             <label for="inputCheckInDate">Дата заезду</label>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
                         <div class="form-floating">
                             <input class="form-control" id="inputCheckOutDate" type="date" name="checkOutDate"
-                                   th:min="${currentDatePlusDay}" th:value="${checkOutDate}"/>
+                                   th:min="${currentDatePlusDay}" th:value="${currentDatePlusDay}"/>
                             <label for="inputCheckOutDate">Дата выезду</label>
                         </div>
                     </div>
@@ -103,7 +103,7 @@
                                 <div class="icon-box">
                                     <i class="fa-solid fa-house"></i>
                                 </div>
-                                нумароў — [[${el.entity.roomsNumber}]] шт.
+                                нумароў — [[${el.entity.roomsCount}]] шт.
                                 (вольных — [[${el.freeRoomsLeft}]])
                             </li>
                             <li class="list-group-item">
@@ -114,7 +114,7 @@
                             </li>
                         </ul>
 
-                        <div class="card-body card-buttons-flex" >
+                        <div class="card-body card-buttons-flex">
                             <a class="btn btn-success" th:href="1">
                                 Заказаць
                             </a>

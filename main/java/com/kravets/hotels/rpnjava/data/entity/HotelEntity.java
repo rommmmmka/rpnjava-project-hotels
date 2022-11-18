@@ -16,14 +16,14 @@ public class HotelEntity {
     private Long id;
 
     @NonNull
-    @Length(min=6, max=45)
+    @Length(min = 6, max = 45)
     private String name;
 
-    @Length(max=300)
+    @Length(max = 300)
     private String description;
 
     @NonNull
-    @Length(max=40)
+    @Length(max = 40)
     private String coverPhoto;
 
     @ManyToOne
@@ -50,11 +50,12 @@ public class HotelEntity {
         this.id = id;
     }
 
+    @NonNull
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@NonNull String name) {
         this.name = name;
     }
 
@@ -66,19 +67,21 @@ public class HotelEntity {
         this.description = description;
     }
 
+    @NonNull
     public String getCoverPhoto() {
         return coverPhoto;
     }
 
-    public void setCoverPhoto(String coverPhoto) {
+    public void setCoverPhoto(@NonNull String coverPhoto) {
         this.coverPhoto = coverPhoto;
     }
 
+    @NonNull
     public CityEntity getCity() {
         return city;
     }
 
-    public void setCity(CityEntity city) {
+    public void setCity(@NonNull CityEntity city) {
         this.city = city;
     }
 

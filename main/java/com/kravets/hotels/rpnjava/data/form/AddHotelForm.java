@@ -11,6 +11,7 @@ public class AddHotelForm {
 
     private Long city;
 
+
     public AddHotelForm() {
     }
 

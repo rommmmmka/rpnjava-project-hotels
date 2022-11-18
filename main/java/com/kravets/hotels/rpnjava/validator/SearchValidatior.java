@@ -29,15 +29,15 @@ public class SearchValidatior implements Validator {
         if (!services.cities.getEnabledCitiesIds().contains(searchForm.getCity())) {
             errors.rejectValue("city", "1");
         }
-        if (searchForm.getAdultsNumber() < 1 || searchForm.getAdultsNumber() > 30) {
-            errors.rejectValue("adultsNumber", "1");
+        if (searchForm.getAdultsCount() < 1 || searchForm.getAdultsCount() > 30) {
+            errors.rejectValue("adultsCount", "1");
         }
-        if (searchForm.getChildrenNumber() < 0 || searchForm.getChildrenNumber() > 30) {
-            errors.rejectValue("adultsNumber", "1");
+        if (searchForm.getChildrenCount() < 0 || searchForm.getChildrenCount() > 30) {
+            errors.rejectValue("adultsCount", "1");
         }
         try {
-            if (searchForm.getCheckInDate().after(searchForm.getCheckOutDate())
-                    || searchForm.getCheckInDate().before(DateUtils.getDate())
+            if (searchForm.getCheckInDate().compareTo(searchForm.getCheckOutDate()) >= 0 ||
+                    searchForm.getCheckInDate().compareTo(DateUtils.getCurrentDate()) > 0
             ) {
                 throw new Exception();
             }

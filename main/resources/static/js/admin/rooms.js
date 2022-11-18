@@ -93,9 +93,9 @@ editCardFormsArray.forEach(function (form) {
 
 
 const inputNumberElements = [
-    document.getElementById("inputAdultsNumber"),
+    document.getElementById("inputAdultsCount"),
     document.getElementById("inputСostPerNight"),
-    document.getElementById("inputRoomsNumber")
+    document.getElementById("inputRoomsCount")
 ];
 inputNumberElements.forEach(function (element) {
     element.addEventListener("change", function () {
@@ -122,14 +122,17 @@ function editCard(id) {
 
 
 const filtersForm = document.getElementById("filtersForm");
+
 function filterHotel(id) {
     filtersForm.filterHotel.value = id;
     filtersForm.submit();
 }
+
 function filterCity(id) {
     filtersForm.filterCity.value = id;
     filtersForm.submit();
 }
+
 function filterSortingProperty(property) {
     filtersForm.sortingProperty.value = property;
     filtersForm.submit();

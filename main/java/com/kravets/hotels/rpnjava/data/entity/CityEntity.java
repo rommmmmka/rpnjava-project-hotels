@@ -15,7 +15,7 @@ public class CityEntity {
     private Long id;
 
     @NonNull
-    @Length(max=50)
+    @Length(max = 50)
     private String name;
 
     private boolean disabled;
@@ -35,11 +35,12 @@ public class CityEntity {
         this.id = id;
     }
 
+    @NonNull
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@NonNull String name) {
         this.name = name;
     }
 

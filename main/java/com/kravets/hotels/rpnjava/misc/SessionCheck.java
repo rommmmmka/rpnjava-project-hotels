@@ -28,7 +28,7 @@ public final class SessionCheck {
                 return null;
             }
 
-            sessionEntity.setLastAccessTime(DateUtils.getDateTime());
+            sessionEntity.setLastAccessTime(DateUtils.getCurrentDateTime());
             services.session.editSession(sessionEntity);
 
             UserEntity userEntity = sessionEntity.getUser();

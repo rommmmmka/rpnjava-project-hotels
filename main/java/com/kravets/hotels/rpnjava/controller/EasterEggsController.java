@@ -39,7 +39,7 @@ public class EasterEggsController {
         sessionCheck.noRestrictionAccess(model, request);
 
         try {
-            Document document = Jsoup.connect("https://povodvypit.wordpress.com/" + DateUtils.getStringShortDate()).get();
+            Document document = Jsoup.connect("https://povodvypit.wordpress.com/" + DateUtils.convertDateToShortString(DateUtils.getCurrentDate())).get();
             Elements elements = document.select(
                     "div.entry-content > h3:not(:contains(Именины)), div.entry-content >  h3:not(:contains(Именины)) + p"
             );

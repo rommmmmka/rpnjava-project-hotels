@@ -1,6 +1,5 @@
 package com.kravets.hotels.rpnjava.controller.list;
 
-import com.kravets.hotels.rpnjava.data.entity.HotelEntity;
 import com.kravets.hotels.rpnjava.misc.Services;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @Controller
 public class ListHotelsContoller {
@@ -37,7 +35,7 @@ public class ListHotelsContoller {
             sessionCheck.noRestrictionAccess(model, request);
 
             model.addAttribute("citiesList", services.cities.getAllCities());
-            model.addAttribute("hotelsList", services.db.getHotelsWithRoomsNumberByParameters(filterCity, sortingProperty, sortingDirection));
+            model.addAttribute("hotelsList", services.db.getHotelsWithRoomsCountByParameters(filterCity, sortingProperty, sortingDirection));
             model.addAttribute("filterCity", filterCity);
             model.addAttribute("sortingProperty", sortingProperty);
             model.addAttribute("sortingDirection", sortingDirection);

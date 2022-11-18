@@ -1,17 +1,24 @@
 package com.kravets.hotels.rpnjava.service;
 
-import com.kravets.hotels.rpnjava.data.entity.*;
+import com.kravets.hotels.rpnjava.data.entity.CityEntity;
+import com.kravets.hotels.rpnjava.data.entity.HotelEntity;
+import com.kravets.hotels.rpnjava.data.entity.RoomEntity;
+import com.kravets.hotels.rpnjava.data.entity.UserEntity;
 import com.kravets.hotels.rpnjava.data.form.AddHotelForm;
 import com.kravets.hotels.rpnjava.data.form.AddRoomForm;
 import com.kravets.hotels.rpnjava.data.form.SearchForm;
-import com.kravets.hotels.rpnjava.data.other.HotelEntityWithRoomsCountField;
-import com.kravets.hotels.rpnjava.data.other.RoomEntityWithFreeRoomsField;
+import com.kravets.hotels.rpnjava.data.other.HotelWithRoomsCount;
+import com.kravets.hotels.rpnjava.data.other.RoomWithFreeRoomsLeft;
 import com.kravets.hotels.rpnjava.exception.InvalidFilterException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class DatabaseService {
@@ -39,11 +46,11 @@ public class DatabaseService {
         this.userService = userService;
     }
 
-    public List<HotelEntityWithRoomsCountField> getHotelsWithRoomsNumberByParameters(Long city, String property, String direction) throws InvalidFilterException {
+    public List<HotelWithRoomsCount> getHotelsWithRoomsCountByParameters(Long city, String property, String direction) throws InvalidFilterException {
         int directionInt = direction.equals("descending") ? -1 : 1;
 
         List<HotelEntity> hotelEntities;
-        List<HotelEntityWithRoomsCountField> answer = new ArrayList<>();
+        List<HotelWithRoomsCount> answer = new ArrayList<>();
         if (city == 0) {
             hotelEntities = hotelService.getAllHotels();
         } else {
@@ -58,14 +65,14 @@ public class DatabaseService {
         for (HotelEntity hotelEntity : hotelEntities) {
             long currentRoomsCount = 0;
             for (RoomEntity roomEntity : hotelEntity.getRooms()) {
-                currentRoomsCount += roomEntity.getRoomsNumber();
+                currentRoomsCount += roomEntity.getRoomsCount();
             }
-            answer.add(new HotelEntityWithRoomsCountField(hotelEntity, currentRoomsCount));
+            answer.add(new HotelWithRoomsCount(hotelEntity, currentRoomsCount));
         }
 
         switch (property) {
             case "creationDate" -> answer.sort(Comparator.comparingLong(a -> a.entity.getId() * directionInt));
-            case "roomsNumber" -> answer.sort(Comparator.comparingLong(a -> a.getRoomsCount() * directionInt));
+            case "roomsCount" -> answer.sort(Comparator.comparingLong(a -> a.getRoomsCount() * directionInt));
             default -> throw new InvalidFilterException();
         }
 
@@ -106,14 +113,14 @@ public class DatabaseService {
             case "creationDate" -> roomEntities.sort(Comparator.comparingLong(a -> a.getId() * directionInt));
             case "guestsLimit" -> roomEntities.sort(Comparator.comparingInt(a -> a.getGuestsLimit() * directionInt));
             case "costPerNight" -> roomEntities.sort(Comparator.comparingInt(a -> a.getCostPerNight() * directionInt));
-            case "roomsNumber" -> roomEntities.sort(Comparator.comparingInt(a -> a.getRoomsNumber() * directionInt));
+            case "roomsCount" -> roomEntities.sort(Comparator.comparingInt(a -> a.getRoomsCount() * directionInt));
             default -> throw new InvalidFilterException();
         }
 
         return roomEntities;
     }
 
-    public List<RoomEntityWithFreeRoomsField> getEmptyRoomsWithFreeRoomsField(SearchForm searchForm) throws NoSuchElementException {
+    public List<RoomWithFreeRoomsLeft> getEmptyRoomsWithFreeRoomsField(SearchForm searchForm) throws NoSuchElementException {
         List<RoomEntity> roomEntities = roomService.getRoomsBySearchFormLimits(searchForm, cityService.getCityByIdOrElseThrow(searchForm.getCity()));
         return orderService.getFreeRoomsWithFreeRoomsCountFromList(roomEntities, searchForm.getCheckInDate(), searchForm.getCheckOutDate());
     }
@@ -131,10 +138,10 @@ public class DatabaseService {
         sessionService.removeSessionsByUser(userEntity);
     }
 
-    public boolean checkIfRoomIsEmpty(Date checkInDate, Date checkOutDate, long roomId) {
+    public boolean checkIfRoomIsEmpty(LocalDate checkInDate, LocalDate checkOutDate, long roomId) {
         RoomEntity roomEntity = roomService.getRoomByIdOrElseThrow(roomId);
         int takenRoomsCount = orderService.getTakenRoomsCount(roomEntity, checkInDate, checkOutDate);
 
-        return takenRoomsCount < roomEntity.getRoomsNumber();
+        return takenRoomsCount < roomEntity.getRoomsCount();
     }
 }

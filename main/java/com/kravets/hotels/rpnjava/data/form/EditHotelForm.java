@@ -7,6 +7,7 @@ public class EditHotelForm {
 
     private String description;
 
+
     public EditHotelForm() {
     }
 

@@ -1,9 +1,9 @@
 package com.kravets.hotels.rpnjava.controller;
 
-import com.kravets.hotels.rpnjava.exception.FormValidationException;
 import com.kravets.hotels.rpnjava.data.form.SearchForm;
+import com.kravets.hotels.rpnjava.data.other.RoomWithFreeRoomsLeft;
+import com.kravets.hotels.rpnjava.exception.FormValidationException;
 import com.kravets.hotels.rpnjava.misc.DateUtils;
-import com.kravets.hotels.rpnjava.data.other.RoomEntityWithFreeRoomsField;
 import com.kravets.hotels.rpnjava.misc.Services;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import com.kravets.hotels.rpnjava.validator.SearchValidatior;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 @Controller
@@ -40,18 +39,17 @@ public class IndexPageController {
     public String indexPage(Model model, HttpServletRequest request) {
         sessionCheck.noRestrictionAccess(model, request);
 
-        ZonedDateTime currentZonedDateTime = DateUtils.getZonedDateTime();
         model.addAttribute("searchForm", new SearchForm());
         model.addAttribute("citiesList", services.cities.getAllCities());
-        model.addAttribute("checkInDate", DateUtils.convertZonedDateToString(currentZonedDateTime));
-        model.addAttribute("checkOutDate", DateUtils.convertZonedDateToString(currentZonedDateTime.plusDays(1)));
+        model.addAttribute("currentDate", DateUtils.convertDateToString(DateUtils.getCurrentDate()));
+        model.addAttribute("currentDatePlusDay", DateUtils.convertDateToString(DateUtils.getCurrentDate().plusDays(1)));
 
         model.addAttribute("templateName", "index");
         model.addAttribute("templateType", "index");
         return "base";
     }
 
-    @GetMapping(value = "/", params = {"city", "adultsNumber", "childrenNumber", "checkInDate", "checkOutDate"})
+    @GetMapping(value = "/", params = {"city", "adultsCount", "childrenCount", "checkInDate", "checkOutDate"})
     public String searchResultsPage(
             Model model,
             @ModelAttribute SearchForm searchForm,
@@ -71,7 +69,7 @@ public class IndexPageController {
             model.addAttribute("checkInDate", DateUtils.convertDateToString(searchForm.getCheckInDate()));
             model.addAttribute("checkOutDate", DateUtils.convertDateToString(searchForm.getCheckOutDate()));
 
-            List<RoomEntityWithFreeRoomsField> roomsList = services.db.getEmptyRoomsWithFreeRoomsField(searchForm);
+            List<RoomWithFreeRoomsLeft> roomsList = services.db.getEmptyRoomsWithFreeRoomsField(searchForm);
             model.addAttribute("roomsList", roomsList);
 
             model.addAttribute("templateName", "index");

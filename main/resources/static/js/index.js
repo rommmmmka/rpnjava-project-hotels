@@ -1,11 +1,11 @@
 const validationConstraints = {
-    adultsNumber: {
+    adultsCount: {
         numericality: {
             lessThanOrEqualTo: 30,
             message: "Колькасць дарослых не можа быць больш за 30"
         }
     },
-    childrenNumber: {
+    childrenCount: {
         numericality: {
             lessThanOrEqualTo: 10,
             message: "Колькасць дзяцей не можа быць больш за 10"
@@ -24,14 +24,14 @@ searchForm.addEventListener("submit", event => {
     }
 });
 
-const inputAdultsNumber = document.getElementById("inputAdultsNumber");
-inputAdultsNumber.addEventListener("change", function () {
-    inputAdultsNumber.value = Math.max(1, inputAdultsNumber.value);
+const inputAdultsCount = document.getElementById("inputAdultsCount");
+inputAdultsCount.addEventListener("change", function () {
+    inputAdultsCount.value = Math.max(1, inputAdultsCount.value);
 });
 
-const inputChildrenNumber = document.getElementById("inputChildrenNumber");
-inputChildrenNumber.addEventListener("change", function () {
-    inputChildrenNumber.value = Math.max(0, inputChildrenNumber.value);
+const inputChildrenCount = document.getElementById("inputChildrenCount");
+inputChildrenCount.addEventListener("change", function () {
+    inputChildrenCount.value = Math.max(0, inputChildrenCount.value);
 });
 
 const inputCheckInDate = document.getElementById("inputCheckInDate");

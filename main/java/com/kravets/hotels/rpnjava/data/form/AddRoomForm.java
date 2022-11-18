@@ -11,9 +11,9 @@ public class AddRoomForm {
 
     private Long hotel;
 
-    private int adultsNumber;
+    private int adultsCount;
 
-    private int childrenNumber;
+    private int childrenCount;
 
     private int bedsForOnePersonCount;
 
@@ -21,9 +21,10 @@ public class AddRoomForm {
 
     private int costPerNight;
 
-    private int roomsNumber;
+    private int roomsCount;
 
     private String isPrepaymentRequired;
+
 
     public AddRoomForm() {
     }
@@ -64,20 +65,20 @@ public class AddRoomForm {
         this.hotel = hotel;
     }
 
-    public int getAdultsNumber() {
-        return adultsNumber;
+    public int getAdultsCount() {
+        return adultsCount;
     }
 
-    public void setAdultsNumber(int adultsNumber) {
-        this.adultsNumber = adultsNumber;
+    public void setAdultsCount(int adultsCount) {
+        this.adultsCount = adultsCount;
     }
 
-    public int getChildrenNumber() {
-        return childrenNumber;
+    public int getChildrenCount() {
+        return childrenCount;
     }
 
-    public void setChildrenNumber(int childrenNumber) {
-        this.childrenNumber = childrenNumber;
+    public void setChildrenCount(int childrenCount) {
+        this.childrenCount = childrenCount;
     }
 
     public int getCostPerNight() {
@@ -112,11 +113,11 @@ public class AddRoomForm {
         this.isPrepaymentRequired = isPrepaymentRequired;
     }
 
-    public int getRoomsNumber() {
-        return roomsNumber;
+    public int getRoomsCount() {
+        return roomsCount;
     }
 
-    public void setRoomsNumber(int roomsNumber) {
-        this.roomsNumber = roomsNumber;
+    public void setRoomsCount(int roomsCount) {
+        this.roomsCount = roomsCount;
     }
 }

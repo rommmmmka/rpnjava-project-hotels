@@ -82,6 +82,7 @@ function editCard(id) {
 }
 
 const filtersForm = document.getElementById("filtersForm");
+
 function filterSortingProperty(property) {
     filtersForm.sortingProperty.value = property;
     filtersForm.submit();

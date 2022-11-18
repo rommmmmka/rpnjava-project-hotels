@@ -1,8 +1,8 @@
 package com.kravets.hotels.rpnjava.controller.admin;
 
-import com.kravets.hotels.rpnjava.exception.FormValidationException;
 import com.kravets.hotels.rpnjava.data.form.AddHotelForm;
 import com.kravets.hotels.rpnjava.data.form.EditHotelForm;
+import com.kravets.hotels.rpnjava.exception.FormValidationException;
 import com.kravets.hotels.rpnjava.misc.Services;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import com.kravets.hotels.rpnjava.validator.AddHotelValidator;
@@ -53,7 +53,7 @@ public class AdminHotelsController {
 
             model.addAttribute("addHotelForm", new AddHotelForm());
             model.addAttribute("citiesList", services.cities.getAllCities());
-            model.addAttribute("hotelsList", services.db.getHotelsWithRoomsNumberByParameters(filterCity, sortingProperty, sortingDirection));
+            model.addAttribute("hotelsList", services.db.getHotelsWithRoomsCountByParameters(filterCity, sortingProperty, sortingDirection));
             model.addAttribute("filterCity", filterCity);
             model.addAttribute("sortingProperty", sortingProperty);
             model.addAttribute("sortingDirection", sortingDirection);

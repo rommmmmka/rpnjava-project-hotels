@@ -17,10 +17,7 @@ public class EditRoomValidator implements Validator {
     public void validate(Object target, Errors errors) {
         EditRoomForm editRoomForm = (EditRoomForm) target;
 
-        if (editRoomForm.getName() == null
-                || editRoomForm.getName().length() < 6
-                || editRoomForm.getName().length() > 45
-        ) {
+        if (editRoomForm.getName() == null || editRoomForm.getName().length() < 6 || editRoomForm.getName().length() > 45) {
             errors.rejectValue("name", "1");
         }
         if (editRoomForm.getDescription().length() > 300) {

@@ -8,7 +8,7 @@
 <th:block th:fragment="content">
     <div class="card my-4" th:remove="${templateType != 'admin'} ? 'all'">
         <div class="card-header">
-            <i class="fas fa-table me-1"></i>
+            <i class="fa-regular fa-square-plus"></i>
             Дабавіць пакой
         </div>
         <div class="card-body container">
@@ -57,16 +57,16 @@
                 <div class="row">
                     <div class="col-md-3 mb-3">
                         <div class="form-floating">
-                            <input class="form-control" id="inputAdultsNumber" type="number" min="1" value="1"
-                                   name="adultsNumber"/>
-                            <label for="inputAdultsNumber">Колькасць месц для дарослых*</label>
+                            <input class="form-control" id="inputAdultsCount" type="number" min="1" value="1"
+                                   name="adultsCount"/>
+                            <label for="inputAdultsCount">Колькасць месц для дарослых*</label>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
                         <div class="form-floating">
-                            <input class="form-control" id="inputChildrenNumber" type="number" placeholder=" "
-                                   th:field="*{childrenNumber}"/>
-                            <label for="inputChildrenNumber">Колькасць месц для дзяцей*</label>
+                            <input class="form-control" id="inputChildrenCount" type="number" placeholder=" "
+                                   th:field="*{childrenCount}"/>
+                            <label for="inputChildrenCount">Колькасць месц для дзяцей*</label>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
@@ -94,9 +94,9 @@
                     </div>
                     <div class="col-md-3 mb-3">
                         <div class="form-floating">
-                            <input class="form-control" id="inputRoomsNumber" type="number" min="1" value="1"
-                                   name="roomsNumber"/>
-                            <label for="inputRoomsNumber">Колькасць нумароў*</label>
+                            <input class="form-control" id="inputRoomsCount" type="number" min="1" value="1"
+                                   name="roomsCount"/>
+                            <label for="inputRoomsCount">Колькасць нумароў*</label>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
@@ -121,7 +121,7 @@
 
     <div class="card my-4">
         <div class="card-header">
-            <i class="fas fa-table me-1"></i>
+            <i class="fa-solid fa-filter"></i>
             Фільтры
         </div>
         <div class="card-body container">
@@ -161,7 +161,7 @@
                                 <option value="costPerNight" th:selected="${sortingProperty} == 'costPerNight'">
                                     Па кошце
                                 </option>
-                                <option value="roomsNumber" th:selected="${sortingProperty} == 'roomsNumber'">
+                                <option value="roomsCount" th:selected="${sortingProperty} == 'roomsCount'">
                                     Па колькасці нумароў
                                 </option>
                             </select>
@@ -195,7 +195,7 @@
 
     <div class="card my-4">
         <div class="card-header">
-            <i class="fas fa-table me-1"></i>
+            <i class="fa-solid fa-list"></i>
             Спіс пакояў
         </div>
         <div class="card-body container">
@@ -228,16 +228,16 @@
                                     </label>
                                 </div>
                                 <div class="form-floating mb-1">
-                                    <input class="form-control" type="number" th:id="|inputAdultsNumber$${room.id}|"
-                                           th:name="adultsNumber" th:value="${room.adultsLimit}"/>
-                                    <label th:for="|inputAdultsNumber${room.id}|">
+                                    <input class="form-control" type="number" th:id="|inputAdultsCount$${room.id}|"
+                                           th:name="adultsCount" th:value="${room.adultsLimit}"/>
+                                    <label th:for="|inputAdultsCount${room.id}|">
                                         Колькасць месц для дарослых
                                     </label>
                                 </div>
                                 <div class="form-floating mb-1">
-                                    <input class="form-control" type="number" th:id="|inputChildrenNumber${room.id}|"
-                                           th:name="childrenNumber" th:value="${room.guestsLimit - room.adultsLimit}"/>
-                                    <label th:for="|inputChildrenNumber${room.id}|">
+                                    <input class="form-control" type="number" th:id="|inputChildrenCount${room.id}|"
+                                           th:name="childrenCount" th:value="${room.guestsLimit - room.adultsLimit}"/>
+                                    <label th:for="|inputChildrenCount${room.id}|">
                                         Колькасць месц для дзяцей
                                     </label>
                                 </div>
@@ -265,9 +265,9 @@
                                     </label>
                                 </div>
                                 <div class="form-floating mb-1">
-                                    <input class="form-control" type="number" th:id="|inputRoomsNumber${room.id}|"
-                                           th:name="roomsNumber" th:value="${room.roomsNumber}"/>
-                                    <label th:for="|inputRoomsNumber${room.id}|">
+                                    <input class="form-control" type="number" th:id="|inputRoomsCount${room.id}|"
+                                           th:name="roomsCount" th:value="${room.roomsCount}"/>
+                                    <label th:for="|inputRoomsCount${room.id}|">
                                         Колькасць нумароў
                                     </label>
                                 </div>
@@ -296,7 +296,8 @@
                                 <div class="icon-box">
                                     <i class="fa-solid fa-user"></i>
                                 </div>
-                                месцаў — [[${room.guestsLimit}]] (сярод іх дзіцячых — [[${room.guestsLimit - room.adultsLimit}]])
+                                месцаў — [[${room.guestsLimit}]] (сярод іх дзіцячых — [[${room.guestsLimit -
+                                room.adultsLimit}]])
                                 <a href="#" onclick="filterSortingProperty('guestsLimit')">[фільтр]</a>
                             </li>
                             <li th:class="|list-group-item card-content-bottom-${room.id}|">
@@ -318,8 +319,8 @@
                                 <div class="icon-box">
                                     <i class="fa-solid fa-house"></i>
                                 </div>
-                                нумароў — [[${room.roomsNumber}]] шт.
-                                <a href="#" onclick="filterSortingProperty('roomsNumber')">[фільтр]</a>
+                                нумароў — [[${room.roomsCount}]] шт.
+                                <a href="#" onclick="filterSortingProperty('roomsCount')">[фільтр]</a>
                             </li>
                             <li class="list-group-item">
                                 Гатэль: [[${room.hotel.name}]]

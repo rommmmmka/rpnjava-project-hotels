@@ -4,7 +4,7 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -15,11 +15,11 @@ public class SessionEntity {
     private Long id;
 
     @NonNull
-    @Length(max=40)
+    @Length(max = 40)
     private String sessionKey = UUID.randomUUID().toString();
 
     @NonNull
-    private Date lastAccessTime;
+    private LocalDateTime lastAccessTime;
 
     private boolean rememberMe;
 
@@ -27,10 +27,11 @@ public class SessionEntity {
     @NonNull
     private UserEntity user;
 
+
     public SessionEntity() {
     }
 
-    public SessionEntity(UserEntity user, Date lastAccessTime, boolean rememberMe) {
+    public SessionEntity(@NonNull UserEntity user, @NonNull LocalDateTime lastAccessTime, boolean rememberMe) {
         this.user = user;
         this.lastAccessTime = lastAccessTime;
         this.rememberMe = rememberMe;
@@ -44,19 +45,21 @@ public class SessionEntity {
         this.id = id;
     }
 
+    @NonNull
     public String getSessionKey() {
         return sessionKey;
     }
 
-    public void setSessionKey(String sessionKey) {
+    public void setSessionKey(@NonNull String sessionKey) {
         this.sessionKey = sessionKey;
     }
 
-    public Date getLastAccessTime() {
+    @NonNull
+    public LocalDateTime getLastAccessTime() {
         return lastAccessTime;
     }
 
-    public void setLastAccessTime(Date lastAccessTime) {
+    public void setLastAccessTime(@NonNull LocalDateTime lastAccessTime) {
         this.lastAccessTime = lastAccessTime;
     }
 
@@ -68,11 +71,12 @@ public class SessionEntity {
         this.rememberMe = rememberMe;
     }
 
+    @NonNull
     public UserEntity getUser() {
         return user;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(@NonNull UserEntity user) {
         this.user = user;
     }
 }

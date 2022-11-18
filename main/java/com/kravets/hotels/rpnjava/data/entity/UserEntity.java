@@ -16,26 +16,26 @@ public class UserEntity {
     private Long id;
 
     @NonNull
-    @Length(max=32)
+    @Length(max = 32)
     private String login;
 
     @NonNull
-    @Length(max=44)
+    @Length(max = 44)
     private String passwordHash;
 
     @NonNull
-    @Length(max=44)
+    @Length(max = 44)
     private String passwordSalt;
 
     @NonNull
-    @Length(max=45)
+    @Length(max = 45)
     private String lastName;
 
     @NonNull
-    @Length(max=45)
+    @Length(max = 45)
     private String firstName;
 
-    @Length(max=45)
+    @Length(max = 45)
     private String patronymic;
 
     private boolean isAdmin;
@@ -45,6 +45,7 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderEntity> orders = new ArrayList<>();
+
 
     public UserEntity() {
     }
@@ -81,43 +82,48 @@ public class UserEntity {
         this.id = id;
     }
 
+    @NonNull
     public String getLogin() {
         return login;
     }
 
-    public void setLogin(String login) {
+    public void setLogin(@NonNull String login) {
         this.login = login;
     }
 
+    @NonNull
     public String getPasswordHash() {
         return passwordHash;
     }
 
-    public void setPasswordHash(String passwordHash) {
+    public void setPasswordHash(@NonNull String passwordHash) {
         this.passwordHash = passwordHash;
     }
 
+    @NonNull
     public String getPasswordSalt() {
         return passwordSalt;
     }
 
-    public void setPasswordSalt(String passwordSalt) {
+    public void setPasswordSalt(@NonNull String passwordSalt) {
         this.passwordSalt = passwordSalt;
     }
 
+    @NonNull
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public void setLastName(@NonNull String lastName) {
         this.lastName = lastName;
     }
 
+    @NonNull
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public void setFirstName(@NonNull String firstName) {
         this.firstName = firstName;
     }
 
