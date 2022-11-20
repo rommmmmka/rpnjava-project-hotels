@@ -2,6 +2,8 @@ package com.kravets.hotels.rpnjava.repository;
 
 import com.kravets.hotels.rpnjava.data.entity.OrderEntity;
 import com.kravets.hotels.rpnjava.data.entity.RoomEntity;
+import com.kravets.hotels.rpnjava.data.entity.StatusEntity;
+import com.kravets.hotels.rpnjava.data.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -10,6 +12,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
+
+    List<OrderEntity> findAllByUser(UserEntity userEntity);
+
+    List<OrderEntity> findAllByStatus(StatusEntity statusEntity);
+
+    List<OrderEntity> findAllByUserAndStatus(UserEntity userEntity, StatusEntity statusEntity);
 
     List<OrderEntity> findAllByExpireDateTimeBefore(LocalDateTime currentDateTime);
 

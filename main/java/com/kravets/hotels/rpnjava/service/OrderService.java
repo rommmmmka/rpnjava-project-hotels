@@ -2,8 +2,10 @@ package com.kravets.hotels.rpnjava.service;
 
 import com.kravets.hotels.rpnjava.data.entity.OrderEntity;
 import com.kravets.hotels.rpnjava.data.entity.RoomEntity;
+import com.kravets.hotels.rpnjava.data.entity.StatusEntity;
 import com.kravets.hotels.rpnjava.data.entity.UserEntity;
 import com.kravets.hotels.rpnjava.data.other.RoomWithFreeRoomsLeft;
+import com.kravets.hotels.rpnjava.exception.NoAccessException;
 import com.kravets.hotels.rpnjava.exception.NoFreeRoomsAvaliableException;
 import com.kravets.hotels.rpnjava.misc.DateUtils;
 import com.kravets.hotels.rpnjava.repository.OrderRepository;
@@ -14,6 +16,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class OrderService {
@@ -22,6 +25,22 @@ public class OrderService {
     @Autowired
     public OrderService(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
+    }
+
+    public List<OrderEntity> getAllOrders() {
+        return orderRepository.findAll();
+    }
+
+    public List<OrderEntity> getOrdersByUser(UserEntity userEntity) {
+        return orderRepository.findAllByUser(userEntity);
+    }
+
+    public List<OrderEntity> getOrdersByStatus(StatusEntity statusEntity) {
+        return orderRepository.findAllByStatus(statusEntity);
+    }
+
+    public List<OrderEntity> getOrdersByUserAndStatus(UserEntity userEntity, StatusEntity statusEntity) {
+        return orderRepository.findAllByUserAndStatus(userEntity, statusEntity);
     }
 
     public int getTakenRoomsCount(RoomEntity roomEntity, LocalDate checkInDate, LocalDate checkOutDate) {
@@ -46,9 +65,9 @@ public class OrderService {
         return answer;
     }
 
-    public void createOrder(LocalDate checkInDate, LocalDate checkOutDate, UserEntity userEntity, RoomEntity roomEntity) throws NoFreeRoomsAvaliableException {
+    public void createOrder(LocalDate checkInDate, LocalDate checkOutDate, UserEntity userEntity, RoomEntity roomEntity, StatusEntity statusEntity) throws NoFreeRoomsAvaliableException {
         if (roomEntity.getRoomsCount() > getTakenRoomsCount(roomEntity, checkInDate, checkOutDate)) {
-            OrderEntity orderEntity = new OrderEntity(checkInDate, checkOutDate, userEntity, roomEntity);
+            OrderEntity orderEntity = new OrderEntity(checkInDate, checkOutDate, userEntity, roomEntity, statusEntity);
             orderEntity.setCost(ChronoUnit.DAYS.between(checkInDate, checkOutDate) * roomEntity.getCostPerNight());
             if (roomEntity.isPrepaymentRequired()) {
                 orderEntity.setExpireDateTime(DateUtils.getCurrentDateTime().plusHours(1));
@@ -62,5 +81,23 @@ public class OrderService {
     public void removeOutdatedOrders() {
         List<OrderEntity> outdatedOrderEntities = orderRepository.findAllByExpireDateTimeBefore(DateUtils.getCurrentDateTime());
         orderRepository.deleteAllInBatch(outdatedOrderEntities);
+    }
+
+    public void editOrder(long orderId, StatusEntity statusEntity) throws NoSuchElementException {
+        OrderEntity orderEntity = orderRepository.findById(orderId).orElseThrow();
+        orderEntity.setStatus(statusEntity);
+        orderRepository.save(orderEntity);
+    }
+
+    public void removeOrder(long orderId) {
+        orderRepository.deleteById(orderId);
+    }
+
+    public void removeOrderByUser(long orderId, UserEntity userEntity) throws NoAccessException {
+        OrderEntity orderEntity = orderRepository.findById(orderId).orElseThrow();
+        if (orderEntity.getUser() != userEntity) {
+            throw new NoAccessException();
+        }
+        orderRepository.delete(orderEntity);
     }
 }

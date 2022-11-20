@@ -11,6 +11,7 @@ public class Services {
     public final OrderService order;
     public final RoomService room;
     public final SessionService session;
+    public final StatusService status;
     public final UserService user;
     public final DatabaseService db;
 
@@ -21,6 +22,7 @@ public class Services {
             OrderService orderService,
             RoomService roomService,
             SessionService sessionService,
+            StatusService statusService,
             UserService userService,
             DatabaseService databaseService
     ) {
@@ -29,6 +31,7 @@ public class Services {
         order = orderService;
         room = roomService;
         session = sessionService;
+        status = statusService;
         user = userService;
         db = databaseService;
     }

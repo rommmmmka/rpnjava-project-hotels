@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="be">
+
+<title th:fragment="title">Адмін-панэль | Booker - браніраванне гатэляў</title>
+
+<th:block th:fragment="content">
+    <div class="card my-4">
+        <div class="card-header">
+            <i class="fa-solid fa-filter"></i>
+            Фільтры
+        </div>
+        <div class="card-body container">
+            <form action="/admin/orders" method="get" id="filtersForm">
+                <div class="row justify-content-md-center">
+                    <div class="col-md-12 mb-3">
+                        <div class="form-floating mb-1">
+                            <select class="form-select" id="filterStatus" name="filterStatus" required>
+                                <option th:value="0">Любы</option>
+                                <option th:each="statusEntity : ${statusesList}" th:value="${statusEntity.id}"
+                                        th:text="${statusEntity.name}"
+                                        th:selected="${statusEntity.id == filterStatus}"/>
+                            </select>
+                            <label for="filterStatus">Статус заказу</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-md-center">
+                    <div class="col-md-12 mt-1 mb-0">
+                        <div class="d-grid">
+                            <button id="applyFiltersButton" class="btn btn-primary btn-block">Прымяніць</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card my-4">
+        <div class="card-header">
+            <i class="fa-solid fa-list"></i>
+            Спіс заказаў
+        </div>
+
+        <div class="card-body container">
+            <div class="row">
+                <div class="col-md-4" th:each="order : ${ordersList}">
+                    <div class="card my-3">
+                        <div class="card-body">
+                            <div>
+                                <h5 class="card-title d-inline" th:text="${order.room.name}"/>
+                            </div>
+                            <div>
+                                <span class="card-text" th:text="${order.room.hotel.name}"/>
+                            </div>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item" th:remove="${templateType == 'user'} ? 'all'">
+                                Карыстальнік: @[[${order.user.login}]]
+                            </li>
+                            <li class="list-group-item">
+                                Дата заезду: [[${order.checkInDate}]]
+                            </li>
+                            <li class="list-group-item">
+                                Дата выезду: [[${order.checkOutDate}]]
+                            </li>
+                            <li class="list-group-item">
+                                Кошт пражывання: [[${order.cost}]] руб.
+                            </li>
+                            <li class="list-group-item" th:id="|cardContent${order.id}|">
+                                Статус заказу:
+                                <span class="span-bold" th:style="|color: ${order.status.color}|"
+                                      th:text="${order.status.name}"/>
+                            </li>
+                            <li class="list-group-item" th:id="|cardEditor${order.id}|" style="display: none;"
+                                th:remove="${templateType == 'user'} ? 'all'">
+                                <form action="/admin/orders/edit" method="post" class="editStatusForm">
+                                    <input type="hidden" name="id" th:value="${order.id}">
+                                    <div class="form-floating mb-1">
+                                        <select class="form-select" name="status" th:id="|selectStatus${order.id}|">
+                                            <option th:each="statusEntity : ${statusesList}"
+                                                    th:value="${statusEntity.id}"
+                                                    th:text="${statusEntity.name}"
+                                                    th:selected="${statusEntity.id == order.status.id}"/>
+                                        </select>
+                                        <label th:for="|selectStatus${order.id}|">Статус</label>
+                                    </div>
+                                    <div class="mb-0">
+                                        <div class="d-grid">
+                                            <button class="btn btn-primary btn-block">Захаваць</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </li>
+                            <li class="list-group-item" th:remove="${order.expireDateTime == null} ? 'all'">
+                                Аўтавыдаленне заказу: [[${order.expireDateTime}]]
+                            </li>
+                        </ul>
+                        <div class="card-body pt-0 card-buttons-flex">
+                            <button type="button" class="btn btn-info mt-3" th:onclick="|editCard(${order.id})|"
+                                    th:remove="${templateType == 'user'} ? 'all'">
+                                <i class="fa-solid fa-pen-to-square white-icon"></i>
+                            </button>
+
+                            <button type="button" class="btn btn-info mt-3" th:onclick="|editCard(${order.id})|"
+                                    th:remove="${templateType == 'admin' || order.status.id != 2} ? 'all'">
+                                <i class="fa-solid fa-wallet white-icon"></i>
+                            </button>
+                            <form method="post" class=" mt-3"
+                                  th:action="(${templateType == 'admin'} ? '/admin' : '') + '/orders/remove'">
+                                <input type="hidden" name="id" th:value="${order.id}">
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</th:block>
+
+<script th:fragmemt="script" src="/js/admin/orders.js"></script>

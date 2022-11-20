@@ -31,15 +31,20 @@ public class OrderEntity {
     @NonNull
     private RoomEntity room;
 
+    @ManyToOne
+    @NonNull
+    private StatusEntity status;
+
 
     public OrderEntity() {
     }
 
-    public OrderEntity(@NonNull LocalDate checkInDate, @NonNull LocalDate checkOutDate, @NonNull UserEntity user, @NonNull RoomEntity room) {
+    public OrderEntity(@NonNull LocalDate checkInDate, @NonNull LocalDate checkOutDate, @NonNull UserEntity user, @NonNull RoomEntity room, @NonNull StatusEntity status) {
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
         this.user = user;
         this.room = room;
+        this.status = status;
     }
 
     public Long getId() {
@@ -100,5 +105,14 @@ public class OrderEntity {
 
     public void setRoom(@NonNull RoomEntity room) {
         this.room = room;
+    }
+
+    @NonNull
+    public StatusEntity getStatus() {
+        return status;
+    }
+
+    public void setStatus(@NonNull StatusEntity status) {
+        this.status = status;
     }
 }

@@ -311,3 +311,7 @@ textarea {
     display: inline-block;
     text-align: center;
 }
+
+.span-bold {
+    font-weight: bold;
+}

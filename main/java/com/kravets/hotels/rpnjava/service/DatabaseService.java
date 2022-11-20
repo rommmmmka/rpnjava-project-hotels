@@ -1,9 +1,6 @@
 package com.kravets.hotels.rpnjava.service;
 
-import com.kravets.hotels.rpnjava.data.entity.CityEntity;
-import com.kravets.hotels.rpnjava.data.entity.HotelEntity;
-import com.kravets.hotels.rpnjava.data.entity.RoomEntity;
-import com.kravets.hotels.rpnjava.data.entity.UserEntity;
+import com.kravets.hotels.rpnjava.data.entity.*;
 import com.kravets.hotels.rpnjava.data.form.AddHotelForm;
 import com.kravets.hotels.rpnjava.data.form.AddRoomForm;
 import com.kravets.hotels.rpnjava.data.form.SearchForm;
@@ -28,6 +25,7 @@ public class DatabaseService {
     private final OrderService orderService;
     private final RoomService roomService;
     private final SessionService sessionService;
+    private final StatusService statusService;
     private final UserService userService;
 
     @Autowired
@@ -37,6 +35,7 @@ public class DatabaseService {
             OrderService orderService,
             RoomService roomService,
             SessionService sessionService,
+            StatusService statusService,
             UserService userService
     ) {
         this.cityService = cityService;
@@ -44,6 +43,7 @@ public class DatabaseService {
         this.orderService = orderService;
         this.roomService = roomService;
         this.sessionService = sessionService;
+        this.statusService = statusService;
         this.userService = userService;
     }
 
@@ -147,6 +147,31 @@ public class DatabaseService {
     }
 
     public void createOrder(LocalDate checkInDate, LocalDate checkOutDate, UserEntity userEntity, long roomId) throws NoSuchElementException, NoFreeRoomsAvaliableException {
-        orderService.createOrder(checkInDate, checkOutDate, userEntity, roomService.getRoomByIdOrElseThrow(roomId));
+        RoomEntity roomEntity = roomService.getRoomByIdOrElseThrow(roomId);
+        StatusEntity statusEntity = statusService.getStatusByIdOrElseThrow(roomEntity.isPrepaymentRequired() ? 2 : 1);
+        orderService.createOrder(checkInDate, checkOutDate, userEntity, roomEntity, statusEntity);
+    }
+
+    public List<OrderEntity> getOrdersByUserAndStatusId(UserEntity userEntity, Long statusId) throws NoSuchElementException {
+        try {
+            StatusEntity statusEntity = statusService.getStatusByIdOrElseThrow(statusId);
+            return orderService.getOrdersByUserAndStatus(userEntity, statusEntity);
+        } catch (Exception e) {
+            return orderService.getOrdersByUser(userEntity);
+        }
+    }
+
+    public List<OrderEntity> getOrdersByStatusId(Long statusId) throws NoSuchElementException {
+        try {
+            StatusEntity statusEntity = statusService.getStatusByIdOrElseThrow(statusId);
+            return orderService.getOrdersByStatus(statusEntity);
+        } catch (Exception e) {
+            return orderService.getAllOrders();
+        }
+    }
+
+    public void editOrder(long orderId, long statusId) throws NoSuchElementException {
+        StatusEntity statusEntity = statusService.getStatusByIdOrElseThrow(statusId);
+        orderService.editOrder(orderId, statusEntity);
     }
 }
