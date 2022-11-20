@@ -80,9 +80,7 @@ function editCard(id) {
         cardContent.style.display = "block";
     }
 }
-
 const filtersForm = document.getElementById("filtersForm");
-
 function filterSortingProperty(property) {
     filtersForm.sortingProperty.value = property;
     filtersForm.submit();

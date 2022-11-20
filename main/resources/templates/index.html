@@ -41,14 +41,14 @@
                     <div class="col-md-6 mb-3">
                         <div class="form-floating">
                             <input class="form-control" id="inputCheckInDate" type="date" name="checkInDate"
-                                   th:min="${currentDate}" th:value="${currentDate}"/>
+                                   th:min="${currentDate}" th:value="${checkInDate}"/>
                             <label for="inputCheckInDate">Дата заезду</label>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
                         <div class="form-floating">
                             <input class="form-control" id="inputCheckOutDate" type="date" name="checkOutDate"
-                                   th:min="${currentDatePlusDay}" th:value="${currentDatePlusDay}"/>
+                                   th:min="${currentDatePlusDay}" th:value="${checkOutDate}"/>
                             <label for="inputCheckOutDate">Дата выезду</label>
                         </div>
                     </div>
@@ -115,7 +115,7 @@
                         </ul>
 
                         <div class="card-body card-buttons-flex">
-                            <a class="btn btn-success" th:href="1">
+                            <a class="btn btn-success" href="#" th:onclick="|orderRoom(${el.entity.id})|">
                                 Заказаць
                             </a>
                         </div>
@@ -124,6 +124,13 @@
 
             </div>
         </div>
+
+        <form action="/orders/add" method="post" id="hiddenForm" th:object="${searchForm}">
+            <input id="inputCheckInDateHidden" type="date" name="checkInDate" th:value="${checkInDate}" hidden/>
+            <input id="inputCheckOutDateHidden" type="date" name="checkOutDate" th:value="${checkOutDate}" hidden/>
+            <input id="inputRoomIdHidden" type="number" name="roomId" hidden/>
+        </form>
+    </div>
 </th:block>
 
 <script th:fragmemt="script" src="/js/index.js"></script>

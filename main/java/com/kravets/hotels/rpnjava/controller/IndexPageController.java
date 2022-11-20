@@ -43,6 +43,8 @@ public class IndexPageController {
         model.addAttribute("citiesList", services.cities.getAllCities());
         model.addAttribute("currentDate", DateUtils.convertDateToString(DateUtils.getCurrentDate()));
         model.addAttribute("currentDatePlusDay", DateUtils.convertDateToString(DateUtils.getCurrentDate().plusDays(1)));
+        model.addAttribute("checkInDate", DateUtils.convertDateToString(DateUtils.getCurrentDate()));
+        model.addAttribute("checkOutDate", DateUtils.convertDateToString(DateUtils.getCurrentDate().plusDays(1)));
 
         model.addAttribute("templateName", "index");
         model.addAttribute("templateType", "index");
@@ -66,6 +68,8 @@ public class IndexPageController {
 
             model.addAttribute("searchForm", searchForm);
             model.addAttribute("citiesList", services.cities.getAllCities());
+            model.addAttribute("currentDate", DateUtils.convertDateToString(DateUtils.getCurrentDate()));
+            model.addAttribute("currentDatePlusDay", DateUtils.convertDateToString(DateUtils.getCurrentDate().plusDays(1)));
             model.addAttribute("checkInDate", DateUtils.convertDateToString(searchForm.getCheckInDate()));
             model.addAttribute("checkOutDate", DateUtils.convertDateToString(searchForm.getCheckOutDate()));
 

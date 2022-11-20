@@ -18,5 +18,6 @@ public class ScheduledSessionsClean {
     @Scheduled(cron = "0 0 * ? * *")
     public void clean() {
         services.session.removeOutdatedSessions();
+        services.order.removeOutdatedOrders();
     }
 }

@@ -10,6 +10,7 @@ import com.kravets.hotels.rpnjava.data.form.SearchForm;
 import com.kravets.hotels.rpnjava.data.other.HotelWithRoomsCount;
 import com.kravets.hotels.rpnjava.data.other.RoomWithFreeRoomsLeft;
 import com.kravets.hotels.rpnjava.exception.InvalidFilterException;
+import com.kravets.hotels.rpnjava.exception.NoFreeRoomsAvaliableException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -125,12 +126,12 @@ public class DatabaseService {
         return orderService.getFreeRoomsWithFreeRoomsCountFromList(roomEntities, searchForm.getCheckInDate(), searchForm.getCheckOutDate());
     }
 
-    public void addHotel(AddHotelForm addHotelForm) throws IOException {
-        hotelService.addHotel(addHotelForm, cityService.getCityById(addHotelForm.getCity()));
+    public void addHotel(AddHotelForm addHotelForm) throws IOException, NoSuchElementException {
+        hotelService.addHotel(addHotelForm, cityService.getCityByIdOrElseThrow(addHotelForm.getCity()));
     }
 
-    public void addRoom(AddRoomForm addRoomForm) throws IOException {
-        roomService.addRoom(addRoomForm, hotelService.getHotelById(addRoomForm.getHotel()));
+    public void addRoom(AddRoomForm addRoomForm) throws IOException, NoSuchElementException {
+        roomService.addRoom(addRoomForm, hotelService.getHotelByIdOrElseThrow(addRoomForm.getHotel()));
     }
 
     public void removeSessionsByUserId(Long id) throws NoSuchElementException {
@@ -143,5 +144,9 @@ public class DatabaseService {
         int takenRoomsCount = orderService.getTakenRoomsCount(roomEntity, checkInDate, checkOutDate);
 
         return takenRoomsCount < roomEntity.getRoomsCount();
+    }
+
+    public void createOrder(LocalDate checkInDate, LocalDate checkOutDate, UserEntity userEntity, long roomId) throws NoSuchElementException, NoFreeRoomsAvaliableException {
+        orderService.createOrder(checkInDate, checkOutDate, userEntity, roomService.getRoomByIdOrElseThrow(roomId));
     }
 }

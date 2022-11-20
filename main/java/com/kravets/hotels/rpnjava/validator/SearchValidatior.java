@@ -37,7 +37,7 @@ public class SearchValidatior implements Validator {
         }
         try {
             if (searchForm.getCheckInDate().compareTo(searchForm.getCheckOutDate()) >= 0 ||
-                    searchForm.getCheckInDate().compareTo(DateUtils.getCurrentDate()) > 0
+                    searchForm.getCheckInDate().compareTo(DateUtils.getCurrentDate()) < 0
             ) {
                 throw new Exception();
             }

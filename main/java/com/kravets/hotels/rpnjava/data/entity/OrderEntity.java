@@ -4,6 +4,7 @@ import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "orders")
@@ -18,7 +19,7 @@ public class OrderEntity {
     @NonNull
     private LocalDate checkOutDate;
 
-    private LocalDate expireDate;
+    private LocalDateTime expireDateTime;
 
     private long cost;
 
@@ -33,6 +34,14 @@ public class OrderEntity {
 
     public OrderEntity() {
     }
+
+    public OrderEntity(@NonNull LocalDate checkInDate, @NonNull LocalDate checkOutDate, @NonNull UserEntity user, @NonNull RoomEntity room) {
+        this.checkInDate = checkInDate;
+        this.checkOutDate = checkOutDate;
+        this.user = user;
+        this.room = room;
+    }
+
     public Long getId() {
         return id;
     }
@@ -59,12 +68,12 @@ public class OrderEntity {
         this.checkOutDate = checkOutDate;
     }
 
-    public LocalDate getExpireDate() {
-        return expireDate;
+    public LocalDateTime getExpireDateTime() {
+        return expireDateTime;
     }
 
-    public void setExpireDate(LocalDate expireDate) {
-        this.expireDate = expireDate;
+    public void setExpireDateTime(LocalDateTime expireDateTime) {
+        this.expireDateTime = expireDateTime;
     }
 
     public long getCost() {

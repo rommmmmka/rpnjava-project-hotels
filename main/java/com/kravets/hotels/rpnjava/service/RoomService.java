@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class RoomService {
@@ -24,7 +25,7 @@ public class RoomService {
         this.roomRepository = roomRepository;
     }
 
-    public RoomEntity getRoomByIdOrElseThrow(long id) {
+    public RoomEntity getRoomByIdOrElseThrow(long id) throws NoSuchElementException {
         return roomRepository.findById(id).orElseThrow();
     }
 

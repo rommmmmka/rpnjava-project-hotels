@@ -1,5 +1,7 @@
 package com.kravets.hotels.rpnjava.controller;
 
+import com.kravets.hotels.rpnjava.data.entity.SessionEntity;
+import com.kravets.hotels.rpnjava.data.entity.UserEntity;
 import com.kravets.hotels.rpnjava.exception.NoFreeRoomsAvaliableException;
 import com.kravets.hotels.rpnjava.misc.Services;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;
@@ -35,13 +37,14 @@ public class OrdersController {
             RedirectAttributes redirectAttributes) {
 
         try {
-            sessionCheck.userAccess(model, request);
+            SessionEntity sessionEntity = sessionCheck.userAccess(model, request);
             if (!services.db.checkIfRoomIsEmpty(checkInDate, checkOutDate, roomId)) {
                 throw new NoFreeRoomsAvaliableException();
             }
 
-            services.order.createOrder(checkInDate, checkOutDate, roomId);
+            services.db.createOrder(checkInDate, checkOutDate, sessionEntity.getUser(), roomId);
 
+            redirectAttributes.addFlashAttribute("successMessage", "Заказ паспяхова створаны");
             return "redirect:/orders";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());

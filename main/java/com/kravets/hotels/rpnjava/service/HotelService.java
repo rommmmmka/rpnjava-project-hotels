@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class HotelService {
@@ -25,7 +26,7 @@ public class HotelService {
         return hotelRepository.findById(id).orElse(null);
     }
 
-    public HotelEntity getHotelByIdOrElseThrow(Long id) {
+    public HotelEntity getHotelByIdOrElseThrow(Long id) throws NoSuchElementException {
         return hotelRepository.findById(id).orElseThrow();
     }
 

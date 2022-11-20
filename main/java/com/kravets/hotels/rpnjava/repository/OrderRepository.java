@@ -3,15 +3,27 @@ package com.kravets.hotels.rpnjava.repository;
 import com.kravets.hotels.rpnjava.data.entity.OrderEntity;
 import com.kravets.hotels.rpnjava.data.entity.RoomEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
-    List<OrderEntity> getAllByRoomAndCheckInDateBetween(RoomEntity room, LocalDate checkInDate, LocalDate checkInDate2);
 
-    List<OrderEntity> getAllByRoomAndCheckOutDateBetween(RoomEntity room, LocalDate checkOutDate, LocalDate checkOutDate2);
+    List<OrderEntity> findAllByExpireDateTimeBefore(LocalDateTime currentDateTime);
 
-    List<OrderEntity> getAllByRoomAndCheckInDateIsLessThanAndCheckOutDateIsGreaterThan(RoomEntity room, LocalDate checkInDate, LocalDate checkOutDate);
+    @Query("""
+           SELECT o
+           FROM OrderEntity o
+           WHERE o.room = ?1
+             AND (
+                    (o.checkInDate >= ?3 AND o.checkInDate <= ?5)
+                 OR (o.checkOutDate >= ?4 AND o.checkOutDate <= ?6)
+                 OR (o.checkInDate <= ?2 AND o.checkOutDate >= ?7)
+                 )
+             AND (o.expireDateTime IS NULL OR o.expireDateTime > ?8)
+           """)
+    List<OrderEntity> getActiveOrders(RoomEntity roomEntity, LocalDate checkInDateM, LocalDate checkInDate, LocalDate checkInDateP, LocalDate checkOutDateM, LocalDate checkOutDate, LocalDate checkOutDateP, LocalDateTime currentDateTime);
+
 }

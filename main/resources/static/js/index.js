@@ -28,7 +28,6 @@ const inputAdultsCount = document.getElementById("inputAdultsCount");
 inputAdultsCount.addEventListener("change", function () {
     inputAdultsCount.value = Math.max(1, inputAdultsCount.value);
 });
-
 const inputChildrenCount = document.getElementById("inputChildrenCount");
 inputChildrenCount.addEventListener("change", function () {
     inputChildrenCount.value = Math.max(0, inputChildrenCount.value);
@@ -48,3 +47,8 @@ inputCheckInDate.addEventListener("change", function () {
     }
 });
 
+const hiddenForm = document.getElementById("hiddenForm");
+function orderRoom(roomId) {
+    hiddenForm.roomId.value = roomId;
+    hiddenForm.submit();
+}
