@@ -2,14 +2,14 @@
 <html xmlns:th="https://www.thymeleaf.org" lang="be">
 
 <title th:fragment="title">
-    [[${templateType == 'admin'} ? 'Адмін-панэль' : 'Спіс пакояў']] | Booker - браніраванне гатэляў
+    [[${templateType == 'admin'} ? 'Адмін-панэль' : 'Спіс нумароў']] | Booker - браніраванне гатэляў
 </title>
 
 <th:block th:fragment="content">
     <div class="card my-4" th:remove="${templateType != 'admin'} ? 'all'">
         <div class="card-header">
             <i class="fa-regular fa-square-plus"></i>
-            Дабавіць пакой
+            Дабавіць нумар
         </div>
         <div class="card-body container">
             <form action="/admin/rooms/create" method="post" id="addRoomForm" enctype="multipart/form-data"
@@ -46,7 +46,7 @@
                         <div class="form-floating mb-md-0">
                             <div>
                                 <label for="inputFile" class="form-label text-secondary mb-0">
-                                    <small>Выява пакоя*</small>
+                                    <small>Выява нумара*</small>
                                 </label>
                                 <input class="form-control form-control-sm" id="inputFile" type="file" accept=".jpg"
                                        th:field="*{coverPhotoFile}">
@@ -196,13 +196,13 @@
     <div class="card my-4">
         <div class="card-header">
             <i class="fa-solid fa-list"></i>
-            Спіс пакояў
+            Спіс нумароў
         </div>
         <div class="card-body container">
             <div class="row">
                 <div class="col-md-3" th:each="room : ${roomsList}">
                     <div class="card my-3">
-                        <img class="card-img-top" alt="Фота пакоя" th:src="|/uploads/${room.coverPhoto}|">
+                        <img class="card-img-top" alt="Фота нумара" th:src="|/uploads/${room.coverPhoto}|">
                         <div class="card-body">
                             <div th:id="|cardContentTop${room.id}|">
                                 <h5 class="card-title" th:text="${room.name}"/>

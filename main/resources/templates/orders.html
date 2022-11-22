@@ -121,4 +121,4 @@
     </div>
 </th:block>
 
-<script th:fragmemt="script" src="/js/admin/orders.js"></script>
+<script th:fragmemt="script" src="/js/admin/orders.js" th:remove="${templateType == 'user'} ? 'all'"></script>

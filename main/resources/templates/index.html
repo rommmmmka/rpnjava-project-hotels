@@ -71,7 +71,7 @@
             <div class="row">
                 <div class="col-md-3" th:each="el : ${roomsList}">
                     <div class="card my-3">
-                        <img class="card-img-top" alt="Фота пакоя" th:src="|/uploads/${el.entity.coverPhoto}|">
+                        <img class="card-img-top" alt="Фота нумара" th:src="|/uploads/${el.entity.coverPhoto}|">
                         <div class="card-body">
                             <h5 class="card-title" th:text="${el.entity.name}"/>
                             <p class="card-text" th:text="${el.entity.description}"/>
@@ -114,7 +114,7 @@
                             </li>
                         </ul>
 
-                        <div class="card-body card-buttons-flex">
+                        <div class="card-body card-buttons-flex" th:remove="${!isLoggedIn} ? 'all'">
                             <a class="btn btn-success" href="#" th:onclick="|orderRoom(${el.entity.id})|">
                                 Заказаць
                             </a>
