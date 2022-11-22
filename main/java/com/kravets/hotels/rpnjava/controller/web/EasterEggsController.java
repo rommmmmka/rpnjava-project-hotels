@@ -1,4 +1,4 @@
-package com.kravets.hotels.rpnjava.controller;
+package com.kravets.hotels.rpnjava.controller.web;
 
 import com.kravets.hotels.rpnjava.misc.DateUtils;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;

@@ -69,7 +69,7 @@ public class UserService {
     public UserEntity loginUser(LoginForm loginForm) throws UserNotFoundException, NoSuchAlgorithmException, InvalidPasswordException {
         UserEntity userEntity = userRepository.getByLogin(loginForm.getLogin());
         if (userEntity == null) {
-            throw new UserNotFoundException();
+            throw new UserNotFoundException("логінам");
         }
 
         String hashedPassword = PasswordHash.createHash(loginForm.getLogin(), loginForm.getPassword(), userEntity.getPasswordSalt());

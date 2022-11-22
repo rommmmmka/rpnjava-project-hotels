@@ -1,5 +1,6 @@
 package com.kravets.hotels.rpnjava.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kravets.hotels.rpnjava.data.form.AddRoomForm;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.lang.NonNull;
@@ -44,6 +45,7 @@ public class RoomEntity {
     @NonNull
     private HotelEntity hotel;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderEntity> orders = new ArrayList<>();
 

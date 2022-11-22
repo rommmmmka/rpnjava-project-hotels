@@ -1,5 +1,6 @@
 package com.kravets.hotels.rpnjava.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kravets.hotels.rpnjava.data.form.RegisterForm;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.lang.NonNull;
@@ -40,9 +41,11 @@ public class UserEntity {
 
     private boolean isAdmin;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SessionEntity> sessions = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderEntity> orders = new ArrayList<>();
 

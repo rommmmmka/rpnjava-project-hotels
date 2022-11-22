@@ -7,6 +7,7 @@ import com.kravets.hotels.rpnjava.data.entity.UserEntity;
 import com.kravets.hotels.rpnjava.data.other.RoomWithFreeRoomsLeft;
 import com.kravets.hotels.rpnjava.exception.NoAccessException;
 import com.kravets.hotels.rpnjava.exception.NoFreeRoomsAvaliableException;
+import com.kravets.hotels.rpnjava.exception.OrderDoesNotExistException;
 import com.kravets.hotels.rpnjava.misc.DateUtils;
 import com.kravets.hotels.rpnjava.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,11 +94,17 @@ public class OrderService {
         orderRepository.deleteById(orderId);
     }
 
-    public void removeOrderByUser(long orderId, UserEntity userEntity) throws NoAccessException {
-        OrderEntity orderEntity = orderRepository.findById(orderId).orElseThrow();
-        if (orderEntity.getUser() != userEntity) {
-            throw new NoAccessException();
+    public void removeOrderByUser(long orderId, UserEntity userEntity) throws NoAccessException, OrderDoesNotExistException {
+        try {
+            OrderEntity orderEntity = orderRepository.findById(orderId).orElseThrow();
+            if (orderEntity.getUser() != userEntity) {
+                throw new NoAccessException();
+            }
+            orderRepository.delete(orderEntity);
+        } catch (NoAccessException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new OrderDoesNotExistException();
         }
-        orderRepository.delete(orderEntity);
     }
 }

@@ -2,7 +2,9 @@ package com.kravets.hotels.rpnjava.data.other;
 
 import com.kravets.hotels.rpnjava.data.entity.HotelEntity;
 
-public class HotelWithRoomsCount {
+import java.io.Serializable;
+
+public class HotelWithRoomsCount implements Serializable {
     public final HotelEntity entity;
 
     public final long roomsCount;

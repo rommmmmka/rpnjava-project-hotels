@@ -3,6 +3,7 @@ package com.kravets.hotels.rpnjava.misc;
 import com.kravets.hotels.rpnjava.data.entity.SessionEntity;
 import com.kravets.hotels.rpnjava.data.entity.UserEntity;
 import com.kravets.hotels.rpnjava.exception.NoAccessException;
+import com.kravets.hotels.rpnjava.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
@@ -19,18 +20,19 @@ public final class SessionCheck {
         this.services = services;
     }
 
+    public SessionEntity updateAndGetSession(String sessionKey) {
+        SessionEntity sessionEntity = services.session.getSessionBySessionKey(sessionKey);
+        sessionEntity.setLastAccessTime(DateUtils.getCurrentDateTime());
+        services.session.editSession(sessionEntity);
+        return sessionEntity;
+    }
+
     private SessionEntity addAttributes(Model model, HttpServletRequest request) {
         model.addAttribute("isLoggedIn", false);
         try {
             String sessionKey = WebUtils.getCookie(request, "session_key").getValue();
-            SessionEntity sessionEntity = services.session.getSessionBySessionKey(sessionKey);
-            if (sessionEntity == null) {
-                return null;
-            }
 
-            sessionEntity.setLastAccessTime(DateUtils.getCurrentDateTime());
-            services.session.editSession(sessionEntity);
-
+            SessionEntity sessionEntity = updateAndGetSession(sessionKey);
             UserEntity userEntity = sessionEntity.getUser();
 
             model.addAttribute("isLoggedIn", true);
@@ -73,5 +75,20 @@ public final class SessionCheck {
             throw new NoAccessException();
         }
         return sessionEntity;
+    }
+
+    public void noRestrictionAccessRest(String sessionKey) {
+        try {
+            updateAndGetSession(sessionKey);
+        } catch (Exception ignored) {
+        }
+    }
+
+    public SessionEntity userAccessRest(String sessionKey) throws NoAccessException, UserNotFoundException {
+        try {
+            return updateAndGetSession(sessionKey);
+        } catch (Exception e) {
+            throw new NoAccessException();
+        }
     }
 }

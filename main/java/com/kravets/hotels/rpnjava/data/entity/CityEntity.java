@@ -1,5 +1,6 @@
 package com.kravets.hotels.rpnjava.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.lang.NonNull;
 
@@ -20,6 +21,7 @@ public class CityEntity {
 
     private boolean disabled;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "city")
     private List<HotelEntity> hotels = new ArrayList<>();
 

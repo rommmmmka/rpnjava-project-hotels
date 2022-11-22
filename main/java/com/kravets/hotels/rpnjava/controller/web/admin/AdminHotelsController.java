@@ -1,4 +1,4 @@
-package com.kravets.hotels.rpnjava.controller.admin;
+package com.kravets.hotels.rpnjava.controller.web.admin;
 
 import com.kravets.hotels.rpnjava.data.form.AddHotelForm;
 import com.kravets.hotels.rpnjava.data.form.EditHotelForm;

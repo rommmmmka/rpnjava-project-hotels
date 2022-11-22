@@ -1,16 +1,18 @@
 package com.kravets.hotels.rpnjava.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kravets.hotels.rpnjava.data.form.AddHotelForm;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "hotels")
-public class HotelEntity {
+public class HotelEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,6 +32,7 @@ public class HotelEntity {
     @NonNull
     private CityEntity city;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RoomEntity> rooms = new ArrayList<>();
 

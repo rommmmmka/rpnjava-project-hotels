@@ -2,6 +2,7 @@ package com.kravets.hotels.rpnjava.service;
 
 import com.kravets.hotels.rpnjava.data.entity.SessionEntity;
 import com.kravets.hotels.rpnjava.data.entity.UserEntity;
+import com.kravets.hotels.rpnjava.exception.UserNotFoundException;
 import com.kravets.hotels.rpnjava.misc.DateUtils;
 import com.kravets.hotels.rpnjava.repository.SessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +34,12 @@ public class SessionService {
         sessionRepository.save(sessionEntity);
     }
 
-    public void removeSession(SessionEntity sessionEntity) {
-        sessionRepository.delete(sessionEntity);
+    public void removeSession(SessionEntity sessionEntity) throws UserNotFoundException {
+        try {
+            sessionRepository.delete(sessionEntity);
+        } catch (Exception e) {
+            throw new UserNotFoundException("сесіённым ключом");
+        }
     }
 
     public void removeSessionsByUser(UserEntity userEntity) throws NoSuchElementException {

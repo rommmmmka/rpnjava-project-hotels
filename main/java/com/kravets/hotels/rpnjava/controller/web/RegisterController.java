@@ -1,4 +1,4 @@
-package com.kravets.hotels.rpnjava.controller;
+package com.kravets.hotels.rpnjava.controller.web;
 
 import com.kravets.hotels.rpnjava.data.form.LoginForm;
 import com.kravets.hotels.rpnjava.data.form.RegisterForm;
@@ -63,7 +63,7 @@ public class RegisterController {
 
             LoginForm loginForm = new LoginForm(registerForm.getLogin());
             redirectAttributes.addFlashAttribute("loginForm", loginForm);
-            redirectAttributes.addFlashAttribute("successMessage", "Акаўнт паспяхова створаны!");
+            redirectAttributes.addFlashAttribute("successMessage", "Акаўнт паспяхова створаны");
 
             return "redirect:/login";
         } catch (Exception e) {

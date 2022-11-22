@@ -1,4 +1,4 @@
-package com.kravets.hotels.rpnjava.controller;
+package com.kravets.hotels.rpnjava.controller.web;
 
 import com.kravets.hotels.rpnjava.data.entity.SessionEntity;
 import com.kravets.hotels.rpnjava.data.entity.UserEntity;

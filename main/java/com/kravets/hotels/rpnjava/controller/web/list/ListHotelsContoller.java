@@ -1,4 +1,4 @@
-package com.kravets.hotels.rpnjava.controller.list;
+package com.kravets.hotels.rpnjava.controller.web.list;
 
 import com.kravets.hotels.rpnjava.misc.Services;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;
@@ -12,20 +12,19 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class ListRoomsController {
+public class ListHotelsContoller {
     private final Services services;
     private final SessionCheck sessionCheck;
 
     @Autowired
-    public ListRoomsController(Services services, SessionCheck sessionCheck) {
+    public ListHotelsContoller(Services services, SessionCheck sessionCheck) {
         this.services = services;
         this.sessionCheck = sessionCheck;
     }
 
-    @GetMapping("/list/rooms")
-    public String adminRoomsPage(
+    @GetMapping("/list/hotels")
+    public String listHotelsPage(
             Model model,
-            @RequestParam(required = false, defaultValue = "0") Long filterHotel,
             @RequestParam(required = false, defaultValue = "0") Long filterCity,
             @RequestParam(required = false, defaultValue = "creationDate") String sortingProperty,
             @RequestParam(required = false, defaultValue = "descending") String sortingDirection,
@@ -35,15 +34,13 @@ public class ListRoomsController {
         try {
             sessionCheck.noRestrictionAccess(model, request);
 
-            model.addAttribute("hotelsList", services.hotel.getAllHotels());
-            model.addAttribute("roomsList", services.db.getRoomsByParameters(filterHotel, filterCity, sortingProperty, sortingDirection));
             model.addAttribute("citiesList", services.cities.getAllCities());
-            model.addAttribute("filterHotel", filterHotel);
+            model.addAttribute("hotelsList", services.db.getHotelsWithRoomsCountByParameters(filterCity, sortingProperty, sortingDirection));
             model.addAttribute("filterCity", filterCity);
             model.addAttribute("sortingProperty", sortingProperty);
             model.addAttribute("sortingDirection", sortingDirection);
 
-            model.addAttribute("templateName", "rooms");
+            model.addAttribute("templateName", "hotels");
             model.addAttribute("templateType", "list");
             return "base";
         } catch (Exception e) {

@@ -1,5 +1,7 @@
 package com.kravets.hotels.rpnjava.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
@@ -23,6 +25,7 @@ public class OrderEntity {
 
     private long cost;
 
+    @JsonPropertyOrder({"id"})
     @ManyToOne
     @NonNull
     private UserEntity user;
@@ -31,6 +34,7 @@ public class OrderEntity {
     @NonNull
     private RoomEntity room;
 
+    @JsonPropertyOrder({"id"})
     @ManyToOne
     @NonNull
     private StatusEntity status;
