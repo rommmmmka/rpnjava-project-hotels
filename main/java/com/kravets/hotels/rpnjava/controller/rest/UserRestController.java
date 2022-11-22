@@ -5,7 +5,6 @@ import com.kravets.hotels.rpnjava.data.entity.UserEntity;
 import com.kravets.hotels.rpnjava.data.form.LoginForm;
 import com.kravets.hotels.rpnjava.data.form.RegisterForm;
 import com.kravets.hotels.rpnjava.exception.FormValidationException;
-import com.kravets.hotels.rpnjava.exception.UserAlreadyExistsException;
 import com.kravets.hotels.rpnjava.misc.Services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 

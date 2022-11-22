@@ -4,6 +4,7 @@ import com.kravets.hotels.rpnjava.data.entity.OrderEntity;
 import com.kravets.hotels.rpnjava.data.entity.RoomEntity;
 import com.kravets.hotels.rpnjava.data.entity.StatusEntity;
 import com.kravets.hotels.rpnjava.data.entity.UserEntity;
+import com.kravets.hotels.rpnjava.data.form.AddOrderForm;
 import com.kravets.hotels.rpnjava.data.other.RoomWithFreeRoomsLeft;
 import com.kravets.hotels.rpnjava.exception.NoAccessException;
 import com.kravets.hotels.rpnjava.exception.NoFreeRoomsAvaliableException;
@@ -66,7 +67,9 @@ public class OrderService {
         return answer;
     }
 
-    public void createOrder(LocalDate checkInDate, LocalDate checkOutDate, UserEntity userEntity, RoomEntity roomEntity, StatusEntity statusEntity) throws NoFreeRoomsAvaliableException {
+    public void createOrder(AddOrderForm addOrderForm, UserEntity userEntity, RoomEntity roomEntity, StatusEntity statusEntity) throws NoFreeRoomsAvaliableException {
+        LocalDate checkInDate = addOrderForm.getCheckInDate();
+        LocalDate checkOutDate = addOrderForm.getCheckOutDate();
         if (roomEntity.getRoomsCount() > getTakenRoomsCount(roomEntity, checkInDate, checkOutDate)) {
             OrderEntity orderEntity = new OrderEntity(checkInDate, checkOutDate, userEntity, roomEntity, statusEntity);
             orderEntity.setCost(ChronoUnit.DAYS.between(checkInDate, checkOutDate) * roomEntity.getCostPerNight());

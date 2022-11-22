@@ -1,6 +1,5 @@
 package com.kravets.hotels.rpnjava.controller.rest;
 
-import com.kravets.hotels.rpnjava.data.other.HotelWithRoomsCount;
 import com.kravets.hotels.rpnjava.misc.Services;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController

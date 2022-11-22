@@ -2,19 +2,18 @@ package com.kravets.hotels.rpnjava.controller.rest;
 
 import com.kravets.hotels.rpnjava.data.entity.SessionEntity;
 import com.kravets.hotels.rpnjava.data.entity.UserEntity;
+import com.kravets.hotels.rpnjava.data.form.AddOrderForm;
+import com.kravets.hotels.rpnjava.exception.FormValidationException;
 import com.kravets.hotels.rpnjava.exception.NoFreeRoomsAvaliableException;
 import com.kravets.hotels.rpnjava.misc.Services;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;
+import com.kravets.hotels.rpnjava.validator.AddOrderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,11 +21,13 @@ import java.util.Map;
 public class OrderRestController {
     private final Services services;
     private final SessionCheck sessionCheck;
+    private final AddOrderValidator addOrderValidator;
 
     @Autowired
-    public OrderRestController(Services services, SessionCheck sessionCheck) {
+    public OrderRestController(Services services, SessionCheck sessionCheck, AddOrderValidator addOrderValidator) {
         this.services = services;
         this.sessionCheck = sessionCheck;
+        this.addOrderValidator = addOrderValidator;
     }
 
     @GetMapping(value = "/rest/order/get")
@@ -54,18 +55,21 @@ public class OrderRestController {
     @PostMapping(value = "/rest/order/add")
     public ResponseEntity<Object> addOrderAction(
             @RequestParam(required = false) String sessionKey,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkInDate,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOutDate,
-            @RequestParam Long roomId
+            @ModelAttribute AddOrderForm addOrderForm,
+            BindingResult result
     ) {
         Map<String, Object> answer = new HashMap<>();
         try {
             SessionEntity sessionEntity = sessionCheck.userAccessRest(sessionKey);
-            if (!services.db.checkIfRoomIsEmpty(checkInDate, checkOutDate, roomId)) {
+            addOrderValidator.validate(addOrderForm, result);
+            if (result.hasErrors()) {
+                throw new FormValidationException();
+            }
+            if (!services.db.checkIfRoomIsEmpty(addOrderForm)) {
                 throw new NoFreeRoomsAvaliableException();
             }
 
-            services.db.createOrder(checkInDate, checkOutDate, sessionEntity.getUser(), roomId);
+            services.db.createOrder(addOrderForm, sessionEntity.getUser());
 
             return new ResponseEntity<>(answer, HttpStatus.OK);
         } catch (Exception e) {

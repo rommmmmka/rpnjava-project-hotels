@@ -92,7 +92,7 @@
                                 </form>
                             </li>
                             <li class="list-group-item" th:remove="${order.expireDateTime == null} ? 'all'">
-                                Аўтавыдаленне заказу: [[${order.expireDateTime}]]
+                                Аўтавыдаленне заказу: [[${order.expireDateTimeFormatted}]]
                             </li>
                         </ul>
                         <div class="card-body pt-0 card-buttons-flex">

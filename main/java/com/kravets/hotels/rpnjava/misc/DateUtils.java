@@ -22,4 +22,8 @@ public class DateUtils {
     public static String convertDateToShortString(LocalDate localDate) {
         return localDate.format(DateTimeFormatter.ofPattern("d-M"));
     }
+
+    public static String convertDateTimeToString(LocalDateTime localDateTime) {
+        return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+    }
 }

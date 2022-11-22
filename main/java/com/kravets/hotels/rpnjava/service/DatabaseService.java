@@ -2,6 +2,7 @@ package com.kravets.hotels.rpnjava.service;
 
 import com.kravets.hotels.rpnjava.data.entity.*;
 import com.kravets.hotels.rpnjava.data.form.AddHotelForm;
+import com.kravets.hotels.rpnjava.data.form.AddOrderForm;
 import com.kravets.hotels.rpnjava.data.form.AddRoomForm;
 import com.kravets.hotels.rpnjava.data.form.SearchForm;
 import com.kravets.hotels.rpnjava.data.other.HotelWithRoomsCount;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -139,17 +139,17 @@ public class DatabaseService {
         sessionService.removeSessionsByUser(userEntity);
     }
 
-    public boolean checkIfRoomIsEmpty(LocalDate checkInDate, LocalDate checkOutDate, long roomId) {
-        RoomEntity roomEntity = roomService.getRoomByIdOrElseThrow(roomId);
-        int takenRoomsCount = orderService.getTakenRoomsCount(roomEntity, checkInDate, checkOutDate);
+    public boolean checkIfRoomIsEmpty(AddOrderForm addOrderForm) {
+        RoomEntity roomEntity = roomService.getRoomByIdOrElseThrow(addOrderForm.getRoomId());
+        int takenRoomsCount = orderService.getTakenRoomsCount(roomEntity, addOrderForm.getCheckInDate(), addOrderForm.getCheckOutDate());
 
         return takenRoomsCount < roomEntity.getRoomsCount();
     }
 
-    public void createOrder(LocalDate checkInDate, LocalDate checkOutDate, UserEntity userEntity, long roomId) throws NoSuchElementException, NoFreeRoomsAvaliableException {
-        RoomEntity roomEntity = roomService.getRoomByIdOrElseThrow(roomId);
+    public void createOrder(AddOrderForm addOrderForm, UserEntity userEntity) throws NoSuchElementException, NoFreeRoomsAvaliableException {
+        RoomEntity roomEntity = roomService.getRoomByIdOrElseThrow(addOrderForm.getRoomId());
         StatusEntity statusEntity = statusService.getStatusByIdOrElseThrow(roomEntity.isPrepaymentRequired() ? 2 : 1);
-        orderService.createOrder(checkInDate, checkOutDate, userEntity, roomEntity, statusEntity);
+        orderService.createOrder(addOrderForm, userEntity, roomEntity, statusEntity);
     }
 
     public List<OrderEntity> getOrdersByUserAndStatusId(UserEntity userEntity, Long statusId) throws NoSuchElementException {

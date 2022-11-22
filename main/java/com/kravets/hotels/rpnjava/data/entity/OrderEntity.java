@@ -1,7 +1,7 @@
 package com.kravets.hotels.rpnjava.data.entity;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.kravets.hotels.rpnjava.misc.DateUtils;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
@@ -49,6 +49,10 @@ public class OrderEntity {
         this.user = user;
         this.room = room;
         this.status = status;
+    }
+
+    public String getExpireDateTimeFormatted() {
+        return DateUtils.convertDateTimeToString(expireDateTime);
     }
 
     public Long getId() {

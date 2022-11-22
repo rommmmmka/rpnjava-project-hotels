@@ -65,7 +65,7 @@ public class RoomRestController {
             @RequestParam(required = false) String sessionKey,
             @ModelAttribute SearchForm searchForm,
             BindingResult result
-            ) {
+    ) {
         Map<String, Object> answer = new HashMap<>();
         try {
             searchValidatior.validate(searchForm, result);

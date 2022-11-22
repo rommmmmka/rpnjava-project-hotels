@@ -2,31 +2,35 @@ package com.kravets.hotels.rpnjava.controller.web;
 
 import com.kravets.hotels.rpnjava.data.entity.SessionEntity;
 import com.kravets.hotels.rpnjava.data.entity.UserEntity;
+import com.kravets.hotels.rpnjava.data.form.AddOrderForm;
+import com.kravets.hotels.rpnjava.exception.FormValidationException;
 import com.kravets.hotels.rpnjava.exception.NoFreeRoomsAvaliableException;
-import com.kravets.hotels.rpnjava.exception.OrderDoesNotExistException;
 import com.kravets.hotels.rpnjava.misc.Services;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;
+import com.kravets.hotels.rpnjava.validator.AddOrderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDate;
 
 @Controller
 public class OrdersController {
-    private final SessionCheck sessionCheck;
     private final Services services;
+    private final SessionCheck sessionCheck;
+    private final AddOrderValidator addOrderValidator;
 
     @Autowired
-    public OrdersController(SessionCheck sessionCheck, Services services) {
-        this.sessionCheck = sessionCheck;
+    public OrdersController(Services services, SessionCheck sessionCheck, AddOrderValidator addOrderValidator) {
         this.services = services;
+        this.sessionCheck = sessionCheck;
+        this.addOrderValidator = addOrderValidator;
     }
 
     @GetMapping(value = "/orders")
@@ -41,6 +45,7 @@ public class OrdersController {
             UserEntity userEntity = sessionEntity.getUser();
 
             model.addAttribute("ordersList", services.db.getOrdersByUserAndStatusId(userEntity, filterStatus));
+            System.out.println(services.db.getOrdersByUserAndStatusId(userEntity, filterStatus).get(0).getExpireDateTimeFormatted());
             model.addAttribute("statusesList", services.status.getAllStatuses());
             model.addAttribute("filterStatus", filterStatus);
 
@@ -56,19 +61,22 @@ public class OrdersController {
     @PostMapping(value = "/orders/add")
     public String addOrderAction(
             Model model,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkInDate,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOutDate,
-            @RequestParam Long roomId,
+            @ModelAttribute AddOrderForm addOrderForm,
+            BindingResult result,
             HttpServletRequest request,
             RedirectAttributes redirectAttributes) {
 
         try {
             SessionEntity sessionEntity = sessionCheck.userAccess(model, request);
-            if (!services.db.checkIfRoomIsEmpty(checkInDate, checkOutDate, roomId)) {
+            addOrderValidator.validate(addOrderForm, result);
+            if (result.hasErrors()) {
+                throw new FormValidationException();
+            }
+            if (!services.db.checkIfRoomIsEmpty(addOrderForm)) {
                 throw new NoFreeRoomsAvaliableException();
             }
 
-            services.db.createOrder(checkInDate, checkOutDate, sessionEntity.getUser(), roomId);
+            services.db.createOrder(addOrderForm, sessionEntity.getUser());
 
             redirectAttributes.addFlashAttribute("successMessage", "Заказ паспяхова створаны");
             return "redirect:/orders";
