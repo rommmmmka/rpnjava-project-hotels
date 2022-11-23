@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org" lang="be">
 
-<title th:fragment="title">Адмін-панэль | Booker - браніраванне гатэляў</title>
+<title th:fragment="title">
+    [[${templateType == 'admin'} ? 'Адмін-панэль' : 'Спіс заказаў']] | Booker - браніраванне гатэляў
+</title>
 
 <th:block th:fragment="content">
     <div class="card my-4">
@@ -101,10 +103,11 @@
                                 <i class="fa-solid fa-pen-to-square white-icon"></i>
                             </button>
 
-                            <button type="button" class="btn btn-info mt-3" th:onclick="|editCard(${order.id})|"
-                                    th:remove="${templateType == 'admin' || order.status.id != 2} ? 'all'">
+                            <a class="btn btn-info mt-3" target="_blank"
+                               th:href="|https://t.me/booker_payment_bot?start=${order.id}|"
+                               th:remove="${templateType == 'admin' || order.status.id != 2} ? 'all'">
                                 <i class="fa-solid fa-wallet white-icon"></i>
-                            </button>
+                            </a>
                             <form method="post" class=" mt-3"
                                   th:action="(${templateType == 'admin'} ? '/admin' : '') + '/orders/remove'">
                                 <input type="hidden" name="id" th:value="${order.id}">

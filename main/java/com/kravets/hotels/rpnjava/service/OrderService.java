@@ -11,6 +11,7 @@ import com.kravets.hotels.rpnjava.exception.NoFreeRoomsAvaliableException;
 import com.kravets.hotels.rpnjava.exception.OrderDoesNotExistException;
 import com.kravets.hotels.rpnjava.misc.DateUtils;
 import com.kravets.hotels.rpnjava.repository.OrderRepository;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,10 @@ public class OrderService {
     @Autowired
     public OrderService(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
+    }
+
+    public OrderEntity getOrderByIdOrElseThrow(long id) throws NoSuchElementException {
+        return orderRepository.findById(id).orElseThrow();
     }
 
     public List<OrderEntity> getAllOrders() {
@@ -90,6 +95,15 @@ public class OrderService {
     public void editOrder(long orderId, StatusEntity statusEntity) throws NoSuchElementException {
         OrderEntity orderEntity = orderRepository.findById(orderId).orElseThrow();
         orderEntity.setStatus(statusEntity);
+        if (statusEntity.getId() == 2) {
+            orderEntity.setExpireDateTime(DateUtils.getCurrentDateTime().plusHours(1));
+        } else {
+            orderEntity.setExpireDateTime(null);
+        }
+        orderRepository.save(orderEntity);
+    }
+
+    public void editOrder(OrderEntity orderEntity) {
         orderRepository.save(orderEntity);
     }
 

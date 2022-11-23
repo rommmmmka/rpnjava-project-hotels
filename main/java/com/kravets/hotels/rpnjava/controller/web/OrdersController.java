@@ -45,7 +45,6 @@ public class OrdersController {
             UserEntity userEntity = sessionEntity.getUser();
 
             model.addAttribute("ordersList", services.db.getOrdersByUserAndStatusId(userEntity, filterStatus));
-            System.out.println(services.db.getOrdersByUserAndStatusId(userEntity, filterStatus).get(0).getExpireDateTimeFormatted());
             model.addAttribute("statusesList", services.status.getAllStatuses());
             model.addAttribute("filterStatus", filterStatus);
 
