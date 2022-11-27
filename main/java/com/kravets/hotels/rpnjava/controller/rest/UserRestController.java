@@ -25,7 +25,7 @@ public class UserRestController {
         this.services = services;
     }
 
-    @GetMapping(value = "/rest/user/get_info")
+    @GetMapping(value = "/api/user/get_info")
     public ResponseEntity<Object> getUserInfo(@RequestParam String sessionKey) {
         Map<String, Object> answer = new HashMap<>();
         try {
@@ -42,7 +42,7 @@ public class UserRestController {
         }
     }
 
-    @PostMapping(value = "/rest/user/register")
+    @PostMapping(value = "/api/user/register")
     public ResponseEntity<Object> registerUser(@Valid @ModelAttribute RegisterForm registerForm, BindingResult result) {
         Map<String, Object> answer = new HashMap<>();
         try {
@@ -58,7 +58,7 @@ public class UserRestController {
         }
     }
 
-    @PostMapping(value = "/rest/user/login")
+    @PostMapping(value = "/api/user/login")
     public ResponseEntity<Object> loginUser(@Valid @ModelAttribute LoginForm loginForm, BindingResult result) {
         Map<String, Object> answer = new HashMap<>();
         try {
@@ -77,7 +77,7 @@ public class UserRestController {
         }
     }
 
-    @PostMapping(value = "/rest/user/logout")
+    @PostMapping(value = "/api/user/logout")
     public ResponseEntity<Object> logoutUser(@RequestParam String sessionKey) {
         Map<String, Object> answer = new HashMap<>();
         try {

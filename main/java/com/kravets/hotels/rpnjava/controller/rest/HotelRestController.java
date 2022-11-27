@@ -23,7 +23,7 @@ public class HotelRestController {
         this.sessionCheck = sessionCheck;
     }
 
-    @GetMapping(value = "/rest/hotel/get")
+    @GetMapping(value = "/api/hotel/get_list")
     public ResponseEntity<Object> getHotelsList(
             @RequestParam(required = false) String sessionKey,
             @RequestParam(required = false, defaultValue = "0") Long filterCity,

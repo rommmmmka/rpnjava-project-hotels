@@ -33,7 +33,7 @@ public class RoomRestController {
         this.searchValidatior = searchValidatior;
     }
 
-    @GetMapping(value = "/rest/room/get")
+    @GetMapping(value = "/api/room/get_list")
     public ResponseEntity<Object> getRoomsList(
             @RequestParam(required = false) String sessionKey,
             @RequestParam(required = false, defaultValue = "0") Long filterHotel,
@@ -60,7 +60,7 @@ public class RoomRestController {
         }
     }
 
-    @GetMapping(value = "/rest/room/search")
+    @GetMapping(value = "/api/room/search")
     public ResponseEntity<Object> searchRooms(
             @RequestParam(required = false) String sessionKey,
             @ModelAttribute SearchForm searchForm,

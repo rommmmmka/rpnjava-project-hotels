@@ -30,7 +30,7 @@ public class OrderRestController {
         this.addOrderValidator = addOrderValidator;
     }
 
-    @GetMapping(value = "/rest/order/get")
+    @GetMapping(value = "/api/order/get_list")
     public ResponseEntity<Object> getOrdersList(
             @RequestParam(required = false) String sessionKey,
             @RequestParam(required = false, defaultValue = "0") Long filterStatus
@@ -52,7 +52,7 @@ public class OrderRestController {
 
     }
 
-    @PostMapping(value = "/rest/order/add")
+    @PostMapping(value = "/api/order/add")
     public ResponseEntity<Object> addOrderAction(
             @RequestParam(required = false) String sessionKey,
             @ModelAttribute AddOrderForm addOrderForm,
@@ -78,7 +78,7 @@ public class OrderRestController {
         }
     }
 
-    @PostMapping(value = "/rest/order/remove")
+    @PostMapping(value = "/api/order/remove")
     public ResponseEntity<Object> removeOrderAction(
             @RequestParam(required = false) String sessionKey,
             @RequestParam Long id
