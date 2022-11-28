@@ -27,40 +27,36 @@ public class UserRestController {
 
     @GetMapping(value = "/api/user/get_info")
     public ResponseEntity<Object> getUserInfo(@RequestParam String sessionKey) {
-        Map<String, Object> answer = new HashMap<>();
         try {
             SessionEntity sessionEntity = services.session.getSessionBySessionKey(sessionKey);
             UserEntity userEntity = sessionEntity.getUser();
 
+            Map<String, Object> answer = new HashMap<>();
             answer.put("login", userEntity.getLogin());
             answer.put("shortName", userEntity.getShortName());
 
             return new ResponseEntity<>(answer, HttpStatus.OK);
         } catch (Exception e) {
-            answer.put("errorMessage", e.getMessage());
-            return new ResponseEntity<>(answer, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PostMapping(value = "/api/user/register")
     public ResponseEntity<Object> registerUser(@Valid @ModelAttribute RegisterForm registerForm, BindingResult result) {
-        Map<String, Object> answer = new HashMap<>();
         try {
             if (result.hasErrors()) {
                 throw new FormValidationException();
             }
 
             services.user.registerUser(registerForm);
-            return new ResponseEntity<>(answer, HttpStatus.OK);
+            return new ResponseEntity<>(null, HttpStatus.OK);
         } catch (Exception e) {
-            answer.put("errorMessage", e.getMessage());
-            return new ResponseEntity<>(answer, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PostMapping(value = "/api/user/login")
     public ResponseEntity<Object> loginUser(@Valid @ModelAttribute LoginForm loginForm, BindingResult result) {
-        Map<String, Object> answer = new HashMap<>();
         try {
             if (result.hasErrors()) {
                 throw new FormValidationException();
@@ -69,25 +65,23 @@ public class UserRestController {
             UserEntity userEntity = services.user.loginUser(loginForm);
             SessionEntity sessionEntity = services.session.createSession(userEntity, loginForm.isRememberMe());
 
+            Map<String, Object> answer = new HashMap<>();
             answer.put("sessionKey", sessionEntity.getSessionKey());
             return new ResponseEntity<>(answer, HttpStatus.OK);
         } catch (Exception e) {
-            answer.put("errorMessage", e.getMessage());
-            return new ResponseEntity<>(answer, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PostMapping(value = "/api/user/logout")
     public ResponseEntity<Object> logoutUser(@RequestParam String sessionKey) {
-        Map<String, Object> answer = new HashMap<>();
         try {
             SessionEntity sessionEntity = services.session.getSessionBySessionKey(sessionKey);
             services.session.removeSession(sessionEntity);
 
-            return new ResponseEntity<>(answer, HttpStatus.OK);
+            return new ResponseEntity<>(null, HttpStatus.OK);
         } catch (Exception e) {
-            answer.put("errorMessage", e.getMessage());
-            return new ResponseEntity<>(answer, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

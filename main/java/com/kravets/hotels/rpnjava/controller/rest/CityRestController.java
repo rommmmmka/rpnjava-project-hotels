@@ -1,5 +1,6 @@
 package com.kravets.hotels.rpnjava.controller.rest;
 
+import com.kravets.hotels.rpnjava.data.entity.CityEntity;
 import com.kravets.hotels.rpnjava.misc.Services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -7,8 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @RestController
 public class CityRestController {
@@ -20,9 +20,7 @@ public class CityRestController {
     }
 
     @GetMapping(value = "/api/city/get_list")
-    public ResponseEntity<Object> getCitiesList() {
-        Map<String, Object> answer = new HashMap<>();
-        answer.put("citiesList", services.cities.getAllCities());
-        return new ResponseEntity<>(answer, HttpStatus.OK);
+    public ResponseEntity<List<CityEntity>> getCitiesList() {
+        return new ResponseEntity<>(services.cities.getAllCities(), HttpStatus.OK);
     }
 }

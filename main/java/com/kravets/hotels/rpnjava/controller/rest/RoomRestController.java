@@ -41,22 +41,12 @@ public class RoomRestController {
             @RequestParam(required = false, defaultValue = "creationDate") String sortingProperty,
             @RequestParam(required = false, defaultValue = "descending") String sortingDirection
     ) {
-        Map<String, Object> answer = new HashMap<>();
         try {
             sessionCheck.noRestrictionAccessRest(sessionKey);
 
-            answer.put("hotelsList", services.hotel.getAllHotels());
-            answer.put("roomsList", services.db.getRoomsByParameters(filterHotel, filterCity, sortingProperty, sortingDirection));
-            answer.put("citiesList", services.cities.getAllCities());
-            answer.put("filterHotel", filterHotel);
-            answer.put("filterCity", filterCity);
-            answer.put("sortingProperty", sortingProperty);
-            answer.put("sortingDirection", sortingDirection);
-
-            return new ResponseEntity<>(answer, HttpStatus.OK);
+            return new ResponseEntity<>(services.db.getRoomsByParameters(filterHotel, filterCity, sortingProperty, sortingDirection), HttpStatus.OK);
         } catch (Exception e) {
-            answer.put("errorMessage", e.getMessage());
-            return new ResponseEntity<>(answer, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -66,7 +56,6 @@ public class RoomRestController {
             @ModelAttribute SearchForm searchForm,
             BindingResult result
     ) {
-        Map<String, Object> answer = new HashMap<>();
         try {
             searchValidatior.validate(searchForm, result);
             if (result.hasErrors()) {
@@ -74,20 +63,9 @@ public class RoomRestController {
             }
             sessionCheck.noRestrictionAccessRest(sessionKey);
 
-            answer.put("searchForm", searchForm);
-            answer.put("citiesList", services.cities.getAllCities());
-            answer.put("currentDate", DateUtils.convertDateToString(DateUtils.getCurrentDate()));
-            answer.put("currentDatePlusDay", DateUtils.convertDateToString(DateUtils.getCurrentDate().plusDays(1)));
-            answer.put("checkInDate", DateUtils.convertDateToString(searchForm.getCheckInDate()));
-            answer.put("checkOutDate", DateUtils.convertDateToString(searchForm.getCheckOutDate()));
-
-            List<RoomWithFreeRoomsLeft> roomsList = services.db.getEmptyRoomsWithFreeRoomsField(searchForm);
-            answer.put("roomsList", roomsList);
-
-            return new ResponseEntity<>(answer, HttpStatus.OK);
+            return new ResponseEntity<>(services.db.getEmptyRoomsWithFreeRoomsField(searchForm), HttpStatus.OK);
         } catch (Exception e) {
-            answer.put("errorMessage", e.getMessage());
-            return new ResponseEntity<>(answer, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

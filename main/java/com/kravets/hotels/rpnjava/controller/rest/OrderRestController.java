@@ -1,5 +1,6 @@
 package com.kravets.hotels.rpnjava.controller.rest;
 
+import com.kravets.hotels.rpnjava.data.entity.OrderEntity;
 import com.kravets.hotels.rpnjava.data.entity.SessionEntity;
 import com.kravets.hotels.rpnjava.data.entity.UserEntity;
 import com.kravets.hotels.rpnjava.data.form.AddOrderForm;
@@ -15,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -32,22 +34,16 @@ public class OrderRestController {
 
     @GetMapping(value = "/api/order/get_list")
     public ResponseEntity<Object> getOrdersList(
-            @RequestParam(required = false) String sessionKey,
+            @RequestParam String sessionKey,
             @RequestParam(required = false, defaultValue = "0") Long filterStatus
     ) {
-        Map<String, Object> answer = new HashMap<>();
         try {
             SessionEntity sessionEntity = sessionCheck.userAccessRest(sessionKey);
             UserEntity userEntity = sessionEntity.getUser();
 
-            answer.put("ordersList", services.db.getOrdersByUserAndStatusId(userEntity, filterStatus));
-            answer.put("statusesList", services.status.getAllStatuses());
-            answer.put("filterStatus", filterStatus);
-
-            return new ResponseEntity<>(answer, HttpStatus.OK);
+            return new ResponseEntity<>(services.db.getOrdersByUserAndStatusId(userEntity, filterStatus), HttpStatus.OK);
         } catch (Exception e) {
-            answer.put("errorMessage", e.getMessage());
-            return new ResponseEntity<>(answer, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
     }
@@ -58,7 +54,6 @@ public class OrderRestController {
             @ModelAttribute AddOrderForm addOrderForm,
             BindingResult result
     ) {
-        Map<String, Object> answer = new HashMap<>();
         try {
             SessionEntity sessionEntity = sessionCheck.userAccessRest(sessionKey);
             addOrderValidator.validate(addOrderForm, result);
@@ -71,10 +66,9 @@ public class OrderRestController {
 
             services.db.createOrder(addOrderForm, sessionEntity.getUser());
 
-            return new ResponseEntity<>(answer, HttpStatus.OK);
+            return new ResponseEntity<>(null, HttpStatus.OK);
         } catch (Exception e) {
-            answer.put("errorMessage", e.getMessage());
-            return new ResponseEntity<>(answer, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -83,16 +77,14 @@ public class OrderRestController {
             @RequestParam(required = false) String sessionKey,
             @RequestParam Long id
     ) {
-        Map<String, Object> answer = new HashMap<>();
         try {
             SessionEntity sessionEntity = sessionCheck.userAccessRest(sessionKey);
 
             services.order.removeOrderByUser(id, sessionEntity.getUser());
 
-            return new ResponseEntity<>(answer, HttpStatus.OK);
+            return new ResponseEntity<>(null, HttpStatus.OK);
         } catch (Exception e) {
-            answer.put("errorMessage", e.getMessage());
-            return new ResponseEntity<>(answer, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
