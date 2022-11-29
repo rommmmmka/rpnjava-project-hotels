@@ -72,7 +72,7 @@ public class DatabaseService {
         }
 
         switch (property) {
-            case "creationDate" -> answer.sort(Comparator.comparingLong(a -> a.entity.getId() * directionInt));
+            case "creationDate" -> answer.sort(Comparator.comparingLong(a -> a.getId() * directionInt));
             case "roomsCount" -> answer.sort(Comparator.comparingLong(a -> a.getRoomsCount() * directionInt));
             default -> throw new InvalidFilterException();
         }

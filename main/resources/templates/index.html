@@ -71,51 +71,51 @@
             <div class="row">
                 <div class="col-md-3" th:each="el : ${roomsList}">
                     <div class="card my-3">
-                        <img class="card-img-top" alt="Фота нумара" th:src="|/uploads/${el.entity.coverPhoto}|">
+                        <img class="card-img-top" alt="Фота нумара" th:src="|/uploads/${el.coverPhoto}|">
                         <div class="card-body">
-                            <h5 class="card-title" th:text="${el.entity.name}"/>
-                            <p class="card-text" th:text="${el.entity.description}"/>
+                            <h5 class="card-title" th:text="${el.name}"/>
+                            <p class="card-text" th:text="${el.description}"/>
                         </div>
 
                         <ul class="list-group list-group-flush">
-                            <li th:class="|list-group-item card-content-bottom-${el.entity.id}|">
+                            <li th:class="|list-group-item card-content-bottom-${el.id}|">
                                 <div class="icon-box">
                                     <i class="fa-solid fa-user"></i>
                                 </div>
-                                месцаў — [[${el.entity.guestsLimit}]]
-                                (сярод іх дзіцячых — [[${el.entity.guestsLimit - el.entity.adultsLimit}]])
+                                месцаў — [[${el.guestsLimit}]]
+                                (сярод іх дзіцячых — [[${el.guestsLimit - el.adultsLimit}]])
                             </li>
-                            <li th:class="|list-group-item card-content-bottom-${el.entity.id}|">
+                            <li th:class="|list-group-item card-content-bottom-${el.id}|">
                                 <div class="icon-box">
                                     <i class="fa-solid fa-bed"></i>
                                 </div>
-                                аднамесных ложкаў — [[${el.entity.bedsForOnePersonCount}]],
-                                двумесных — [[${el.entity.bedsForTwoPersonsCount}]]
+                                аднамесных ложкаў — [[${el.bedsForOnePersonCount}]],
+                                двумесных — [[${el.bedsForTwoPersonsCount}]]
                             </li>
-                            <li th:class="|list-group-item card-content-bottom-${el.entity.id}|">
+                            <li th:class="|list-group-item card-content-bottom-${el.id}|">
                                 <div class="icon-box">
                                     <i class="fa-solid fa-wallet"></i>
                                 </div>
-                                кошт — [[${el.entity.costPerNight}]] руб. (за ноч),
-                                [[${el.entity.isPrepaymentRequired} ? 'патрабуецца перадаплата' : 'без перадаплаты']]
+                                кошт — [[${el.costPerNight}]] руб. (за ноч),
+                                [[${el.isPrepaymentRequired} ? 'патрабуецца перадаплата' : 'без перадаплаты']]
                             </li>
-                            <li th:class="|list-group-item card-content-bottom-${el.entity.id}|">
+                            <li th:class="|list-group-item card-content-bottom-${el.id}|">
                                 <div class="icon-box">
                                     <i class="fa-solid fa-house"></i>
                                 </div>
-                                нумароў — [[${el.entity.roomsCount}]] шт.
+                                нумароў — [[${el.roomsCount}]] шт.
                                 (вольных — [[${el.freeRoomsLeft}]])
                             </li>
                             <li class="list-group-item">
-                                Гатэль: [[${el.entity.hotel.name}]]
+                                Гатэль: [[${el.hotel.name}]]
                             </li>
                             <li class="list-group-item">
-                                Горад: [[${el.entity.hotel.city.name}]]
+                                Горад: [[${el.hotel.city.name}]]
                             </li>
                         </ul>
 
                         <div class="card-body card-buttons-flex" th:remove="${!isLoggedIn} ? 'all'">
-                            <a class="btn btn-success" href="#" th:onclick="|orderRoom(${el.entity.id})|">
+                            <a class="btn btn-success" href="#" th:onclick="|orderRoom(${el.id})|">
                                 Заказаць
                             </a>
                         </div>
