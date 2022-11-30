@@ -5,9 +5,10 @@ import com.kravets.hotels.rpnjava.data.entity.UserEntity;
 import com.kravets.hotels.rpnjava.data.form.LoginForm;
 import com.kravets.hotels.rpnjava.data.form.RegisterForm;
 import com.kravets.hotels.rpnjava.exception.FormValidationException;
+import com.kravets.hotels.rpnjava.exception.UserAlreadyExistsException;
+import com.kravets.hotels.rpnjava.misc.ResponseStatus;
 import com.kravets.hotels.rpnjava.misc.Services;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -35,9 +36,9 @@ public class UserRestController {
             answer.put("login", userEntity.getLogin());
             answer.put("shortName", userEntity.getShortName());
 
-            return new ResponseEntity<>(answer, HttpStatus.OK);
+            return ResponseStatus.OK.body(answer);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return ResponseStatus.UNKNOWN.body(null);
         }
     }
 
@@ -49,9 +50,12 @@ public class UserRestController {
             }
 
             services.user.registerUser(registerForm);
-            return new ResponseEntity<>(null, HttpStatus.OK);
+
+            return ResponseStatus.OK.body(null);
+        } catch (UserAlreadyExistsException e) {
+            return ResponseStatus.USER_ALREADY_EXISTS.body(null);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return ResponseStatus.UNKNOWN.body(null);
         }
     }
 
@@ -67,9 +71,10 @@ public class UserRestController {
 
             Map<String, Object> answer = new HashMap<>();
             answer.put("sessionKey", sessionEntity.getSessionKey());
-            return new ResponseEntity<>(answer, HttpStatus.OK);
+
+            return ResponseStatus.OK.body(answer);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return ResponseStatus.UNKNOWN.body(null);
         }
     }
 
@@ -79,9 +84,9 @@ public class UserRestController {
             SessionEntity sessionEntity = services.session.getSessionBySessionKey(sessionKey);
             services.session.removeSession(sessionEntity);
 
-            return new ResponseEntity<>(null, HttpStatus.OK);
+            return ResponseStatus.OK.body(null);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return ResponseStatus.UNKNOWN.body(null);
         }
     }
 }

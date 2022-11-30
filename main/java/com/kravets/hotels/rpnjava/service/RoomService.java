@@ -45,7 +45,7 @@ public class RoomService {
         int guestsLimit = searchForm.getAdultsCount() + searchForm.getChildrenCount();
         int adultsLimit = searchForm.getAdultsCount();
 
-        List<RoomEntity> roomEntities = roomRepository.getAllByGuestsLimitLessThanEqualAndAdultsLimitLessThanEqual(guestsLimit, adultsLimit);
+        List<RoomEntity> roomEntities = roomRepository.getAllByGuestsLimitGreaterThanEqualAndAdultsLimitGreaterThanEqual(guestsLimit, adultsLimit);
         List<RoomEntity> answer = new ArrayList<>();
         for (RoomEntity roomEntity : roomEntities) {
             if (roomEntity.getHotel().getCity() == cityEntity) {

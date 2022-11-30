@@ -13,5 +13,5 @@ public interface RoomRepository extends JpaRepository<RoomEntity, Long> {
 
     List<RoomEntity> getAllByHotelIn(List<HotelEntity> hotelEntities);
 
-    List<RoomEntity> getAllByGuestsLimitLessThanEqualAndAdultsLimitLessThanEqual(int guestsLimitMax, int adultsLimitMax);
+    List<RoomEntity> getAllByGuestsLimitGreaterThanEqualAndAdultsLimitGreaterThanEqual(int guestsLimitMax, int adultsLimitMax);
 }

@@ -1,9 +1,9 @@
 package com.kravets.hotels.rpnjava.controller.rest;
 
 import com.kravets.hotels.rpnjava.data.entity.CityEntity;
+import com.kravets.hotels.rpnjava.misc.ResponseStatus;
 import com.kravets.hotels.rpnjava.misc.Services;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +21,6 @@ public class CityRestController {
 
     @GetMapping(value = "/api/city/get_list")
     public ResponseEntity<List<CityEntity>> getCitiesList() {
-        return new ResponseEntity<>(services.cities.getAllCities(), HttpStatus.OK);
+        return ResponseStatus.OK.body(services.cities.getAllCities());
     }
 }

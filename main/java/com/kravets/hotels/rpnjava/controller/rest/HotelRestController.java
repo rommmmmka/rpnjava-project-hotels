@@ -1,6 +1,8 @@
 package com.kravets.hotels.rpnjava.controller.rest;
 
 import com.kravets.hotels.rpnjava.data.other.HotelWithRoomsCount;
+import com.kravets.hotels.rpnjava.exception.InvalidFilterException;
+import com.kravets.hotels.rpnjava.misc.ResponseStatus;
 import com.kravets.hotels.rpnjava.misc.Services;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,9 +38,11 @@ public class HotelRestController {
     ) {
         try {
             sessionCheck.noRestrictionAccessRest(sessionKey);
-            return new ResponseEntity<>(services.db.getHotelsWithRoomsCountByParameters(filterCity, sortingProperty, sortingDirection), HttpStatus.OK);
+            return ResponseStatus.OK.body(services.db.getHotelsWithRoomsCountByParameters(filterCity, sortingProperty, sortingDirection));
+        } catch (InvalidFilterException e) {
+            return ResponseStatus.INVALID_FILTERS.body(null);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return ResponseStatus.UNKNOWN.body(null);
         }
     }
 }

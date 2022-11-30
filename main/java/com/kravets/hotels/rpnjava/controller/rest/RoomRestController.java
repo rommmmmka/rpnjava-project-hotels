@@ -3,7 +3,9 @@ package com.kravets.hotels.rpnjava.controller.rest;
 import com.kravets.hotels.rpnjava.data.form.SearchForm;
 import com.kravets.hotels.rpnjava.data.other.RoomWithFreeRoomsLeft;
 import com.kravets.hotels.rpnjava.exception.FormValidationException;
+import com.kravets.hotels.rpnjava.exception.InvalidFilterException;
 import com.kravets.hotels.rpnjava.misc.DateUtils;
+import com.kravets.hotels.rpnjava.misc.ResponseStatus;
 import com.kravets.hotels.rpnjava.misc.Services;
 import com.kravets.hotels.rpnjava.misc.SessionCheck;
 import com.kravets.hotels.rpnjava.validator.SearchValidatior;
@@ -44,9 +46,11 @@ public class RoomRestController {
         try {
             sessionCheck.noRestrictionAccessRest(sessionKey);
 
-            return new ResponseEntity<>(services.db.getRoomsByParameters(filterHotel, filterCity, sortingProperty, sortingDirection), HttpStatus.OK);
+            return ResponseStatus.OK.body(services.db.getRoomsByParameters(filterHotel, filterCity, sortingProperty, sortingDirection));
+        } catch (InvalidFilterException e) {
+            return ResponseStatus.INVALID_FILTERS.body(null);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return ResponseStatus.UNKNOWN.body(null);
         }
     }
 
@@ -63,9 +67,11 @@ public class RoomRestController {
             }
             sessionCheck.noRestrictionAccessRest(sessionKey);
 
-            return new ResponseEntity<>(services.db.getEmptyRoomsWithFreeRoomsField(searchForm), HttpStatus.OK);
+            return ResponseStatus.OK.body(services.db.getEmptyRoomsWithFreeRoomsField(searchForm));
+        } catch (FormValidationException e) {
+            return ResponseStatus.FORM_NOT_VALID.body(null);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return ResponseStatus.UNKNOWN.body(null);
         }
     }
 }
