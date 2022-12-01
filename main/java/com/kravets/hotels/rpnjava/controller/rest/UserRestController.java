@@ -5,7 +5,9 @@ import com.kravets.hotels.rpnjava.data.entity.UserEntity;
 import com.kravets.hotels.rpnjava.data.form.LoginForm;
 import com.kravets.hotels.rpnjava.data.form.RegisterForm;
 import com.kravets.hotels.rpnjava.exception.FormValidationException;
+import com.kravets.hotels.rpnjava.exception.InvalidPasswordException;
 import com.kravets.hotels.rpnjava.exception.UserAlreadyExistsException;
+import com.kravets.hotels.rpnjava.exception.UserNotFoundException;
 import com.kravets.hotels.rpnjava.misc.ResponseStatus;
 import com.kravets.hotels.rpnjava.misc.Services;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,8 +73,14 @@ public class UserRestController {
 
             Map<String, Object> answer = new HashMap<>();
             answer.put("sessionKey", sessionEntity.getSessionKey());
+            answer.put("shortName", userEntity.getShortName());
+            answer.put("isAdmin", userEntity.isAdmin());
 
             return ResponseStatus.OK.body(answer);
+        } catch (UserNotFoundException e) {
+            return ResponseStatus.USER_NOT_FOUND.body(null);
+        } catch (InvalidPasswordException e) {
+            return ResponseStatus.INVALID_PASSWORD.body(null);
         } catch (Exception e) {
             return ResponseStatus.UNKNOWN.body(null);
         }

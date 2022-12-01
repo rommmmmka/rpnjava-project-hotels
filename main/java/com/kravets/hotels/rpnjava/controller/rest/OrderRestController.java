@@ -46,7 +46,7 @@ public class OrderRestController {
 
     @PostMapping(value = "/api/order/add")
     public ResponseEntity<Object> addOrderAction(
-            @RequestParam(required = false) String sessionKey,
+            @RequestParam String sessionKey,
             @ModelAttribute AddOrderForm addOrderForm,
             BindingResult result
     ) {

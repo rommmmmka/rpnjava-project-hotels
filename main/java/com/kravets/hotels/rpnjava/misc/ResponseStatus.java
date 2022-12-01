@@ -11,6 +11,8 @@ public class ResponseStatus {
     public static final ResponseEntity.BodyBuilder NO_FREE_ROOMS = ResponseEntity.status(462);
     public static final ResponseEntity.BodyBuilder ORDER_DOES_NOT_EXIST = ResponseEntity.status(463);
     public static final ResponseEntity.BodyBuilder USER_ALREADY_EXISTS = ResponseEntity.status(464);
+    public static final ResponseEntity.BodyBuilder USER_NOT_FOUND = ResponseEntity.status(465);
+    public static final ResponseEntity.BodyBuilder INVALID_PASSWORD = ResponseEntity.status(466);
 
     public static final ResponseEntity.BodyBuilder UNKNOWN = ResponseEntity.status(560);
 }
