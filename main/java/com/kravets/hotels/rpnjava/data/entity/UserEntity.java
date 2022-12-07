@@ -20,10 +20,12 @@ public class UserEntity {
     @Length(max = 32)
     private String login;
 
+    @JsonIgnore
     @NonNull
     @Length(max = 44)
     private String passwordHash;
 
+    @JsonIgnore
     @NonNull
     @Length(max = 44)
     private String passwordSalt;

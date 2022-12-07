@@ -1,6 +1,8 @@
 package com.kravets.hotels.rpnjava.data.entity;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.kravets.hotels.rpnjava.misc.DateUtils;
 import org.springframework.lang.NonNull;
 
@@ -16,16 +18,18 @@ public class OrderEntity {
     private Long id;
 
     @NonNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate checkInDate;
 
     @NonNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate checkOutDate;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime expireDateTime;
 
     private long cost;
 
-    @JsonPropertyOrder({"id"})
     @ManyToOne
     @NonNull
     private UserEntity user;
@@ -34,7 +38,6 @@ public class OrderEntity {
     @NonNull
     private RoomEntity room;
 
-    @JsonPropertyOrder({"id"})
     @ManyToOne
     @NonNull
     private StatusEntity status;
@@ -51,6 +54,7 @@ public class OrderEntity {
         this.status = status;
     }
 
+    @JsonIgnore
     public String getExpireDateTimeFormatted() {
         return DateUtils.convertDateTimeToString(expireDateTime);
     }

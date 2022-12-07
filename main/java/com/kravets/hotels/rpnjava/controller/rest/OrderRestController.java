@@ -1,5 +1,6 @@
 package com.kravets.hotels.rpnjava.controller.rest;
 
+import com.kravets.hotels.rpnjava.data.entity.OrderEntity;
 import com.kravets.hotels.rpnjava.data.entity.SessionEntity;
 import com.kravets.hotels.rpnjava.data.entity.UserEntity;
 import com.kravets.hotels.rpnjava.data.form.AddOrderForm;
@@ -15,6 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 public class OrderRestController {
@@ -38,7 +42,15 @@ public class OrderRestController {
             SessionEntity sessionEntity = sessionCheck.userAccessRest(sessionKey);
             UserEntity userEntity = sessionEntity.getUser();
 
-            return ResponseStatus.OK.body(services.db.getOrdersByUserAndStatusId(userEntity, filterStatus));
+//            return ResponseStatus.OK.body(services.db.getOrdersByUserAndStatusId(userEntity, filterStatus));
+            List<OrderEntity> orders = services.db.getOrdersByUserAndStatusId(userEntity, filterStatus);
+            for (OrderEntity orderEntity : orders) {
+                if (orderEntity.getExpireDateTime() == null) {
+                    orderEntity.setExpireDateTime(LocalDateTime.MAX);
+                }
+            }
+
+            return ResponseEntity.status(200).body(orders);
         } catch (Exception e) {
             return ResponseStatus.UNKNOWN.body(null);
         }

@@ -1,5 +1,6 @@
 package com.kravets.hotels.rpnjava.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.lang.NonNull;
 
@@ -19,6 +20,7 @@ public class SessionEntity {
     private String sessionKey = UUID.randomUUID().toString();
 
     @NonNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime lastAccessTime;
 
     private boolean rememberMe;
